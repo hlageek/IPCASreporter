@@ -15,11 +15,11 @@
 ## Add meta data about your application
 golem::fill_desc(
   pkg_name = "IPCASreporter", # The Name of the package containing the App 
-  pkg_title = "PKG_TITLE", # The Title of the package containing the App 
-  pkg_description = "PKG_DESC.", # The Description of the package containing the App 
-  author_first_name = "AUTHOR_FIRST", # Your First Name
-  author_last_name = "AUTHOR_LAST", # Your Last Name
-  author_email = "AUTHOR@MAIL.COM", # Your Email
+  pkg_title = "ipcasreporter", # The Title of the package containing the App 
+  pkg_description = "App for annual reporting at IP CAS.", # The Description of the package containing the App 
+  author_first_name = "Radim", # Your First Name
+  author_last_name = "Hladík", # Your Last Name
+  author_email = "hladik@flu.cas.cz", # Your Email
   repo_url = NULL # The URL of the GitHub Repo (optional) 
 )     
 
@@ -37,7 +37,7 @@ usethis::use_news_md( open = FALSE )
 ## Use git ----
 usethis::use_git()
 
-## Init Testing Infrastructure ----
+2## Init Testing Infrastructure ----
 ## Create a template for tests
 golem::use_recommended_tests()
 

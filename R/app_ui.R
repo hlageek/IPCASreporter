@@ -10,8 +10,44 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # List the first level UI elements here 
     fluidPage(
-      h1("IPCASreporter")
-    )
+      titlePanel("Submission form for IP CAS annual report"),
+      
+      sidebarLayout(
+        sidebarPanel(width = 2,
+          
+      mod_employee_name_ui("employee_name_ui_1"),
+      
+      mod_department_ui("department_ui_1"),
+      
+      navlistPanel(
+        "Header",
+        tabPanel("First"),
+        tabPanel("Second"),
+        tabPanel("Third")
+      )
+        ),
+      
+      
+      mainPanel(
+        
+        tabsetPanel(type = "pills",
+                    tabPanel("I. VYDANÉ PUBLIKACE"),
+                    tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+                    tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+                    tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+                    tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+                    tabPanel("VI. POPULARIZAČNÍ ČINNOST"),
+                    tabPanel("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+                    tabPanel("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+                    tabPanel("IX. OSTATNÍ"),
+                    tabPanel("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+                    tabPanel("XI. RŮZNÉ")
+        
+      ),
+      
+      ),
+      ),
+    ),
   )
 }
 
