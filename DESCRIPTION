@@ -9,7 +9,11 @@ Imports:
     golem,
     shiny,
     tibble,
-    pkgload
+    pkgload,
+    magrittr,
+    rvest,
+    stringr,
+    here
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

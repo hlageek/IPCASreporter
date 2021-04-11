@@ -16,11 +16,27 @@
 ## Dependencies ----
 ## Add one line by package you want to add as dependency
 usethis::use_package( "tibble" )
+usethis::use_package( "magrittr" )
+usethis::use_package( "rvest" )
+usethis::use_package( "stringr" )
+usethis::use_package( "officer" )
+usethis::use_package( "here" )
+
+
+
+
+
 
 ## Add modules ----
 ## Create a module infrastructure in R/
 golem::add_module( name = "employee_name" ) # Name of the module
 golem::add_module( name = "department" ) # Name of the module
+golem::add_module( name = "fte" ) # Name of the module
+golem::add_module( name = "pub" ) # Name of the module
+golem::add_module( name = "docx" ) # Name of the module
+
+
+
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*

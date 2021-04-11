@@ -12,43 +12,60 @@ app_ui <- function(request) {
     fluidPage(
       titlePanel("Submission form for IP CAS annual report"),
       
-      sidebarLayout(
-        sidebarPanel(width = 2,
-          
-      mod_employee_name_ui("employee_name_ui_1"),
-      
-      mod_department_ui("department_ui_1"),
-      
-      navlistPanel(
-        "Header",
-        tabPanel("First"),
-        tabPanel("Second"),
-        tabPanel("Third")
-      )
+   
+
+        column(width = 10,
+               
+                      
+                      
+                      
+           
+               navlistPanel(widths = c(2,8), well = F,
+                            
+                            tabPanel("Identifkační údaje",
+                                     mod_employee_name_ui("employee_name_ui_1"),
+                                     
+                                     mod_department_ui("department_ui_1"),
+                                     
+                                     mod_fte_ui("fte_ui_1"),
+                                     textOutput("fte")
+                                     
+                                     ),
+                            "Report sections",
+                            tabPanel("I. VYDANÉ PUBLIKACE", 
+                                     
+                                     mod_pub_ui("pub_ui_1")
+                                     ),
+                            tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ", h2("2")),
+                            tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+                            tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+                            tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+                            tabPanel("VI. POPULARIZAČNÍ ČINNOST"),
+                            tabPanel("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+                            tabPanel("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+                            tabPanel("IX. OSTATNÍ"),
+                            tabPanel("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+                            tabPanel("XI. RŮZNÉ")
+                            
+                        
+               ),
         ),
-      
-      
-      mainPanel(
+        column(width = 2,
+               
+               h1("test"),
+               
+               mod_docx_ui("docx_ui_1")
+               
+               
+               
+               
+        )
         
-        tabsetPanel(type = "pills",
-                    tabPanel("I. VYDANÉ PUBLIKACE"),
-                    tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
-                    tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
-                    tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
-                    tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
-                    tabPanel("VI. POPULARIZAČNÍ ČINNOST"),
-                    tabPanel("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
-                    tabPanel("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
-                    tabPanel("IX. OSTATNÍ"),
-                    tabPanel("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
-                    tabPanel("XI. RŮZNÉ")
         
-      ),
-      
-      ),
-      ),
     ),
+    
   )
+  
 }
 
 #' Add external Resources to the Application
@@ -64,7 +81,7 @@ golem_add_external_resources <- function(){
   add_resource_path(
     'www', app_sys('app/www')
   )
- 
+  
   tags$head(
     favicon(),
     bundle_resources(

@@ -10,16 +10,20 @@
 mod_department_ui <- function(id){
   ns <- NS(id)
   tagList(
-    selectInput(ns("select"), "Select here", choices=departments$department_name)
+    selectInput(NS(id, "department"), "Select here", choices=departments$department_name)
   )
 }
     
 #' department Server Function
 #'
 #' @noRd 
-mod_department_server <- function(input, output, session){
+mod_department_server <- function(input, output, session, r){
   ns <- session$ns
- 
+  
+  observeEvent( input$department , {
+    r$department <- input$department
+  })
+  
 }
     
 ## To be copied in the UI
