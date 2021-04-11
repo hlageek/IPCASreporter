@@ -22,7 +22,9 @@ app_ui <- function(request) {
            
                navlistPanel(widths = c(2,8), well = F,
                             
-                            tabPanel("Identifkační údaje",
+                            "Researcher's details",
+                            
+                            tabPanel("IDENTIFIKAČNÍ ÚDAJE",
                                      mod_employee_name_ui("employee_name_ui_1"),
                                      
                                      mod_department_ui("department_ui_1"),
@@ -52,7 +54,7 @@ app_ui <- function(request) {
         ),
         column(width = 2,
                
-               h1("test"),
+               h3("Download report"),
                
                mod_docx_ui("docx_ui_1")
                

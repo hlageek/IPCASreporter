@@ -11,7 +11,7 @@ mod_pub_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    textInput(NS(id, "asep_code"), label = "ASEP item code"),
+    textInput(NS(id, "asep_code"), label = "ASEP item code", value = "0467096"),
     
     uiOutput(NS(id, "title")),
     
