@@ -32,7 +32,9 @@ mod_docx_server <- function(input, output, session, r){
       doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>% 
         officer::body_replace_text_at_bkm("employee_name", r$employee_name) %>% 
         officer::body_replace_text_at_bkm("department",r$department) %>% 
-        officer::body_replace_text_at_bkm("fte", r$fte)
+        officer::body_replace_text_at_bkm("fte", r$fte) %>% 
+        officer::body_replace_text_at_bkm("pubs", r$pubs) 
+        
 
       print(doc, target = file)
     }

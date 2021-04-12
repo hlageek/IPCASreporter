@@ -29,6 +29,14 @@ mod_pub_server <- function(input, output, session, r){
   ns <- session$ns
   
 
+  
+  observeEvent( input$asep_code  , {
+    
+    
+    r$pubs <- get_asep(input$asep_code)
+      
+  })
+  
   output$title <- renderText({ 
     
     if (isTruthy(input$asep_code)) {
@@ -62,7 +70,7 @@ mod_pub_server <- function(input, output, session, r){
   output$additional_info <- renderUI({
     
 
-    if (isTruthy(input$significant) & isTruthy(title)) {
+    if (isTruthy(input$significant)) {
       
       tagList(
       textAreaInput("annotation_cze", label = "Annotation in Czech", width = '80%'),
