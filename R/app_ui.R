@@ -16,11 +16,8 @@ app_ui <- function(request) {
 
         column(width = 7,
                
-                      
-                      
-                      
            
-               navlistPanel(widths = c(2,5), well = F,
+               navlistPanel(widths = c(4,8), well = F,
                             
                             "Researcher's details",
                             
