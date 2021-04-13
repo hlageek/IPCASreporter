@@ -22,12 +22,13 @@ app_ui <- function(request) {
                             "Researcher's details",
                             
                             tabPanel("IDENTIFIKAČNÍ ÚDAJE",
+                                     
                                      mod_employee_name_ui("employee_name_ui_1"),
                                      
                                      mod_department_ui("department_ui_1"),
                                      
                                      mod_fte_ui("fte_ui_1"),
-                                     textOutput("fte")
+                                     textOutput("r$fte")
                                      
                                      ),
                             "Report sections",
@@ -35,10 +36,49 @@ app_ui <- function(request) {
                                      
                                      mod_pub_ui("pub_ui_1")
                                      ),
-                            tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ", h2("2")),
-                            tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
-                            tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
-                            tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+                            
+                            tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ", 
+                                     
+                                     h2("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+                                     p( "Včetně odkazu do ASEP")
+                                     
+                                     ),
+                            
+                            tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST",
+                                     
+                                     h2("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+                                     p("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ."),
+                                     h3("1)	Výuka na vysokých školách a vedení prací:"),
+                                     h4("a) Bakalářské a magisterské studijní programy"),
+                                     h4("b) Doktorský studijní program"),
+                                     
+                                     h3("2)	Příspěvky a přednášky na konferencích: "),
+                                     h4("a) Zahraniční:"),
+                                     h4("b) Domácí:"),
+                                     
+                                     h3("3)	 Samostatné přednášky:"),
+                                     h4("a) Zahraniční:"),
+                                     h4("b) Domácí:")
+                                     
+                                     
+                                     ),
+                            
+                            tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY",
+                                     
+                                     h2("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+                                     p("Uveďte i projekty podané a nepřijaté k financování.")
+                                     
+                                     
+                                     ),
+                            
+                            
+                            tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21",
+                                     
+                                     h2("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+                                     p("Včetně anotace (min. 300 znaků) a výstupů (publikace, konference, přednáška atd.).")
+                                     
+                                     
+                                     ),
                             tabPanel("VI. POPULARIZAČNÍ ČINNOST"),
                             tabPanel("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
                             tabPanel("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
