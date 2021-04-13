@@ -10,7 +10,9 @@
 mod_department_ui <- function(id){
   ns <- NS(id)
   tagList(
-    selectInput(NS(id, "department"), "Select here", choices=departments$department_name)
+    selectInput(NS(id, "department"), "Department", 
+                selected = "", 
+                choices = c("", departments$department_name))
   )
 }
     

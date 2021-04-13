@@ -34,6 +34,8 @@ golem::add_module( name = "department" ) # Name of the module
 golem::add_module( name = "fte" ) # Name of the module
 golem::add_module( name = "pub" ) # Name of the module
 golem::add_module( name = "docx" ) # Name of the module
+golem::add_module( name = "preview" ) # Name of the module
+
 
 
 

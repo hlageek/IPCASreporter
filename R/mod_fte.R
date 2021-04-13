@@ -11,7 +11,7 @@ mod_fte_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    sliderInput(NS(id, "fte"), label = "FTE", value = 1, min = 0, max = 1, step = 0.01)
+    sliderInput(NS(id, "fte"), label = "FTE", value = 0, min = 0, max = 1, step = 0.01)
 
       )
 }

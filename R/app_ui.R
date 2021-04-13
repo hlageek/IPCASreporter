@@ -14,13 +14,13 @@ app_ui <- function(request) {
       
    
 
-        column(width = 10,
+        column(width = 7,
                
                       
                       
                       
            
-               navlistPanel(widths = c(2,8), well = F,
+               navlistPanel(widths = c(2,5), well = F,
                             
                             "Researcher's details",
                             
@@ -52,13 +52,13 @@ app_ui <- function(request) {
                         
                ),
         ),
-        column(width = 2,
+        column(width = 5,
                
                h3("Download report"),
                
-               mod_docx_ui("docx_ui_1")
+               mod_docx_ui("docx_ui_1"),
                
-               
+               mod_preview_ui("preview_ui_1")
                
                
         )
