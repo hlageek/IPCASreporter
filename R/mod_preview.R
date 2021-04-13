@@ -21,7 +21,12 @@ mod_preview_ui <- function(id){
     
     br(),
     "FTE:",
-    textOutput(NS(id, "fte"), inline = TRUE)
+    textOutput(NS(id, "fte"), inline = TRUE),
+    
+    
+    br(),
+    "PUB:",
+    htmlOutput(NS(id, "pub"), inline = FALSE)
         
         
 )
@@ -37,6 +42,16 @@ mod_preview_server <- function(input, output, session, r){
     output$employee_name <- renderText({r$employee_name})
     output$department <- renderText({r$department})
     output$fte <- renderText({r$fte})
+    
+    pubs <- reactive({
+      
+      pubs_fun <- function(x) paste(x, '<br/>')
+      
+      paste(lapply(r$pub, pubs_fun), collapse = "")
+      
+    })
+    
+    output$pub <- renderText({pubs()})
    
 }
     

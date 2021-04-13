@@ -17,7 +17,9 @@ mod_pub_ui <- function(id){
     
     checkboxInput(NS(id, "significant"), label = "A significant output."),
     
-    uiOutput(NS(id, "additional_info"))
+    uiOutput(NS(id, "additional_info")),
+    
+    actionButton(NS(id, "save"), label = "Add to report")
     
   )
 }
@@ -88,19 +90,19 @@ mod_pub_server <- function(input, output, session, r){
       textAreaInput("citation", label = "Bibliographical citation", value = title2() , width = '80%')
 
       
-      
-      
-      
-      
-      
-      
-      
       )
       
     }
-    
-    
+
   })
+  
+
+  r$pub <- c()
+  
+  observeEvent( input$save , {
+    r$pub <- c(r$pub, title2())
+  })
+  
  
 }
     

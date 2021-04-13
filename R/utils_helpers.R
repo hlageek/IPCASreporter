@@ -15,7 +15,9 @@ get_asep <- function(asep_code) {
  
  asep_citation %>% 
      rvest::html_text2() %>% 
-     stringr::str_replace(emphasis_citation, paste0("<em>", emphasis_citation, "</em>"))
+     stringr::str_replace(emphasis_citation, paste0("<em>", emphasis_citation, "</em>")) %>% 
+     trimws() 
+ 
  } else {
      "No data found for the ASEP item code."
      }
