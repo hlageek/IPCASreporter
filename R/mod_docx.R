@@ -33,7 +33,9 @@ mod_docx_server <- function(input, output, session, r){
         officer::body_replace_text_at_bkm("employee_name", r$employee_name) %>% 
         officer::body_replace_text_at_bkm("department",r$department) %>% 
         officer::body_replace_text_at_bkm("fte", r$fte) %>% 
-        officer::body_replace_text_at_bkm("pubs", r$pubs) 
+        officer::cursor_bookmark("pubs") %>% 
+        officer::body_add_fpar(format_html_citation(r$pubs)) %>% 
+        officer::body_replace_text_at_bkm("pubs", "") 
         
 
       print(doc, target = file)

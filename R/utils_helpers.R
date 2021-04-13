@@ -23,3 +23,22 @@ get_asep <- function(asep_code) {
      }
     
 }
+
+
+############################
+# word formatting util
+
+format_html_citation <- function(html_citation) {
+
+    citation <- unlist(strsplit(html_citation, "</?em>"))
+    fp_normal <- officer::fp_text()
+    fp_italic <- update(fp_normal, italic = TRUE)
+    
+    formatted_citation <- officer::fpar(
+        officer::ftext(citation[1], fp_normal), 
+        officer::ftext(citation[2], fp_italic),
+        officer::ftext(citation[3], fp_normal) 
+          
+             )
+    
+}
