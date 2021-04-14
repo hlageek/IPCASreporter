@@ -11,6 +11,13 @@ mod_preview_ui <- function(id){
   ns <- NS(id)
   tagList(
     
+    tags$style(HTML("
+                  .col-sm-5 {
+                    height:80vh;
+                    overflow-y:scroll
+                  }
+                  ")),    
+    
     br(),
     "Name:",
     textOutput(NS(id, "employee_name"), inline = TRUE),
@@ -26,7 +33,10 @@ mod_preview_ui <- function(id){
     
     br(),
     "PUB:",
-    htmlOutput(NS(id, "pub"), inline = FALSE)
+    htmlOutput(NS(id, "pub"), inline = FALSE),
+    
+
+        
         
         
 )
