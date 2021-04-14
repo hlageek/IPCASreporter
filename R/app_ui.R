@@ -47,20 +47,32 @@ app_ui <- function(request) {
                             tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST",
                                      
                                      h2("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+                                     
                                      p("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ."),
+                                     
+                                     tabsetPanel(tabPanel("Bc. & Mgr.",
+                                     
+
                                      h3("1)	Výuka na vysokých školách a vedení prací:"),
                                      h4("a) Bakalářské a magisterské studijní programy"),
+                                     mod_lecture_ui("lecture_ui_1"),
+                                     ), 
+                                     tabPanel("PhD.",
+                                     h3("1)	Výuka na vysokých školách a vedení prací:"),
                                      h4("b) Doktorský studijní program"),
+                                     ),
                                      
+                                     tabPanel("Konference",
                                      h3("2)	Příspěvky a přednášky na konferencích: "),
                                      h4("a) Zahraniční:"),
                                      h4("b) Domácí:"),
-                                     
+                                     ),
+                                     tabPanel("Přednášky",
                                      h3("3)	 Samostatné přednášky:"),
                                      h4("a) Zahraniční:"),
                                      h4("b) Domácí:")
-                                     
-                                     
+                                     )
+                                     )
                                      ),
                             
                             tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY",
@@ -95,8 +107,9 @@ app_ui <- function(request) {
                
                mod_docx_ui("docx_ui_1"),
                
-               mod_preview_ui("preview_ui_1")
                
+               mod_preview_ui("preview_ui_1"),
+    
                
         )
         
