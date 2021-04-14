@@ -55,7 +55,7 @@ app_ui <- function(request) {
 
                                      h3("1)	Výuka na vysokých školách a vedení prací:"),
                                      h4("a) Bakalářské a magisterské studijní programy"),
-                                     mod_lecture_ui("undergrad_ui_1"),
+                                     mod_undergrad_ui("undergrad_ui_1"),
                                      ), 
                                      tabPanel("PhD.",
                                      h3("1)	Výuka na vysokých školách a vedení prací:"),
