@@ -19,7 +19,9 @@ mod_pub_ui <- function(id){
     
     uiOutput(NS(id, "additional_info")),
     
-    actionButton(NS(id, "save"), label = "Add to report")
+    actionButton(NS(id, "save"), label = "Add to report"),
+    
+    actionButton(NS(id, "remove"), label = "Remove from report")
     
   )
 }
@@ -96,11 +98,30 @@ mod_pub_server <- function(input, output, session, r){
 
   })
   
-
+# create output container
+  
   r$pub <- c()
+  
+# Add to report
   
   observeEvent( input$save , {
     r$pub <- c(r$pub, title2())
+  })
+  
+# Remove from report
+  
+  observeEvent( input$remove , {
+    
+    if (length(r$pub) < 2) {
+    r$pub <- c()
+    
+    } else {
+      
+    r$pub <- r$pub[1:(length(r$pub)-1)]
+    
+    }
+    
+    
   })
   
  
