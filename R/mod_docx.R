@@ -25,7 +25,7 @@ mod_docx_server <- function(input, output, session, r){
   output$download_docx<- downloadHandler(
   
     filename = function() {
-      tempfile(fileext = ".docx")
+      paste0("ipcas_annual_report-", r$employee_name, ".docx")
     },
     
     content = function(file) {
