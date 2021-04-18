@@ -22,7 +22,7 @@ mod_conference_ui <- function(id){
 #' conference Server Function
 #'
 #' @noRd 
-mod_conference_foreign_server <- function(id) {
+mod_conference_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     reactive(

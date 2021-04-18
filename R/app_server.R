@@ -28,7 +28,7 @@ app_server <- function( input, output, session ) {
     
     conference_foreign <- mod_conference_server( "conference_ui_1")
     
-    conference_local <- mod_conference_foreign_server( "conference_ui_2")
+    conference_local <- mod_conference_server( "conference_ui_2")
     
 
     
