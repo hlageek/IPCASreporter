@@ -30,15 +30,58 @@ get_asep <- function(asep_code) {
 
 format_html_citation <- function(html_citation) {
 
-    citation <- unlist(strsplit(html_citation, "</?em>"))
+    citation <- sapply(html_citation, strsplit, "</?em>")
     fp_normal <- officer::fp_text()
     fp_italic <- update(fp_normal, italic = TRUE)
     
-    formatted_citation <- officer::fpar(
+    
+    process_format <- function(citation) {
+        officer::fpar(
         officer::ftext(citation[1], fp_normal), 
         officer::ftext(citation[2], fp_italic),
         officer::ftext(citation[3], fp_normal) 
-          
-             )
+
+        )
+
+    }
     
+   processed <-  purrr::map(citation, process_format) 
+
+   value <- do.call(officer::block_list, processed)
+   
+   return(value)
+}
+
+
+add_blocks <- function( x, blocks, pos = "after" ){
+    
+
+    if( length(blocks) > 0 ){
+        pos_vector <- rep("after", length(blocks))
+        for(i in seq_along(blocks) ){
+            
+            wml <- officer::to_wml(blocks[[i]])
+            x <- officer::cursor_end(x)
+            x <- officer::body_add_xml(x, wml, pos = "after")
+            # x <- officer::cursor_backward(x)
+            # x <- officer::cursor_bookmark(x,"pubs")
+            
+
+        }
+    }
+    
+    x
+}
+
+body_add_par_n <- function(doc, value) {
+    i <- 1
+    n <- length(value)
+    while (i<=n) {
+        
+        doc <- officer::body_add_fpar(doc, value[[i]])
+        doc <- officer::body_add_par(doc, "")
+        i <- i+1
+    }
+    
+    doc
 }

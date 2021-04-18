@@ -21,7 +21,8 @@ mod_docx_ui <- function(id){
 #' @noRd 
 mod_docx_server <- function(input, output, session, r){
   ns <- session$ns
-  
+  data <- r
+  doc <-  compile_docx(data)
   output$download_docx<- downloadHandler(
   
     filename = function() {
@@ -29,13 +30,7 @@ mod_docx_server <- function(input, output, session, r){
     },
     
     content = function(file) {
-      doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>% 
-        officer::body_replace_text_at_bkm("employee_name", r$employee_name) %>% 
-        officer::body_replace_text_at_bkm("department",r$department) %>% 
-        officer::body_replace_text_at_bkm("fte", r$fte) %>% 
-        officer::cursor_bookmark("pubs") %>% 
-        officer::body_add_fpar(format_html_citation(r$pubs)) %>% 
-        officer::body_replace_text_at_bkm("pubs", "") 
+      doc <-doc
         
 
       print(doc, target = file)
