@@ -35,6 +35,12 @@ mod_preview_ui <- function(id){
     "PUB:",
     htmlOutput(NS(id, "pub"), inline = FALSE),
     
+    br(),
+    "Conference:",
+    textOutput(NS(id, "conference_foreign")),
+    br(),
+    textOutput(NS(id, "conference_local")),
+    
 
         
         
@@ -46,7 +52,10 @@ mod_preview_ui <- function(id){
 #' preview Server Function
 #'
 #' @noRd 
-mod_preview_server <- function(input, output, session, r){
+mod_preview_server <- function(input, output, session, 
+                               r,
+                               conference_foreign,
+                               conference_local){
   ns <- session$ns
 
     output$employee_name <- renderText({r$employee_name})
@@ -62,6 +71,13 @@ mod_preview_server <- function(input, output, session, r){
     })
     
     output$pub <- renderText({pubs()})
+    
+    output$conference_foreign <- renderText({conference_foreign()})
+    output$conference_local <- renderText({conference_local()})
+    
+    
+    
+
    
 }
     

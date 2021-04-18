@@ -11,15 +11,15 @@ mod_undergrad_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    textInput("undergrad_school", label = "Název VŠ:"),
-    textInput("undergrad_faculty", label = "Název fakulty:"),
-    textInput("undergrad_program", label = "Název studijního programu/studijního oboru:"),
-    textInput("undergrad_year", label = "Akademický rok, semestr:"),
-    textInput("undergrad_course", label = "Název předmětu:"),
-    radioButtons("undergrad_level", label = "", choices = c("Bakalářský program:", "Magisterský program:"), inline = TRUE),
-    checkboxGroupInput("undergrad_type", label = "", choices = c("Přednášky", "Semináře", "Cvičení",  "Vedení bakalářských a diplomových prací", "Učební texty")),
-    numericInput("undergrad_hours", label = "Počet odučených hodin:", value = 1),
-    textAreaInput("undergrad_other", label = "Jiné")
+    textInput(ns("undergrad_school"), label = "Název VŠ:"),
+    textInput(ns("undergrad_faculty"), label = "Název fakulty:"),
+    textInput(ns("undergrad_program"), label = "Název studijního programu/studijního oboru:"),
+    textInput(ns("undergrad_year"), label = "Akademický rok, semestr:"),
+    textInput(ns("undergrad_course"), label = "Název předmětu:"),
+    radioButtons(ns("undergrad_level"), label = "", choices = c("Bakalářský program:", "Magisterský program:"), inline = TRUE),
+    checkboxGroupInput(ns("undergrad_type"), label = "", choices = c("Přednášky", "Semináře", "Cvičení",  "Vedení bakalářských a diplomových prací", "Učební texty")),
+    numericInput(ns("undergrad_hours"), label = "Počet odučených hodin:", value = 1),
+    textAreaInput(ns("undergrad_other"), label = "Jiné")
  
   )
 }

@@ -21,7 +21,18 @@ app_server <- function( input, output, session ) {
     
     callModule(mod_docx_server, "docx_ui_1", r = r)
     
-    callModule(mod_preview_server, "preview_ui_1", r = r)
     
     callModule(mod_undergrad_server, "undergrad_ui_1", r = r)
+    
+    callModule(mod_postgrad_server, "postgrad_ui_1", r = r)
+    
+    conference_foreign <- mod_conference_server( "conference_ui_1")
+    
+    conference_local <- mod_conference_foreign_server( "conference_ui_2")
+    
+
+    
+    callModule(mod_preview_server, "preview_ui_1", r = r, 
+               conference_foreign,
+               conference_local)
 }
