@@ -19,14 +19,15 @@ mod_employee_name_ui <- function(id){
 #' employee_name Server Function
 #'
 #' @noRd 
-mod_employee_name_server <- function(input, output, session, r){
-  ns <- session$ns
+mod_employee_name_server <- function(id) {
+  moduleServer(id, function(input, output, session) {
   
-  observeEvent( input$employee_name , {
-    r$employee_name <- input$employee_name
-  })
+  
+   reactive(input$employee_name)
+  
 
 
+})
 }
     
 ## To be copied in the UI
