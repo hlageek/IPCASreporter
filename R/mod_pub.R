@@ -99,8 +99,8 @@ mod_pub_server <- function(input, output, session, r){
   })
   
 # create output container
-  
-  r$pub <- c()
+
+    r$pub <- c()
   
 # Add to report
   

@@ -21,8 +21,7 @@ mod_docx_ui <- function(id){
 #' @noRd 
 mod_docx_server <- function(input, output, session, r){
   ns <- session$ns
-  data <- r
-  doc <-  compile_docx(data)
+  doc <-  reactive({compile_docx(r)})
   output$download_docx<- downloadHandler(
   
     filename = function() {
@@ -30,7 +29,7 @@ mod_docx_server <- function(input, output, session, r){
     },
     
     content = function(file) {
-      doc <-doc
+      doc <- doc()
         
 
       print(doc, target = file)

@@ -63,8 +63,6 @@ add_blocks <- function( x, blocks, pos = "after" ){
             wml <- officer::to_wml(blocks[[i]])
             x <- officer::cursor_end(x)
             x <- officer::body_add_xml(x, wml, pos = "after")
-            # x <- officer::cursor_backward(x)
-            # x <- officer::cursor_bookmark(x,"pubs")
             
 
         }
@@ -79,7 +77,6 @@ body_add_par_n <- function(doc, value) {
     while (i<=n) {
         
         doc <- officer::body_add_fpar(doc, value[[i]])
-        doc <- officer::body_add_par(doc, "")
         i <- i+1
     }
     
