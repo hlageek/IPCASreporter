@@ -46,9 +46,9 @@ golem::add_module( name = "conference" ) # Name of the module
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
-golem::add_fct( "helpers" ) 
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
+golem::add_utils( "add_remove" )
 
 ## External resources
 ## Creates .js and .css files at inst/app/www

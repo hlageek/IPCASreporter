@@ -13,13 +13,18 @@ app_server <- function( input, output, session ) {
 
     employee_name <- mod_employee_name_server("employee_name_ui_1")
     
-    callModule(mod_department_server, "department_ui_1", r = r)
+    department <- mod_department_server("department_ui_1", r= r)
     
     callModule(mod_fte_server, "fte_ui_1", r = r)
     
     callModule(mod_pub_server, "pub_ui_1", r = r)
     
-    callModule(mod_docx_server, "docx_ui_1", r = r)
+    # this module needs current values for its output - download
+    # therefore current values are passed by parentheses ()
+    mod_docx_server("docx_ui_1", 
+               r = r,
+               employee_name = employee_name(),
+               department = department())
     
     
     callModule(mod_undergrad_server, "undergrad_ui_1", r = r)
@@ -31,10 +36,12 @@ app_server <- function( input, output, session ) {
     conference_local <- mod_conference_server( "conference_ui_2")
     
 
-    
+    # this module needs to react to changes
+    # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 
                        r = r, 
                        employee_name = employee_name,
+                       department = department,
                        conference_foreign = conference_foreign,
                        conference_local = conference_local)
 }

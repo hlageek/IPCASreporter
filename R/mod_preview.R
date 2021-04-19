@@ -53,12 +53,14 @@ mod_preview_ui <- function(id){
 #'
 #' @noRd 
 mod_preview_server <- function(id,
-                                  r,
-                                  employee_name,
-                                  conference_foreign,
-                                  conference_local) {
+                               r,
+                               employee_name,
+                               department,
+                               conference_foreign,
+                               conference_local) {
+  
   moduleServer(id, function(input, output, session) {
-
+    
     output$employee_name <- renderText({employee_name()})
     output$department <- renderText({r$department})
     output$fte <- renderText({r$fte})
@@ -78,10 +80,10 @@ mod_preview_server <- function(id,
     
     
     
-}
-   
-  )
   }
+  
+  )
+}
 
     
 ## To be copied in the UI

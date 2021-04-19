@@ -14,7 +14,9 @@ mod_conference_ui <- function(id){
     textInput(ns("conference_contribution"), label = "Contribution title"),
     textInput(ns("conference_organizer"), label = "Organizer"),
     textInput(ns("conference_name"), label = "Název konference"),
-    dateInput(ns("conference_date"), label = "Datum konání")
+    dateInput(ns("conference_date"), label = "Datum konání"),
+    make_add_remove_ui(ns)
+
   )
   
 }

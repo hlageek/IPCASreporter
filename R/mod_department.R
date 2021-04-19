@@ -19,13 +19,14 @@ mod_department_ui <- function(id){
 #' department Server Function
 #'
 #' @noRd 
-mod_department_server <- function(input, output, session, r){
-  ns <- session$ns
-  
+mod_department_server <- function(id, r) {
+  moduleServer(id, function(input, output, session) {
+
   observeEvent( input$department , {
     r$department <- input$department
   })
   
+})
 }
     
 ## To be copied in the UI

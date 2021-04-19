@@ -1,9 +1,11 @@
 
 
-compile_docx <- function(data) {
+compile_docx <- function(data, 
+                         employee_name,
+                         department) {
     
     officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
-        officer::body_replace_text_at_bkm("employee_name", data$employee_name) %>%
+        officer::body_replace_text_at_bkm("employee_name", employee_name) %>%
         officer::body_replace_text_at_bkm("department",data$department) %>%
         officer::body_replace_text_at_bkm("fte", data$fte) %>%
         officer::cursor_bookmark("pubs") %>% 

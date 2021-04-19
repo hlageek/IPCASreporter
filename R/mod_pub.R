@@ -11,17 +11,15 @@ mod_pub_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    textInput(NS(id, "asep_code"), label = "ASEP item code", value = "0467096"),
+    textInput(ns("asep_code"), label = "ASEP item code", value = "0467096"),
     
-    uiOutput(NS(id, "title")),
+    uiOutput(ns("title")),
     
-    checkboxInput(NS(id, "significant"), label = "A significant output."),
+    checkboxInput(ns("significant"), label = "A significant output."),
     
-    uiOutput(NS(id, "additional_info")),
+    uiOutput(ns("additional_info")),
     
-    actionButton(NS(id, "save"), label = "Add to report"),
-    
-    actionButton(NS(id, "remove"), label = "Remove from report")
+    make_add_remove_ui(ns)
     
   )
 }
@@ -106,6 +104,7 @@ mod_pub_server <- function(input, output, session, r){
   
   observeEvent( input$save , {
     r$pub <- c(r$pub, title2())
+    #cat(file = stderr(), r$pub)
   })
   
 # Remove from report

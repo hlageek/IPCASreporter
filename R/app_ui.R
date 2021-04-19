@@ -68,7 +68,7 @@ app_ui <- function(request) {
                                      h4("a) Zahraniční:"),
                                      mod_conference_ui("conference_ui_1"),
                                      h4("b) Domácí:"),
-                                     mod_conference_ui("conference_ui_2"),
+                                     mod_conference_ui("conference_ui_2"), br(),br(),br(),br(),br(),    
                                      ),
                                      tabPanel("Přednášky",
                                      h3("3)	 Samostatné přednášky:"),

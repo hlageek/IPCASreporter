@@ -19,13 +19,22 @@ mod_docx_ui <- function(id){
 #' docx Server Function
 #'
 #' @noRd 
-mod_docx_server <- function(input, output, session, r){
+mod_docx_server <- function(id, 
+                            r,
+                            employee_name,
+                            department){
+  moduleServer(id, function(input, output, session) {
   ns <- session$ns
-  doc <-  reactive({compile_docx(r)})
+  
+ 
+  doc <-  reactive({compile_docx(r,
+                                 employee_name,
+                                 department)})
+  
   output$download_docx<- downloadHandler(
   
     filename = function() {
-      paste0("ipcas_annual_report-", r$employee_name, ".docx")
+      paste0("ipcas_annual_report-", employee_name, ".docx")
     },
     
     content = function(file) {
@@ -37,6 +46,7 @@ mod_docx_server <- function(input, output, session, r){
    
   )
  
+  })
 }
     
 ## To be copied in the UI
