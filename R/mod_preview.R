@@ -68,7 +68,7 @@ mod_preview_server <- function(id,
     
 
     
-    output$pub <- renderText({publications()})
+    output$pub <- renderText({paste(publications, collapse = "")})
     
     output$conference_foreign <- renderText({conference_foreign()})
     output$conference_local <- renderText({conference_local()})

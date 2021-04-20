@@ -27,8 +27,8 @@ mod_pub_ui <- function(id){
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <- function(input, output, session, r){
-  ns <- session$ns
+mod_pub_server <-  function(id, r) {
+  moduleServer(id, function(input, output, session) {
   
 
   
@@ -64,7 +64,7 @@ mod_pub_server <- function(input, output, session, r){
       "Insert ASEP code."
       
     }
-    
+ 
   })
   
   
@@ -98,12 +98,11 @@ mod_pub_server <- function(input, output, session, r){
   
 # create output container
   
-  
+  reactive({
   publications <- mod_add_remove_server("add_remove_ui_1", title2())
-  
- return(reactive(publications))
+  })
 
-
+  })
 }
     
 ## To be copied in the UI
