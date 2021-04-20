@@ -98,12 +98,11 @@ mod_pub_server <- function(input, output, session, r){
   
 # create output container
   
- 
-  test <- mod_add_remove_server("add_remove_ui_1", title2())
   
-  publications <- reactive(test())
+  publications <- mod_add_remove_server("add_remove_ui_1", title2())
+  
+ return(reactive(publications))
 
-return(publications())
 
 }
     

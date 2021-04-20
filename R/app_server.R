@@ -17,7 +17,7 @@ app_server <- function( input, output, session ) {
     
     callModule(mod_fte_server, "fte_ui_1", r = r)
     
-    publications <- callModule(mod_pub_server, "pub_ui_1", r = r)
+    publications <- reactive(callModule(mod_pub_server, "pub_ui_1", r = r))
     
     # this module needs current values for its output - download
     # therefore current values are passed by parentheses ()
@@ -35,7 +35,6 @@ app_server <- function( input, output, session ) {
     
     conference_local <- mod_conference_server( "conference_ui_2")
     
-
     # this module needs to react to changes
     # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 
@@ -45,4 +44,5 @@ app_server <- function( input, output, session ) {
                        conference_foreign = conference_foreign,
                        conference_local = conference_local,
                        publications = publications)
+    
 }
