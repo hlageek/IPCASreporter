@@ -31,8 +31,9 @@ mod_add_remove_server <- function(id, data) {
     # Add to report
 
     observeEvent( input$save , {
-      result <- c(result(), data)
-      # cat(file = stderr(), result$vector)
+      result <<- c(result(), data)
+
+          cat(file = stderr(), result)
       
     })
 
@@ -41,12 +42,12 @@ mod_add_remove_server <- function(id, data) {
     observeEvent( input$remove , {
 
       if (length(result()) < 2) {
-        result <- c()
+        result <<- c()
 
       } else {
 
-        result <- result()[1:(length(result())-1)]
-        # cat(file = stderr(), result$vector)
+        result <<- result()[1:(length(result())-1)]
+        cat(file = stderr(), result)
         
 
       }
@@ -54,8 +55,9 @@ mod_add_remove_server <- function(id, data) {
     )
     
 
+  
     return(
-      reactive(result)
+      reactive({test})
       )
   })
 }

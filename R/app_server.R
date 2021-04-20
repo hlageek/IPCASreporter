@@ -17,7 +17,7 @@ app_server <- function( input, output, session ) {
     
     callModule(mod_fte_server, "fte_ui_1", r = r)
     
-    publications <- reactive(callModule(mod_pub_server, "pub_ui_1", r = r))
+    publications <- callModule(mod_pub_server, "pub_ui_1", r = r)
     
     # this module needs current values for its output - download
     # therefore current values are passed by parentheses ()

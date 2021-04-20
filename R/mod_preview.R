@@ -65,16 +65,10 @@ mod_preview_server <- function(id,
     output$employee_name <- renderText({employee_name()})
     output$department <- renderText({r$department})
     output$fte <- renderText({r$fte})
-
-    pubs <- reactive({
-      
-      pubs_fun <- function(x) paste(x, '<br/>')
-
-      paste(lapply(publications(), pubs_fun), collapse = "")
-
-    })
     
-    output$pub <- renderText({pubs()})
+
+    
+    output$pub <- renderText({publications()})
     
     output$conference_foreign <- renderText({conference_foreign()})
     output$conference_local <- renderText({conference_local()})
