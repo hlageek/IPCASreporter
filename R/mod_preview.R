@@ -57,7 +57,8 @@ mod_preview_server <- function(id,
                                employee_name,
                                department,
                                conference_foreign,
-                               conference_local) {
+                               conference_local,
+                               publications) {
   
   moduleServer(id, function(input, output, session) {
     
@@ -69,7 +70,7 @@ mod_preview_server <- function(id,
       
       pubs_fun <- function(x) paste(x, '<br/>')
       
-      paste(lapply(r$pub, pubs_fun), collapse = "")
+      paste(lapply(publications, pubs_fun), collapse = "")
       
     })
     
