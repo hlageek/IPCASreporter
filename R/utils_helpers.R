@@ -6,22 +6,8 @@ get_asep <- function(asep_code) {
     #     xml2::xml_find_first("//item//title") %>% 
     #     xml2::xml_text() 
     
- asep_citation <- rvest::read_html(paste0("https://asep.lib.cas.cz/arl-cav/cs/detail/?zf=CAV_BIBCIT_INI&idx=cav_un_epca*", asep_code)) %>% rvest::html_element("div.zf-empty")
+ asep_citation <- "NODATA"
  
- if (class(asep_citation) != "xml_missing") {
- emphasis_citation <- asep_citation %>% 
-     rvest::html_element("em") %>% 
-     rvest::html_text2()
- 
- asep_citation %>% 
-     rvest::html_text2() %>% 
-     stringr::str_replace(emphasis_citation, paste0("<em>", emphasis_citation, "</em>")) %>% 
-     trimws() 
- 
- } else {
-     "No data found for the ASEP item code."
-     }
-    
 }
 
 

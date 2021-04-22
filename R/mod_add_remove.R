@@ -22,44 +22,37 @@ mod_add_remove_ui <- function(id){
 #' add_remove Server Function
 #'
 #' @noRd 
-mod_add_remove_server <- function(id, data) {
+mod_add_remove_server <- function(id, data, r) {
   moduleServer(id, function(input, output, session) {
     
     
-    result <- reactiveValues()
-
+    r$pub <- c()
+    
     # Add to report
-
+    
     observeEvent( input$save , {
-      result$vector <- c(result$vector(), data)
-
-          cat(file = stderr(), result$vector)
+      r$pub <- c(r$pub, data)
+      #cat(file = stderr(), r$pub)
+    })
+    
+    # Remove from report
+    
+    observeEvent( input$remove , {
+      
+      if (length(r$pub) < 2) {
+        r$pub <- c()
+        
+      } else {
+        
+        r$pub <- r$pub[1:(length(r$pub)-1)]
+        
+      }
+      
       
     })
-
-    # Remove from report
-
-    observeEvent( input$remove , {
-
-      if (length(result$vector()) < 2) {
-        result$vector <- c()
-
-      } else {
-
-        result$vector <- result$vector()[1:(length(result$vector())-1)]
-        cat(file = stderr(), result$vector)
-        
-
-      }
-    }
-    )
     
 
-  
-      reactive({
-        test <- result()$vector
-        
-        })
+    
       
   })
 }
