@@ -97,9 +97,11 @@ mod_pub_server <-  function(id, r) {
   })
   
 # create output container
+  publications <- mod_add_remove_server("add_remove_ui_1", title2)
   
-  mod_add_remove_server("add_remove_ui_1", title2(), r)
-
+  return(publications)
+  
+ 
   })
   
 }

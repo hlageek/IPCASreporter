@@ -21,10 +21,6 @@ app_server <- function( input, output, session ) {
     
     # this module needs current values for its output - download
     # therefore current values are passed by parentheses ()
-    mod_docx_server("docx_ui_1", 
-               r = r,
-               employee_name = employee_name(),
-               department = department())
     
     
     callModule(mod_undergrad_server, "undergrad_ui_1", r = r)
@@ -44,5 +40,11 @@ app_server <- function( input, output, session ) {
                        conference_foreign = conference_foreign,
                        conference_local = conference_local,
                        publications = publications)
+    
+    mod_docx_server("docx_ui_1", 
+                    r = r,
+                    employee_name = employee_name(),
+                    department = department(),
+                    publications = publications())
     
 }
