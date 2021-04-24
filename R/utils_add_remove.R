@@ -35,3 +35,4 @@ call_remove_ui <- function(object, name, data, input = input$remove) {
     
     
 }
+
