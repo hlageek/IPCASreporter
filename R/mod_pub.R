@@ -19,7 +19,7 @@ mod_pub_ui <- function(id){
     
     uiOutput(ns("additional_info")),
     
-    make_add_remove_ui(ns)
+    mod_add_remove_ui(ns("add_remove_ui_1"))
     
   )
 }
@@ -27,8 +27,8 @@ mod_pub_ui <- function(id){
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <- function(input, output, session, r){
-  ns <- session$ns
+mod_pub_server <-  function(id, r) {
+  moduleServer(id, function(input, output, session) {
   
 
   
@@ -64,7 +64,7 @@ mod_pub_server <- function(input, output, session, r){
       "Insert ASEP code."
       
     }
-    
+ 
   })
   
   
@@ -97,33 +97,13 @@ mod_pub_server <- function(input, output, session, r){
   })
   
 # create output container
-
-    r$pub <- c()
+  publications <- mod_add_remove_server("add_remove_ui_1", title2)
   
-# Add to report
-  
-  observeEvent( input$save , {
-    r$pub <- c(r$pub, title2())
-    #cat(file = stderr(), r$pub)
-  })
-  
-# Remove from report
-  
-  observeEvent( input$remove , {
-    
-    if (length(r$pub) < 2) {
-    r$pub <- c()
-    
-    } else {
-      
-    r$pub <- r$pub[1:(length(r$pub)-1)]
-    
-    }
-    
-    
-  })
+  return(publications)
   
  
+  })
+  
 }
     
 ## To be copied in the UI

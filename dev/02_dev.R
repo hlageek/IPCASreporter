@@ -38,6 +38,8 @@ golem::add_module( name = "preview" ) # Name of the module
 golem::add_module( name = "undergrad" ) # Name of the module
 golem::add_module( name = "postgrad" ) # Name of the module
 golem::add_module( name = "conference" ) # Name of the module
+golem::add_module( name = "add_remove" ) # Name of the module
+
 
 
 

@@ -22,14 +22,16 @@ mod_docx_ui <- function(id){
 mod_docx_server <- function(id, 
                             r,
                             employee_name,
-                            department){
+                            department,
+                            publications){
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
  
   doc <-  reactive({compile_docx(r,
                                  employee_name,
-                                 department)})
+                                 department,
+                                 publications)})
   
   output$download_docx<- downloadHandler(
   

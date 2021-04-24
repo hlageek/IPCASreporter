@@ -57,7 +57,8 @@ mod_preview_server <- function(id,
                                employee_name,
                                department,
                                conference_foreign,
-                               conference_local) {
+                               conference_local,
+                               publications) {
   
   moduleServer(id, function(input, output, session) {
     
@@ -65,15 +66,9 @@ mod_preview_server <- function(id,
     output$department <- renderText({r$department})
     output$fte <- renderText({r$fte})
     
-    pubs <- reactive({
-      
-      pubs_fun <- function(x) paste(x, '<br/>')
-      
-      paste(lapply(r$pub, pubs_fun), collapse = "")
-      
-    })
+
     
-    output$pub <- renderText({pubs()})
+    output$pub <- renderText({paste(publications(), collapse = "</br>")})
     
     output$conference_foreign <- renderText({conference_foreign()})
     output$conference_local <- renderText({conference_local()})
