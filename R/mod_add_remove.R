@@ -44,7 +44,9 @@ mod_add_remove_server <- function(id, data) {
     observeEvent( input$remove , {
       
       if (length(input_value()) < 2) {
+
         input_value <- input_value(c())
+
 
       } else {
         
