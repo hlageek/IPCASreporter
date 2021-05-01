@@ -31,6 +31,10 @@ app_server <- function( input, output, session ) {
     
     conference_local <- mod_conference_server( "conference_ui_2")
     
+    mod_grants_server( "grants_ui_1" )
+    
+    mod_av21_server( "av21_ui_1" )
+    
     # this module needs to react to changes
     # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 

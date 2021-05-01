@@ -15,7 +15,9 @@ mod_conference_ui <- function(id){
     textInput(ns("conference_organizer"), label = "Organizer"),
     textInput(ns("conference_name"), label = "Název konference"),
     dateInput(ns("conference_date"), label = "Datum konání"),
-    make_add_remove_ui(ns)
+    radioButtons(ns("conference_location"), label = "Kategorie", choices = c("Domácí", "Zahraniční"), inline = TRUE),
+    mod_add_remove_ui(ns("add_remove_ui_1"))
+    
 
   )
   

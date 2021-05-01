@@ -16,7 +16,9 @@ mod_postgrad_ui <- function(id){
     textInput("postgrad_program", label = "Název studijního programu/studijního oboru:"),
     textInput("postgrad_course", label = "Název předmětu:"),
     checkboxGroupInput("postgrad_type", label = "", choices = c("Přednášky", "Semináře", "Cvičení",  "Vedení bakalářských a diplomových prací", "Učební texty")),
-    textAreaInput("postgrad_other", label = "Jiné")
+    textAreaInput("postgrad_other", label = "Jiné"),
+    mod_add_remove_ui(ns("add_remove_ui_1"))
+    
  
   )
 }

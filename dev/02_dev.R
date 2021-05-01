@@ -39,6 +39,31 @@ golem::add_module( name = "undergrad" ) # Name of the module
 golem::add_module( name = "postgrad" ) # Name of the module
 golem::add_module( name = "conference" ) # Name of the module
 golem::add_module( name = "add_remove" ) # Name of the module
+golem::add_module( name = "events" ) # Name of the module
+golem::add_module( name = "lectures" ) # Name of the module
+golem::add_module( name = "grants" ) # Name of the module
+golem::add_module( name = "av21" ) # Name of the module
+golem::add_module( name = "popular" ) # Name of the module
+golem::add_module( name = "school" ) # Name of the module
+golem::add_module( name = "public" ) # Name of the module
+golem::add_module( name = "int_projects" ) # Name of the module
+golem::add_module( name = "int_bilateral" ) # Name of the module
+golem::add_module( name = "other_award" ) # Name of the module
+golem::add_module( name = "other_review" ) # Name of the module
+golem::add_module( name = "other_member" ) # Name of the module
+golem::add_module( name = "wip" ) # Name of the module
+golem::add_module( name = "various" ) # Name of the module
+
+
+
+
+
+
+
+
+
+
+
 
 
 
