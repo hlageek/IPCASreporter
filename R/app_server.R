@@ -7,15 +7,8 @@
 app_server <- function( input, output, session ) {
   # List the first level callModules here
     
-    library(magrittr)
-  
-    r <- reactiveValues()
 
-    employee_name <- mod_employee_name_server("employee_name_ui_1")
-    
-    department <- mod_department_server("department_ui_1", r= r)
-    
-    callModule(mod_fte_server, "fte_ui_1", r = r)
+    identification <- mod_identification_server("identification_ui_1")
     
     publications <- mod_pub_server("pub_ui_1", r = r)
     
@@ -38,12 +31,7 @@ app_server <- function( input, output, session ) {
     # this module needs to react to changes
     # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 
-                       r = r, 
-                       employee_name = employee_name,
-                       department = department,
-                       conference_foreign = conference_foreign,
-                       conference_local = conference_local,
-                       publications = publications)
+                       identification)
     
     mod_docx_server("docx_ui_1", 
                     r = r,

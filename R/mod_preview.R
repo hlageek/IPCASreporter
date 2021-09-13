@@ -20,26 +20,26 @@ mod_preview_ui <- function(id){
     
     br(),
     "Name:",
-    textOutput(NS(id, "employee_name"), inline = TRUE),
+    textOutput(ns("employee_name"), inline = TRUE),
     
     br(),
     "Department:",
-    textOutput(NS(id, "department"), inline = TRUE),
+    textOutput(ns("department"), inline = TRUE),
     
     br(),
     "FTE:",
-    textOutput(NS(id, "fte"), inline = TRUE),
+    textOutput(ns("fte"), inline = TRUE),
     
     
     br(),
-    "PUB:",
-    htmlOutput(NS(id, "pub"), inline = FALSE),
+    "Publications:",
+    htmlOutput(ns("pub"), inline = FALSE),
     
     br(),
     "Conference:",
-    textOutput(NS(id, "conference_foreign")),
+    textOutput(ns("conference_foreign")),
     br(),
-    textOutput(NS(id, "conference_local")),
+    textOutput(ns("conference_local")),
     
 
         
@@ -53,18 +53,16 @@ mod_preview_ui <- function(id){
 #'
 #' @noRd 
 mod_preview_server <- function(id,
-                               r,
-                               employee_name,
-                               department,
-                               conference_foreign,
-                               conference_local,
-                               publications) {
-  
+                               identification) {
   moduleServer(id, function(input, output, session) {
     
-    output$employee_name <- renderText({employee_name()})
-    output$department <- renderText({r$department})
-    output$fte <- renderText({r$fte})
+    # Identification
+    if (isTruthy(identification)) {
+    output$employee_name <- renderText({identification$employee_name})
+    output$department <- renderText({identification$department})
+    output$fte <- renderText({identification$fte})
+    output$comment <- renderText({identification$comment})
+    }
     
 
     

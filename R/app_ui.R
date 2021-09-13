@@ -23,13 +23,8 @@ app_ui <- function(request) {
                             
                             tabPanel("IDENTIFIKAČNÍ ÚDAJE",
                                      
-                                     mod_employee_name_ui("employee_name_ui_1"),
-                                     
-                                     mod_department_ui("department_ui_1"),
-                                     
-                                     mod_fte_ui("fte_ui_1"),
-                                     textOutput("r$fte")
-                                     
+                                     mod_identification_ui("identification_ui_1")
+                                  
                                      ),
                             "Report sections",
                             tabPanel("I. VYDANÉ PUBLIKACE", 

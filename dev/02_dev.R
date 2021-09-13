@@ -29,9 +29,7 @@ usethis::use_package( "here" )
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module( name = "employee_name" ) # Name of the module
-golem::add_module( name = "department" ) # Name of the module
-golem::add_module( name = "fte" ) # Name of the module
+golem::add_module( name = "identification" ) # Name of the module
 golem::add_module( name = "pub" ) # Name of the module
 golem::add_module( name = "docx" ) # Name of the module
 golem::add_module( name = "preview" ) # Name of the module
@@ -58,21 +56,9 @@ golem::add_module( name = "various" ) # Name of the module
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
+golem::add_fct("test_modules")
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
 golem::add_utils( "add_remove" )
