@@ -1,15 +1,18 @@
-get_asep <- function(asep_code) {
+get_asep <- function(author_name) {
     
-    query <- paste0("@attr 98=2 @attr 1=2426 '", asep_code, "'")
+    query <- paste0("@attr 98=2 @and @and @attr 1=1 '", author_name, "' @attr 1=2462 'FLU-F' @attr 1=31 @or '", format(Sys.Date(), "%Y"), "''", format(Sys.Date()-365, "%Y"), "'")
     
-    asep_citation <- httr::GET(url = "https://asep.lib.cas.cz/i2/i2.ws.cls",
+    asep_result <- httr::GET(url = "https://asep.lib.cas.cz/i2/i2.ws.cls",
                                query = list(method = "search", 
                                             db = "CavUnEpca", 
                                             query = query,
+                                            from = 1,
+                                            to = 5,
+                                            sort = "1=31 i>",
                                             fmt = "xml")) %>% 
         httr::content(as = "parsed", "text/html", "utf-8")
     
-    asep_citation <- asep_citation %>% rvest::html_node("body") %>% 
+    asep_citation <- asep_result %>% rvest::html_node("body") %>% 
         rvest::html_nodes(xpath = '//*[@tag="Tbc"]') %>% 
         rvest::html_text2()
     
@@ -18,7 +21,7 @@ get_asep <- function(asep_code) {
         asep_citation
         
     } else {
-        "No data found for the ASEP item code."
+        paste0("No ASEP records found for author ", author_name, " in year ", format(Sys.Date(), "%Y"), " or ", format(Sys.Date()-365, "%Y"), ".")
     }
     
 }

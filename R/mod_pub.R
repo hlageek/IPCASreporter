@@ -11,11 +11,16 @@ mod_pub_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    div(style="display: inline-block;vertical-align:baseline;", 
-        textInput(ns("asep_code"), label = "Insert ASEP item code", value = "0467096")),
+    div(style="display: inline-block;vertical-align:baseline;",
+        
+        textInput(ns("asep_code"), 
+                  label = "Insert ASEP item code", 
+                  value = "0467096")),
     
     div(style="display: inline-block;vertical-align:baseline;",
-    actionButton(ns("asep_search"), label = "Search")),
+        
+        actionButton(ns("asep_search"), 
+                     label = "Search")),
     
     br(),
     
@@ -33,19 +38,8 @@ mod_pub_ui <- function(id){
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <-  function(id, r) {
+mod_pub_server <-  function(id) {
   moduleServer(id, function(input, output, session) {
-  
-
-  
-  # observeEvent( input$asep_code  , {
-  #   
-  #   
-  #   r$pubs <- get_asep(input$asep_code)
-  #     
-  # })
-  
-    
 
  
   
