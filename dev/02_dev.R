@@ -61,7 +61,8 @@ golem::add_module( name = "various" ) # Name of the module
 golem::add_fct("test_modules")
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
-golem::add_utils( "add_remove" )
+golem::add_utils( "funs", module = "pub" )
+
 
 ## External resources
 ## Creates .js and .css files at inst/app/www

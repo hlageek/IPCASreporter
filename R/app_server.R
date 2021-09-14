@@ -9,8 +9,8 @@ app_server <- function( input, output, session ) {
     
 
     identification <- mod_identification_server("identification_ui_1")
-    
-    publications <- mod_pub_server("pub_ui_1", r = r)
+
+    publications <- mod_pub_server("pub_ui_1", identification)
     
     # this module needs current values for its output - download
     # therefore current values are passed by parentheses ()
