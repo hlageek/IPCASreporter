@@ -10,7 +10,7 @@ app_server <- function( input, output, session ) {
 
     identification <- mod_identification_server("identification_ui_1")
 
-    publications <- mod_pub_server("pub_ui_1", identification)
+    section_i <- mod_pub_server("pub_ui_1", identification)
     
     # this module needs current values for its output - download
     # therefore current values are passed by parentheses ()
@@ -31,7 +31,8 @@ app_server <- function( input, output, session ) {
     # this module needs to react to changes
     # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 
-                       identification)
+                       identification,
+                       section_i)
     
     mod_docx_server("docx_ui_1", 
                     r = r,

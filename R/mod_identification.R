@@ -36,7 +36,7 @@ mod_identification_ui <- function(id){
                   ),
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Update report"
                  )
  
   )
@@ -52,10 +52,10 @@ mod_identification_server <- function(id) {
     
     observeEvent(input$add, {
      
-      identification$employee_name = input$employee_name
-      identification$department = input$department
-      identification$fte = input$fte
-      identification$comment = input$comment
+      identification$employee_name <- input$employee_name
+      identification$department <- input$department
+      identification$fte <- input$fte
+      identification$comment <- input$comment
         
     })
     

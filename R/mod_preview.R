@@ -33,7 +33,7 @@ mod_preview_ui <- function(id){
     
     br(),
     "Publications:",
-    htmlOutput(ns("pub"), inline = FALSE),
+    htmlOutput(ns("pubs"), inline = FALSE),
     
     br(),
     "Conference:",
@@ -53,7 +53,8 @@ mod_preview_ui <- function(id){
 #'
 #' @noRd 
 mod_preview_server <- function(id,
-                               identification) {
+                               identification,
+                               section_i) {
   moduleServer(id, function(input, output, session) {
     
     # Identification
@@ -64,12 +65,17 @@ mod_preview_server <- function(id,
     output$comment <- renderText({identification$comment})
     }
     
-
+    # Publications
     
-    output$pub <- renderText({paste(publications(), collapse = "</br>")})
+    if (isTruthy(section_i)) {
     
-    output$conference_foreign <- renderText({conference_foreign()})
-    output$conference_local <- renderText({conference_local()})
+    output$pubs <- renderText({
+      paste(section_i$publist, collapse = "<br>")
+      })
+    }
+    
+    # output$conference_foreign <- renderText({conference_foreign()})
+    # output$conference_local <- renderText({conference_local()})
     
     
     

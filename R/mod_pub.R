@@ -48,11 +48,12 @@ mod_pub_server <-  function(id, identification) {
 
         checkboxGroupInput(ns("publist"), 
                            label ="Most recent publications in ASEP.", 
+                           width = "100%",
                            choiceNames = displayed_citations,
                            choiceValues = citations),
         
         actionButton(ns("add"),
-                     label = "Add to report"
+                     label = "Update report"
         )
        )
       } else {
@@ -71,15 +72,15 @@ mod_pub_server <-  function(id, identification) {
       
     })
     
-    publications <- reactiveValues()
+    section_i <- reactiveValues()
     
-    observeEvent(req(input$add), {
-
-    publications <- reactiveValues(input$publist)
-    print(publications())
-    })
+    observeEvent(input$add, {
+    
+      section_i$publist <- input$publist
+    
+      })
    
-    return(publications)
+    return(section_i)
     
   })
   
