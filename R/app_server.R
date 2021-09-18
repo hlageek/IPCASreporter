@@ -16,7 +16,7 @@ app_server <- function( input, output, session ) {
     # therefore current values are passed by parentheses ()
     
     
-    callModule(mod_undergrad_server, "undergrad_ui_1", r = r)
+    mod_undergrad_server("undergrad_ui_1")
     
     callModule(mod_postgrad_server, "postgrad_ui_1", r = r)
     
