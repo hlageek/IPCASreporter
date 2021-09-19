@@ -16,7 +16,7 @@ app_server <- function( input, output, session ) {
     # therefore current values are passed by parentheses ()
     
     
-    mod_undergrad_server("undergrad_ui_1")
+    section_iii_undergrad <- mod_undergrad_server("undergrad_ui_1")
     
     callModule(mod_postgrad_server, "postgrad_ui_1", r = r)
     
@@ -32,7 +32,8 @@ app_server <- function( input, output, session ) {
     # therefore reactive values are passed *without* parentheses ()
     mod_preview_server("preview_ui_1", 
                        identification,
-                       section_i)
+                       section_i,
+                       section_iii_undergrad)
     
     mod_docx_server("docx_ui_1", 
                     r = r,

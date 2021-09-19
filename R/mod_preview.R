@@ -13,27 +13,36 @@ mod_preview_ui <- function(id){
     
     tags$style(HTML("
                   .col-sm-5 {
-                    height:80vh;
+                    border: 2px solid lightgray;
+                    height:100vh;
                     overflow-y:scroll
                   }
                   ")),    
     
     br(),
-    "Name:",
+    "Jméno:",
     textOutput(ns("employee_name"), inline = TRUE),
     
     br(),
-    "Department:",
+    "Oddělení:",
     textOutput(ns("department"), inline = TRUE),
     
     br(),
     "FTE:",
     textOutput(ns("fte"), inline = TRUE),
     
+    br(),
+    "Komentář:",
+    textOutput(ns("comment"), inline = TRUE),
+    
     
     br(),
-    "Publications:",
-    htmlOutput(ns("pubs"), inline = FALSE),
+    h4("I. VYDANÉ PUBLIKACE"),
+    htmlOutput(ns("section_i"), inline = FALSE),
+    
+    br(),
+    h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+    htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
     
     br(),
     "Conference:",
@@ -54,7 +63,8 @@ mod_preview_ui <- function(id){
 #' @noRd 
 mod_preview_server <- function(id,
                                identification,
-                               section_i) {
+                               section_i,
+                               section_iii_undergrad) {
   moduleServer(id, function(input, output, session) {
     
     # Identification
@@ -65,14 +75,29 @@ mod_preview_server <- function(id,
     output$comment <- renderText({identification$comment})
     }
     
-    # Publications
+    # Section I
     
     if (isTruthy(section_i)) {
     
-    output$pubs <- renderText({
+    output$section_i <- renderText({
       paste(section_i$publist, collapse = "<br>")
       })
     }
+    
+    # Section III
+    
+    ## Undergrad
+    
+    if (isTruthy(section_iii_undergrad)) {
+
+        output$section_iii_undergrad <- renderText({
+          paste(reactiveValuesToList(section_iii_undergrad))
+      })
+        
+    }
+    
+    observe({        print(reactiveValuesToList(section_iii_undergrad))
+})
     
     # output$conference_foreign <- renderText({conference_foreign()})
     # output$conference_local <- renderText({conference_local()})

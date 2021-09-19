@@ -30,15 +30,35 @@ mod_undergrad_ui <- function(id){
               choices = c(paste0(format(Sys.Date(), "%Y"), ", LS"),
                           paste0(format(Sys.Date(), "%Y"), ", ZS"))),
     
-    radioButtons(ns("undergrad_level"), label = "", choices = c("Bakalářský studijní program", "Magisterský studijní program"), inline = TRUE),
+    radioButtons(ns("undergrad_level"), 
+                 label = "", 
+                 choices = c("Bakalářský studijní program", 
+                             "Magisterský studijní program"), 
+                 inline = TRUE),
     
-    textInput(ns("undergrad_course"), label = "Název předmětu:"),
+    textInput(ns("undergrad_course"), 
+              label = "Název předmětu:"),
 
-    checkboxGroupInput(ns("undergrad_type"), label = "", choices = c("Přednášky", "Semináře", "Cvičení",  "Vedení bakalářských a diplomových prací", "Učební texty")),
-    numericInput(ns("undergrad_hours"), label = "Počet odučených hodin:", value = 1),
-    textAreaInput(ns("undergrad_other"), label = "Jiné"),
-    mod_add_remove_ui(ns("add_remove_ui_1"))
+    checkboxGroupInput(ns("undergrad_type"), 
+                       label = "", 
+                       choices = c("Přednášky", 
+                                   "Semináře", 
+                                   "Cvičení",  
+                                   "Vedení bakalářských a diplomových prací", 
+                                   "Učební texty")),
     
+    numericInput(ns("undergrad_hours"), 
+                 label = "Počet odučených hodin:", 
+                 value = 0,
+                 min = 0,
+                 step = 1),
+    
+    textAreaInput(ns("undergrad_other"), 
+                  label = "Jiné"),
+
+    actionButton(ns("add"),
+                 label = "Update report"
+    )
  
   )
 }
@@ -49,6 +69,39 @@ mod_undergrad_ui <- function(id){
 mod_undergrad_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+    
+    undergrad <- reactiveValues()
+    
+    items <- c(
+      "undergrad_school",
+      "undergrad_faculty",
+      "undergrad_program",
+      "undergrad_year",
+      "undergrad_level",
+      "undergrad_course",
+      "undergrad_type",
+      "undergrad_hours",
+      "undergrad_other"
+      )
+      
+      
+    
+    observeEvent(input$add, {
+      
+      all_items <- list()
+      
+      for (i in seq_along(items)) {
+        
+        all_items <- c(all_items, input[[items[i]]])
+        
+      }
+      
+      index <- as.character(input$add)
+
+            undergrad[[index]] <- paste(all_items, collapse = "<br>")
+    })
+    
+    # Update selection options based on choices
 
     observe({
       
@@ -107,13 +160,14 @@ mod_undergrad_server <- function(id) {
                           choices = choices_prog)
       
     })
+      
+
+      
+      
+      return(undergrad)
  
   })
   }
     
-## To be copied in the UI
-# mod_undergrad_ui("undergrad_ui_1")
-    
-## To be copied in the server
-# callModule(mod_undergrad_server, "undergrad_ui_1")
+
  

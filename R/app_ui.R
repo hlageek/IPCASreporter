@@ -187,9 +187,9 @@ app_ui <- function(request) {
         ),
         column(width = 5,
                
-               h3("Download report"),
+               h3("Preview report"),
                
-               mod_docx_ui("docx_ui_1"),
+               #mod_docx_ui("docx_ui_1"),
                
                
                mod_preview_ui("preview_ui_1"),
