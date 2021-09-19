@@ -13,7 +13,7 @@ mod_undergrad_ui <- function(id){
     
     selectInput(ns("undergrad_school"), 
                 label = "Název VŠ:", 
-                choices = unique(universities$university), 
+                choices = c("", unique(sort(universities$university))), 
                 selected = ""),
     
     selectInput(ns("undergrad_faculty"), 
@@ -58,7 +58,8 @@ mod_undergrad_server <- function(id) {
           dplyr::filter(university == input$undergrad_school &
                           !is.na(faculty)) %>% 
           dplyr::pull(faculty) %>% 
-          unique()
+          unique() %>% 
+          sort()
         
         
   updateSelectInput(session = session,
@@ -80,18 +81,24 @@ mod_undergrad_server <- function(id) {
           
           choices_prog <- universities %>% 
             dplyr::filter(university == input$undergrad_school &
-                            !is.na(disc_program)) %>% 
+                            !is.na(disc_program) &
+                            stringr::str_detect(type, "bakalářský|magisterský") 
+                          ) %>% 
             dplyr::pull(disc_program) %>% 
-            unique()
+            unique() %>% 
+            sort()
           
         } else {
           
           choices_prog <- universities %>% 
             dplyr::filter(university == input$undergrad_school &
                             faculty == input$undergrad_faculty &
-                            !is.na(disc_program)) %>% 
+                            !is.na(disc_program) &
+                            stringr::str_detect(type, "bakalářský|magisterský") 
+                          ) %>% 
             dplyr::pull(disc_program) %>% 
-            unique()
+            unique() %>% 
+            sort()
           
         }
         
