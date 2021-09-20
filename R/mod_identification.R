@@ -9,8 +9,9 @@
 #' @importFrom shiny NS tagList 
 mod_identification_ui <- function(id){
   ns <- NS(id)
-  tagList(
-    
+  
+  fluidRow(column(width = 4,
+
     textInput(ns("employee_name"), 
               "Full name", 
               value = ""
@@ -39,6 +40,32 @@ mod_identification_ui <- function(id){
                  label = "Update report"
                  )
  
+  
+  ),
+  
+  column(width = 8,
+         
+         h2("IDENTIFIKAČNÍ ÚDAJE"),
+         
+         br(),
+         "Jméno:",
+         textOutput(ns("employee_name"), inline = TRUE),
+         
+         br(),
+         "Oddělení:",
+         textOutput(ns("department"), inline = TRUE),
+         
+         br(),
+         "FTE:",
+         textOutput(ns("fte"), inline = TRUE),
+         
+         br(),
+         "Komentář:",
+         textOutput(ns("comment"), inline = TRUE)
+         
+         )
+  
+  
   )
 }
     
@@ -56,6 +83,11 @@ mod_identification_server <- function(id) {
       identification$department <- input$department
       identification$fte <- input$fte
       identification$comment <- input$comment
+      
+      output$employee_name <- renderText({identification$employee_name})
+      output$department <- renderText({identification$department})
+      output$fte <- renderText({identification$fte})
+      output$comment <- renderText({identification$comment})
         
     })
     

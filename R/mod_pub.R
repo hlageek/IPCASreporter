@@ -9,10 +9,24 @@
 #' @importFrom shiny NS tagList 
 mod_pub_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  
+  fluidRow(column(width = 4,
+  
     
    uiOutput(ns("pubs"))
     
+  ),
+  
+  column(width = 8,
+         
+         
+         h2("I. VYDANÉ PUBLIKACE"),
+         p( "Včetně odkazu do ASEP"),
+         
+         htmlOutput(ns("section_i"), inline = FALSE),
+         
+         
+         )
   )
 }
     
@@ -77,6 +91,10 @@ mod_pub_server <-  function(id, identification) {
     observeEvent(input$add, {
     
       section_i$publist <- input$publist
+      
+      output$section_i <- renderText({
+        paste(section_i$publist, collapse = "<br>")
+      })
     
       })
    

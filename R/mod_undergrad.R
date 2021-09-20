@@ -96,9 +96,7 @@ mod_undergrad_server <- function(id) {
         
       }
       
-      index <- as.character(input$add)
-
-            undergrad[[index]] <- paste(all_items, collapse = "<br>")
+            undergrad[[as.character(input$add)]] <- paste(all_items, collapse = "<br>")
     })
     
     # Update selection options based on choices
