@@ -96,9 +96,7 @@ mod_preview_server <- function(id,
         
     }
     
-    observe({        print(reactiveValuesToList(section_iii_undergrad))
-})
-    
+   
     # output$conference_foreign <- renderText({conference_foreign()})
     # output$conference_local <- renderText({conference_local()})
     

@@ -9,7 +9,10 @@
 #' @importFrom shiny NS tagList 
 mod_undergrad_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  
+
+  
+  fluidRow(column(width = 4,
     
     selectInput(ns("undergrad_school"), 
                 label = "Název VŠ:", 
@@ -39,13 +42,9 @@ mod_undergrad_ui <- function(id){
     textInput(ns("undergrad_course"), 
               label = "Název předmětu:"),
 
-    checkboxGroupInput(ns("undergrad_type"), 
-                       label = "", 
-                       choices = c("Přednášky", 
-                                   "Semináře", 
-                                   "Cvičení",  
-                                   "Vedení bakalářských a diplomových prací", 
-                                   "Učební texty")),
+    
+    undergrad_types(id), tags$br(),
+    
     
     numericInput(ns("undergrad_hours"), 
                  label = "Počet odučených hodin:", 
@@ -60,6 +59,18 @@ mod_undergrad_ui <- function(id){
                  label = "Update report"
     )
  
+  ),
+  
+  column(width = 8,
+         
+         
+         h3("1)	Výuka na vysokých školách a vedení prací:"),
+         h4("a) Bakalářské a magisterské studijní programy "),
+         
+         htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
+         
+         
+  )
   )
 }
     
@@ -70,7 +81,7 @@ mod_undergrad_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     
-    undergrad <- reactiveValues()
+    section_iii_undergrad <- reactiveValues()
     
     items <- c(
       "undergrad_school",
@@ -96,7 +107,7 @@ mod_undergrad_server <- function(id) {
         
       }
       
-            undergrad[[as.character(input$add)]] <- paste(all_items, collapse = "<br>")
+      section_iii_undergrad[[as.character(input$add)]] <- paste(all_items, collapse = "<br>")
     })
     
     # Update selection options based on choices
@@ -159,13 +170,23 @@ mod_undergrad_server <- function(id) {
       
     })
       
+      
+      if (isTruthy(section_iii_undergrad)) {
+        
+        output$section_iii_undergrad <- renderText({
+          paste(reactiveValuesToList(section_iii_undergrad))
+        })
+        
+      }
 
       
       
-      return(undergrad)
+      return(section_iii_undergrad)
  
   })
-  }
+}
     
+
+
 
  

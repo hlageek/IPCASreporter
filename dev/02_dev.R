@@ -63,6 +63,8 @@ golem::add_fct("test_modules")
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
 golem::add_utils( "funs", module = "pub" )
+golem::add_utils( "funs", module = "undergrad" )
+
 
 
 ## External resources
