@@ -90,10 +90,31 @@ mod_undergrad_server <- function(id) {
       "undergrad_year",
       "undergrad_level",
       "undergrad_course",
-      "undergrad_type",
+      "undergrad_type_prednasky",
+      "undergrad_type_seminare",
+      "undergrad_type_cviceni",
+      "undergrad_type_vedeni",
+      "undergrad_type_texty",
       "undergrad_hours",
       "undergrad_other"
       )
+    
+    item_names <- c(
+      "Název VŠˇ:",
+      "Název fakulty:",
+      "Název studijního programu/oboru:",
+      "Akademický rok, semestr:",
+      "Typ studijního programu/oboru:",
+      "Název předmětu:",
+      "Přednášky:",
+      "Semináře:",
+      "Cvičení:",
+      "Vedení bakalářských a diplomových prací:",
+      "Učební texty:",
+      "Počet odučených hodin:",
+      "Jiné:"
+      
+    )
       
       
     
@@ -103,11 +124,12 @@ mod_undergrad_server <- function(id) {
       
       for (i in seq_along(items)) {
         
-        all_items <- c(all_items, input[[items[i]]])
+        all_items <- c(all_items, paste(item_names[i], input[[items[i]]]))
         
       }
-      
-      section_iii_undergrad[[as.character(input$add)]] <- paste(all_items, collapse = "<br>")
+
+      section_iii_undergrad[[as.character(input$add)]] <- paste(paste(all_items, collapse = "<br>"), "<br><br>")
+    
     })
     
     # Update selection options based on choices
