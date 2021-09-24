@@ -56,8 +56,10 @@ body_add_par_n <- function(doc, value) {
     n <- length(as.list(value))
     while (i<=n) {
         
-        doc <- officer::body_add_par(doc, value[[i]]) %>% 
-            officer::body_add_par("")
+        doc <- officer::body_add_fpar(doc, 
+                                      officer::fpar(value[[i]], 
+                                                    fp_t = officer:: fp_text(font.size = 12,
+                                                                             font.family = "Times New Roman"))) 
         i <- i+1
     }
     
@@ -80,4 +82,10 @@ body_add_par_nf <- function(doc, value) {
 
 
 #--------------------------------------
-# word formatting utils
+# collapse <br> separated reactive values for Word
+
+collapse_br <- function(reactive_val) {
+purrr::reduce(reactiveValuesToList(reactive_val), paste) %>%  
+    strsplit("<br>") %>% 
+    unlist()
+}

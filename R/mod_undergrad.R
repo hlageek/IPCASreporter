@@ -100,7 +100,7 @@ mod_undergrad_server <- function(id) {
       )
     
     item_names <- c(
-      "Název VŠˇ:",
+      "Název VŠ:",
       "Název fakulty:",
       "Název studijního programu/oboru:",
       "Akademický rok, semestr:",

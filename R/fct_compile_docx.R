@@ -4,7 +4,7 @@ compile_docx <- function(identification,
                          section_i,
                          section_iii_undergrad) {
     
-    browser()
+    #browser()
     doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
         officer::body_replace_text_at_bkm("employee_name", identification$employee_name) %>%
         officer::body_replace_text_at_bkm("department",identification$department) %>%
@@ -15,6 +15,6 @@ compile_docx <- function(identification,
         officer::body_replace_text_at_bkm("pubs", "") %>% 
         officer::cursor_bookmark("undergrad") %>% 
         officer::body_add_par("") %>% 
-        body_add_par_n(reactiveValuesToList(section_iii_undergrad)) %>% 
+        body_add_par_n(collapse_br(section_iii_undergrad)) %>% 
         officer::body_replace_text_at_bkm("undergrad", "") 
 }
