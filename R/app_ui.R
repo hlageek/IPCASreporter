@@ -20,7 +20,7 @@ app_ui <- function(request) {
                             tabPanel("NÁHLED",
                                      
                                      
-                                     #mod_docx_ui("docx_ui_1"),
+                                     mod_docx_ui("docx_ui_1"),
                                      
                                      
                                      mod_preview_ui("preview_ui_1"),

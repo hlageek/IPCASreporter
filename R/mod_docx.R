@@ -20,29 +20,30 @@ mod_docx_ui <- function(id){
 #'
 #' @noRd 
 mod_docx_server <- function(id, 
-                            r,
-                            employee_name,
-                            department,
-                            publications){
+                            identification,
+                            section_i,
+                            section_iii_undergrad){
+  
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
  
-  doc <-  reactive({compile_docx(r,
-                                 employee_name,
-                                 department,
-                                 publications)})
+  doc <-  reactive({compile_docx(identification,
+                                 section_i,
+                                 section_iii_undergrad
+                                 )})
   
   output$download_docx<- downloadHandler(
   
+   
     filename = function() {
-      paste0("ipcas_annual_report-", employee_name, ".docx")
+      paste0("ipcas_annual_report-", identification$employee_name, ".docx")
     },
     
     content = function(file) {
       doc <- doc()
         
-
+      
       print(doc, target = file)
     }
    

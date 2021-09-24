@@ -36,9 +36,8 @@ app_server <- function( input, output, session ) {
                        section_iii_undergrad)
     
     mod_docx_server("docx_ui_1", 
-                    r = r,
-                    employee_name = employee_name(),
-                    department = department(),
-                    publications = publications())
+                    identification,
+                    section_i,
+                    section_iii_undergrad)
     
 }

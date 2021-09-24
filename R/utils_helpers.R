@@ -27,6 +27,8 @@ format_html_citation <- function(html_citation) {
    return(value)
 }
 
+#--------------------------------------
+# word formatting utils
 
 add_blocks <- function( x, blocks, pos = "after" ){
     
@@ -46,7 +48,24 @@ add_blocks <- function( x, blocks, pos = "after" ){
     x
 }
 
+#--------------------------------------
+# add paragraphs
+
 body_add_par_n <- function(doc, value) {
+    i <- 1
+    n <- length(as.list(value))
+    while (i<=n) {
+        
+        doc <- officer::body_add_par(doc, value[[i]]) %>% 
+            officer::body_add_par("")
+        i <- i+1
+    }
+    
+    doc
+}
+
+# formatted
+body_add_par_nf <- function(doc, value) {
     i <- 1
     n <- length(value)
     while (i<=n) {
@@ -58,3 +77,7 @@ body_add_par_n <- function(doc, value) {
     doc
 }
 #--------------------------------------
+
+
+#--------------------------------------
+# word formatting utils

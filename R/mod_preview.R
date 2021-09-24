@@ -68,33 +68,30 @@ mod_preview_server <- function(id,
   moduleServer(id, function(input, output, session) {
     
     # Identification
-    if (isTruthy(identification)) {
     output$employee_name <- renderText({identification$employee_name})
     output$department <- renderText({identification$department})
     output$fte <- renderText({identification$fte})
     output$comment <- renderText({identification$comment})
-    }
+    
     
     # Section I
     
-    if (isTruthy(section_i)) {
     
     output$section_i <- renderText({
       paste(section_i$publist, collapse = "<br>")
       })
-    }
+    
     
     # Section III
     
     ## Undergrad
     
-    if (isTruthy(section_iii_undergrad)) {
-
+    
         output$section_iii_undergrad <- renderText({
           paste(reactiveValuesToList(section_iii_undergrad))
       })
         
-    }
+    
     
    
     # output$conference_foreign <- renderText({conference_foreign()})
@@ -108,9 +105,3 @@ mod_preview_server <- function(id,
 }
 
     
-## To be copied in the UI
-# mod_preview_ui("preview_ui_1")
-    
-## To be copied in the server
-# callModule(mod_preview_server, "preview_ui_1")
- 
