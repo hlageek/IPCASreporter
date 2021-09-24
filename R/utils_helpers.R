@@ -87,5 +87,6 @@ body_add_par_nf <- function(doc, value) {
 collapse_br <- function(reactive_val) {
 purrr::reduce(reactiveValuesToList(reactive_val), paste) %>%  
     strsplit("<br>") %>% 
-    unlist()
+    unlist() %>% 
+        trimws()
 }
