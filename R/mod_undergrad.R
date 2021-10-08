@@ -12,7 +12,7 @@ mod_undergrad_ui <- function(id){
   
 
   
-  fluidRow(column(width = 4,
+  fluidRow(column(width = 6,
     
     selectInput(ns("undergrad_school"), 
                 label = "Název VŠ:", 
@@ -61,7 +61,7 @@ mod_undergrad_ui <- function(id){
  
   ),
   
-  column(width = 8,
+  column(width = 6,
          
          
          h3("1)	Výuka na vysokých školách a vedení prací:"),
@@ -116,7 +116,7 @@ mod_undergrad_server <- function(id) {
       
     )
       
-      
+    
     
     observeEvent(input$add, {
       
@@ -127,9 +127,21 @@ mod_undergrad_server <- function(id) {
         all_items <- c(all_items, paste(item_names[i], input[[items[i]]]))
         
       }
+      
+      if (!exists("section_iii_undergrad")) {
+        
+        section_iii_undergrad <- list()
+        
+      }
+      
 
-      section_iii_undergrad[[as.character(input$add)]] <- paste(paste(all_items, collapse = "<br>"), "<br><br>")
-    
+      section_iii_undergrad[[as.character(
+        length(
+          reactiveValuesToList(
+            section_iii_undergrad))+1)
+        ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      
+
     })
     
     # Update selection options based on choices

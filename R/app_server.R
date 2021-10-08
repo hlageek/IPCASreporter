@@ -12,13 +12,10 @@ app_server <- function( input, output, session ) {
 
     section_i <- mod_pub_server("pub_ui_1", identification)
     
-    # this module needs current values for its output - download
-    # therefore current values are passed by parentheses ()
-    
     
     section_iii_undergrad <- mod_undergrad_server("undergrad_ui_1")
     
-    callModule(mod_postgrad_server, "postgrad_ui_1", r = r)
+    section_iii_postgrad <- mod_postgrad_server("postgrad_ui_1")
     
     conference_foreign <- mod_conference_server( "conference_ui_1")
     
@@ -33,11 +30,13 @@ app_server <- function( input, output, session ) {
     mod_preview_server("preview_ui_1", 
                        identification,
                        section_i,
-                       section_iii_undergrad)
+                       section_iii_undergrad,
+                       section_iii_postgrad)
     
     mod_docx_server("docx_ui_1", 
                     identification,
                     section_i,
-                    section_iii_undergrad)
+                    section_iii_undergrad,
+                    section_iii_postgrad)
     
 }

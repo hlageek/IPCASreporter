@@ -43,6 +43,8 @@ mod_preview_ui <- function(id){
     br(),
     h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
+    htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
+    
     
     br(),
     "Conference:",
@@ -64,7 +66,8 @@ mod_preview_ui <- function(id){
 mod_preview_server <- function(id,
                                identification,
                                section_i,
-                               section_iii_undergrad) {
+                               section_iii_undergrad,
+                               section_iii_postgrad) {
   moduleServer(id, function(input, output, session) {
     
     # Identification
@@ -90,6 +93,10 @@ mod_preview_server <- function(id,
         output$section_iii_undergrad <- renderText({
           paste(reactiveValuesToList(section_iii_undergrad))
       })
+        
+        output$section_iii_postgrad <- renderText({
+          paste(reactiveValuesToList(section_iii_postgrad))
+        })
         
     
     

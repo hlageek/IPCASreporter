@@ -64,6 +64,8 @@ golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
 golem::add_utils( "funs", module = "pub" )
 golem::add_utils( "funs", module = "undergrad" )
+golem::add_utils( "funs", module = "postgrad" )
+
 
 
 

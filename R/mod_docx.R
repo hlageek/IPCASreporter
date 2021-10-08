@@ -22,7 +22,8 @@ mod_docx_ui <- function(id){
 mod_docx_server <- function(id, 
                             identification,
                             section_i,
-                            section_iii_undergrad){
+                            section_iii_undergrad,
+                            section_iii_postgrad){
   
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
@@ -30,7 +31,8 @@ mod_docx_server <- function(id,
  
   doc <-  reactive({compile_docx(identification,
                                  section_i,
-                                 section_iii_undergrad
+                                 section_iii_undergrad,
+                                 section_iii_postgrad
                                  )})
   
   output$download_docx<- downloadHandler(
