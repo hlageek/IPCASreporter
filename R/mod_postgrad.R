@@ -52,7 +52,7 @@ mod_postgrad_ui <- function(id){
                                 label = "Jiné"),
                   
                   actionButton(ns("add"),
-                               label = "Update report"
+                               label = "Add to report"
                   )
                   
   ),

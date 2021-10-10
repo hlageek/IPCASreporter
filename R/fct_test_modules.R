@@ -24,3 +24,17 @@ section_iii_undergradApp <- function() {
     }
     shinyApp(ui, server)  
 }
+
+
+# Section III
+
+section_ivApp <- function() {
+    ui <- fluidPage(
+        mod_grants_ui("grants_ui_1")
+    )
+    server <- function(input, output, session) {
+        
+        mod_grants_server("grants_ui_1")
+    }
+    shinyApp(ui, server)  
+}

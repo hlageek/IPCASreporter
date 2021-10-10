@@ -47,12 +47,17 @@ mod_preview_ui <- function(id){
     
     
     br(),
-    "Conference:",
-    textOutput(ns("conference_foreign")),
-    br(),
-    textOutput(ns("conference_local")),
+    htmlOutput(ns("section_iii_conference_foreign"), inline = FALSE),
+    htmlOutput(ns("section_iii_conference_domestic"), inline = FALSE),
     
-
+    br(),
+    htmlOutput(ns("section_iii_lecture_foreign"), inline = FALSE),
+    htmlOutput(ns("section_iii_lecture_domestic"), inline = FALSE),
+    
+    br(),
+    htmlOutput(ns("section_iv_funded"), inline = FALSE),
+    htmlOutput(ns("section_iv_unfunded"), inline = FALSE)
+    
         
         
         
@@ -67,7 +72,11 @@ mod_preview_server <- function(id,
                                identification,
                                section_i,
                                section_iii_undergrad,
-                               section_iii_postgrad) {
+                               section_iii_postgrad,
+                               section_iii_conference,
+                               section_iii_lecture,
+                               section_iv) {
+  
   moduleServer(id, function(input, output, session) {
     
     # Identification
@@ -94,16 +103,40 @@ mod_preview_server <- function(id,
           paste(section_iii_undergrad$data)
       })
         
+    ## Postgrad
+        
         output$section_iii_postgrad <- renderText({
           paste(section_iii_postgrad$data)
         })
         
-    
-    
-   
-    # output$conference_foreign <- renderText({conference_foreign()})
-    # output$conference_local <- renderText({conference_local()})
-    
+    ## Conference
+        
+        output$section_iii_conference_foreign <-  renderText({
+          paste(section_iii_conference$foreign)
+        })
+        output$section_iii_conference_domestic <-  renderText({
+          paste(section_iii_conference$domestic)
+        })
+        
+    ## Lecture
+        
+        output$section_iii_lecture_foreign <-  renderText({
+          paste(section_iii_lecture$foreign)
+        })
+        output$section_iii_lecture_domestic <-  renderText({
+          paste(section_iii_lecture$domestic)
+        })
+        
+        
+    # Section IV
+        
+        output$section_iv_funded <-  renderText({
+          paste(section_iv$funded)
+        })
+        output$ssection_iv_unfunded <-  renderText({
+          paste(section_iv$unfunded)
+        })
+        
     
     
   }

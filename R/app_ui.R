@@ -62,19 +62,18 @@ app_ui <- function(request) {
                                      br(),br(),br(),br(),br(),
                                      ), 
                                      tabPanel("PhD.",
-                                     h3("1)	Výuka na vysokých školách a vedení prací:"),
-                                     h4("b) Doktorský studijní program"),
+                                      
                                      mod_postgrad_ui("postgrad_ui_1"),
                                      br(),br(),br(),br(),br(),
                                      ),
                                      
                                      tabPanel("Konference",
-                                     h3("2)	Příspěvky a přednášky na konferencích: "),
+                                     
                                      mod_conference_ui("conference_ui_1"),
                                      br(),br(),br(),br(),br(),    
                                      ),
                                      tabPanel("Přednášky",
-                                     h3("3)	 Samostatné přednášky:"),
+                                     
                                      mod_lectures_ui("lectures_ui_1"),
                                      br(),br(),br(),br(),br(),
                                      )

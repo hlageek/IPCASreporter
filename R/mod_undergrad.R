@@ -154,8 +154,6 @@ mod_undergrad_server <- function(id) {
       
       section_iii_undergrad$data[as.integer(input$remove_list)] <- NULL 
       
-      print(section_iii_undergrad$data)
-
       updateSelectInput(session = session,
                         "remove_list", 
                         choices = seq_along(section_iii_undergrad$data)
