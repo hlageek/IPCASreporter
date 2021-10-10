@@ -228,8 +228,8 @@ mod_undergrad_server <- function(id) {
      
         
         output$section_iii_undergrad_preview <- renderText({
-          if (length(section_iii_undergrad$data>0)) {
-          paste(paste0(seq_along(section_iii_undergrad$data), ". <br>"),
+          if (length(section_iii_undergrad$data)>0) {
+          paste(paste0(seq_along(section_iii_undergrad$data), ".<br>"),
                 section_iii_undergrad$data)
           } else {""}
           })

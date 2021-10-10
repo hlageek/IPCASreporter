@@ -222,8 +222,8 @@ mod_postgrad_server <- function(id) {
   
   
   output$section_iii_postgrad_preview <- renderText({
-    if (length(section_iii_postgrad$data>0)) {
-      paste(paste0(seq_along(section_iii_postgrad$data), ". <br>"),
+    if (length(section_iii_postgrad$data)>0) {
+      paste(paste0(seq_along(section_iii_postgrad$data), ".<br>"),
             section_iii_postgrad$data)
     } else {""}
   })
