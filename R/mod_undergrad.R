@@ -56,7 +56,7 @@ mod_undergrad_ui <- function(id){
                   label = "Jiné"),
 
     actionButton(ns("add"),
-                 label = "Update report"
+                 label = "Add to report"
     )
  
   ),
@@ -67,7 +67,14 @@ mod_undergrad_ui <- function(id){
          h3("1)	Výuka na vysokých školách a vedení prací:"),
          h4("a) Bakalářské a magisterské studijní programy "),
          
-         htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
+         htmlOutput(ns("section_iii_undergrad_preview"), inline = FALSE),
+         
+         selectInput(ns("remove_list"), 
+                     label = "Item",
+                     choices = ""),
+         actionButton(ns("remove"),
+                      label = "Remove item from report"
+         )
          
          
   )
@@ -128,20 +135,33 @@ mod_undergrad_server <- function(id) {
         
       }
       
-      if (!exists("section_iii_undergrad")) {
-        
-        section_iii_undergrad <- list()
-        
-      }
       
 
-      section_iii_undergrad[[as.character(
-        length(
-          reactiveValuesToList(
-            section_iii_undergrad))+1)
-        ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      section_iii_undergrad$data[[length(section_iii_undergrad$data)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_iii_undergrad$data)
+                        )
+                        
+      
       
 
+    })
+    
+    observeEvent(input$remove, {
+      
+      
+      section_iii_undergrad$data[as.integer(input$remove_list)] <- NULL 
+      
+      print(section_iii_undergrad$data)
+
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_iii_undergrad$data)
+                        
+      )
+      
     })
     
     # Update selection options based on choices
@@ -205,13 +225,18 @@ mod_undergrad_server <- function(id) {
     })
       
       
-      if (isTruthy(section_iii_undergrad)) {
+     
         
-        output$section_iii_undergrad <- renderText({
-          paste(reactiveValuesToList(section_iii_undergrad))
-        })
+        output$section_iii_undergrad_preview <- renderText({
+          if (length(section_iii_undergrad$data>0)) {
+          paste(paste0(seq_along(section_iii_undergrad$data), ". <br>"),
+                section_iii_undergrad$data)
+          } else {""}
+          })
+      
+      
         
-      }
+      
 
       
       

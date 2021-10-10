@@ -63,9 +63,14 @@ mod_postgrad_ui <- function(id){
          h3("1)	Výuka na vysokých školách a vedení prací:"),
          h4("b) Doktorský studijní program"),
          
-         htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
+         htmlOutput(ns("section_iii_postgrad_preview"), inline = FALSE),
          
-         
+         selectInput(ns("remove_list"), 
+                     label = "Item",
+                     choices = ""),
+         actionButton(ns("remove"),
+                      label = "Remove item from report"
+         )
   )
   )
 }
@@ -124,17 +129,32 @@ mod_postgrad_server <- function(id) {
       
     }
     
-    if (!exists("section_iii_postgrad")) {
-      
-      section_iii_postgrad <- list()
-      
-    }
     
-    section_iii_postgrad[[as.character(
-      length(
-        reactiveValuesToList(
-          section_iii_postgrad))+1)
-    ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+    
+    section_iii_postgrad$data[[length(section_iii_postgrad$data)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+    
+    updateSelectInput(session = session,
+                      "remove_list", 
+                      choices = seq_along(section_iii_postgrad$data)
+    )
+    
+    
+    
+    
+  })
+  
+  observeEvent(input$remove, {
+    
+    
+    section_iii_postgrad$data[as.integer(input$remove_list)] <- NULL 
+    
+    print(section_iii_postgrad$data)
+    
+    updateSelectInput(session = session,
+                      "remove_list", 
+                      choices = seq_along(section_iii_postgrad$data)
+                      
+    )
     
   })
   
@@ -172,7 +192,7 @@ mod_postgrad_server <- function(id) {
       choices_prog <- universities %>% 
         dplyr::filter(university == input$postgrad_school &
                         !is.na(disc_program) &
-                        stringr::str_detect(type, "bakalářský|magisterský") 
+                        stringr::str_detect(type, "doktorský") 
         ) %>% 
         dplyr::pull(disc_program) %>% 
         unique() %>% 
@@ -184,7 +204,7 @@ mod_postgrad_server <- function(id) {
         dplyr::filter(university == input$postgrad_school &
                         faculty == input$postgrad_faculty &
                         !is.na(disc_program) &
-                        stringr::str_detect(type, "bakalářský|magisterský") 
+                        stringr::str_detect(type, "doktorský") 
         ) %>% 
         dplyr::pull(disc_program) %>% 
         unique() %>% 
@@ -199,13 +219,18 @@ mod_postgrad_server <- function(id) {
   })
   
   
-  if (isTruthy(section_iii_postgrad)) {
-    
-    output$section_iii_postgrad <- renderText({
-      paste(reactiveValuesToList(section_iii_postgrad))
-    })
-    
-  }
+  
+  
+  output$section_iii_postgrad_preview <- renderText({
+    if (length(section_iii_postgrad$data>0)) {
+      paste(paste0(seq_along(section_iii_postgrad$data), ". <br>"),
+            section_iii_postgrad$data)
+    } else {""}
+  })
+  
+  
+  
+  
   
   
   

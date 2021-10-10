@@ -53,7 +53,7 @@ add_blocks <- function( x, blocks, pos = "after" ){
 
 body_add_par_n <- function(doc, value) {
     i <- 1
-    n <- length(as.list(value))
+    n <- length(value)
     while (i<=n) {
         
         doc <- officer::body_add_fpar(doc, 
@@ -84,8 +84,8 @@ body_add_par_nf <- function(doc, value) {
 #--------------------------------------
 # collapse <br> separated reactive values for Word
 
-collapse_br <- function(reactive_val) {
-purrr::reduce(reactiveValuesToList(reactive_val), paste) %>%  
+collapse_br <- function(list_value) {
+purrr::reduce(list_value, paste) %>%  
     strsplit("<br>") %>% 
     unlist() %>% 
         trimws()

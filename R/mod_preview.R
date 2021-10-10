@@ -91,11 +91,11 @@ mod_preview_server <- function(id,
     
     
         output$section_iii_undergrad <- renderText({
-          paste(reactiveValuesToList(section_iii_undergrad))
+          paste(section_iii_undergrad$data)
       })
         
         output$section_iii_postgrad <- renderText({
-          paste(reactiveValuesToList(section_iii_postgrad))
+          paste(section_iii_postgrad$data)
         })
         
     

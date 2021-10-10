@@ -16,10 +16,10 @@ compile_docx <- function(identification,
         officer::body_replace_text_at_bkm("pubs", "") %>% 
         officer::cursor_bookmark("undergrad") %>% 
         officer::body_add_par("") %>% 
-        body_add_par_n(collapse_br(section_iii_undergrad)) %>% 
+        body_add_par_n(collapse_br(section_iii_undergrad$data)) %>% 
         officer::body_replace_text_at_bkm("undergrad", "") %>% 
-        officer::cursor_bookmark("postgrad") %>% 
-        officer::body_add_par("") %>% 
-        body_add_par_n(collapse_br(section_iii_postgrad)) %>% 
-        officer::body_replace_text_at_bkm("postgrad", "") 
+        officer::cursor_bookmark("postgrad") %>%
+        officer::body_add_par("") %>%
+        body_add_par_n(collapse_br(section_iii_postgrad$data)) %>%
+        officer::body_replace_text_at_bkm("postgrad", "")
 }

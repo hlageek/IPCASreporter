@@ -11,7 +11,7 @@ mod_docx_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    downloadButton(NS(id, "download_docx"), "Download")
+    downloadButton(ns("download_docx"), "Download")
     
   )
 }
