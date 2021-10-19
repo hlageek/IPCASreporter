@@ -59,7 +59,7 @@ golem::add_module( name = "various" ) # Name of the module
 
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
-golem::add_fct("test_modules")
+golem::add_fct("test_modules") # modules as apps
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
 golem::add_utils( "funs", module = "pub" )
@@ -78,6 +78,7 @@ golem::add_css_file( "custom" )
 ## Add internal datasets ----
 ## If you have data in your package
 usethis::use_data_raw(name = "departments", open = FALSE ) 
+usethis::use_data_raw(name = "providers", open = FALSE)
 
 ## Tests ----
 ## Add one line by test you want to create

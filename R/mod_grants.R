@@ -20,11 +20,7 @@ mod_grants_ui <- function(id){
     selectInput(ns("grant_provider"),
                 label = "Poskytovatel",
                 selected = "",
-                choices = 
-                c("",
-                  "GAČR",
-                  "TAČR",
-                  "MŠMT")),
+                choices =  c("", providers$providers)),
     
     selectInput(ns("grant_date_from"), label = "Doba řešení od",
                 selected = "",
@@ -37,6 +33,7 @@ mod_grants_ui <- function(id){
                             seq(2010, 2030, 1))),
     conditionalPanel(
       condition = "input.grant_date_from == output.current_year",
+      ns = ns,
       
       textAreaInput(ns("annotation_cze"), label = "Anotace česky"),
       textAreaInput(ns("annotation_eng"), label = "Anotace anglicky"),
@@ -44,11 +41,13 @@ mod_grants_ui <- function(id){
     ),
     
     radioButtons(ns("funding_status"), 
-                 label = "Kategorie", 
+                 label = "Kategorie: ", 
                  choices = c("Přijatý k financování" = "funded",
                              "Nepřijatý k financování" = "unfunded")
                  ),
     
+   br(), br(), br(),
+   
     actionButton(ns("add"),
                  label = "Add to report"
                  )
