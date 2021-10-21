@@ -19,7 +19,8 @@ app_ui <- function(request) {
                             
                             tabPanel("NÁHLED",
                                      
-                                     
+                                     bookmarkButton(label = "Save",
+                                                    title = "Copy the generated link to resume work later."),
                                      mod_docx_ui("docx_ui_1"),
                                      
                                      
