@@ -9,13 +9,31 @@
 #' @importFrom shiny NS tagList 
 mod_various_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  fluidRow(column(width = 6,
+                  
     
     textAreaInput(ns("various_description"), label = "Popis"),
     
     
-    mod_add_remove_ui(ns("add_remove_ui_1"))
- 
+    actionButton(ns("add"),
+                 label = "Add to report"
+    )
+    
+  ),
+  
+  column(width = 6, 
+         
+         htmlOutput(ns("section_xi"), inline = FALSE),
+         
+         selectInput(ns("remove_list"), 
+                     label = "Item",
+                     choices = ""),
+         
+         br(), br(),
+         actionButton(ns("remove"),
+                      label = "Remove item from report"
+         )
+  ) 
   )
 }
     
@@ -25,6 +43,69 @@ mod_various_ui <- function(id){
 mod_various_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+    
+    section_xi <- reactiveValues()
+    
+    items <- c(
+      "various_description"
+    )
+    
+    item_names <- c(
+      "Popis:"
+    )
+    
+    item_values <- reactive({
+      
+      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+      
+    })
+    
+    
+    observeEvent(input$add, {
+      
+      all_items <- list()
+      
+      for (i in seq_along(items)) {
+        
+        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        
+      }
+      
+      
+      
+      section_xi$data[[
+        length(
+          section_xi$data)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_xi$data)
+      )
+    })
+    
+    observeEvent(input$remove, {
+      
+      
+      section_xi$data[as.integer(input$remove_list)] <- NULL 
+      
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_xi$data)
+                        
+      )
+      
+    })
+    
+    
+    output$section_xi <- renderText({
+      if (length(section_xi$data)>0) {
+        paste(paste0(seq_along(section_xi$data), ".<br>"),
+              section_xi$data)
+      } else {""}
+    })
+    
+    return(section_xi)
     
   })}
     

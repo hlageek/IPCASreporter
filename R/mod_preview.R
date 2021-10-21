@@ -41,6 +41,9 @@ mod_preview_ui <- function(id){
     htmlOutput(ns("section_i"), inline = FALSE),
     
     br(),
+    h4("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+    
+    br(),
     h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
     h5("1) Výuka na vysokých školách a vedení prací"),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
@@ -84,11 +87,27 @@ mod_preview_ui <- function(id){
     h5("Zapojení do mezinárodních projektů"),
     htmlOutput(ns("section_viii_int_projects"), inline = FALSE),
     h5("Mezinárodní dvoustranné dohody"),
-    htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE)
+    htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE),
     
-        
-        
+    br(),
+    h4("IX. OSTATNÍ"),
+    h5("Ocenění odbornou komunitou"),
+    htmlOutput(ns("section_ix_award"), inline = FALSE),
+    h5("Posudky"),
+    htmlOutput(ns("section_ix_review"), inline = FALSE),
+    h5("Členství v komisích, redakčních radách apod."),
+    h6("Domácí"),
+    htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
+    h6("Zahraniční"),
+    htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
     
+    br(),
+    h4("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+    htmlOutput(ns("section_x"), inline = FALSE),
+    
+    br(),
+    h4("XI. RŮZNÉ"),
+    htmlOutput(ns("section_xi"), inline = FALSE)
 )
   
 }
@@ -109,9 +128,14 @@ mod_preview_server <- function(id,
                                section_vi_school,
                                section_vii,
                                section_viii_int_projects,
-                               section_viii_int_bilateral
+                               section_viii_int_bilateral,
+                               section_ix_award,
+                               section_ix_review,
+                               section_ix_member,
+                               section_x,
+                               section_xi
                                ) {
-  
+ 
   moduleServer(id, function(input, output, session) {
     
     # Identification
@@ -206,9 +230,37 @@ mod_preview_server <- function(id,
         
         output$section_viii_int_bilateral <-  renderText({
           paste(section_viii_int_bilateral$bilateral)
+        })
+        
+    # Section IX
+        
+        output$section_ix_award <-  renderText({
+          paste(section_ix_award$award)
+        })
+        
+        output$section_ix_review <-  renderText({
+          paste(section_ix_review$review)
+        })    
+        
+        output$section_ix_member_domestic <-  renderText({
+          paste(section_ix_member$domestic)
+        })    
+        
+        output$section_ix_member_foreign <-  renderText({
+          paste(section_ix_member$foreign)
         })        
         
-
+        # Section X
+        
+        output$section_x <-  renderText({
+          paste(section_x$wip)
+        })
+        
+        # Section XI
+        
+        output$section_xi <-  renderText({
+          paste(section_xi$data)
+        })
   }
   
   )

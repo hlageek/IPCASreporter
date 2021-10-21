@@ -12,7 +12,12 @@ compile_docx <- function(identification,
                          section_vi_school,
                          section_vii,
                          section_viii_int_projects,
-                         section_viii_int_bilateral
+                         section_viii_int_bilateral,
+                         section_ix_award,
+                         section_ix_review,
+                         section_ix_member,
+                         section_x,
+                         section_xi
                          ) {
     
     
@@ -53,5 +58,20 @@ compile_docx <- function(identification,
         add_doc_section("int_projects",
                         section_viii_int_projects$projects) %>% 
         add_doc_section("int_bilateral",
-                        section_viii_int_bilateral$bilateral)
+                        section_viii_int_bilateral$bilateral) %>% 
+        add_doc_section("section_ix_award",
+                        section_ix_award$award) %>% 
+        add_doc_section("section_ix_review",
+                        section_ix_review$review) %>% 
+        add_doc_section("section_ix_member_domestic",
+                        section_ix_member$domestic) %>% 
+        add_doc_section("section_ix_member_foreign",
+                        section_ix_member$foreign) %>% 
+        add_doc_section("section_x",
+                        section_x$wip) %>% 
+        add_doc_section("section_xi",
+                        section_xi$data)
+        
+        
+        
 }

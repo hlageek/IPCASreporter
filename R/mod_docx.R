@@ -32,7 +32,12 @@ mod_docx_server <- function(id,
                             section_vi_school,
                             section_vii,
                             section_viii_int_projects,
-                            section_viii_int_bilateral
+                            section_viii_int_bilateral,
+                            section_ix_award,
+                            section_ix_review,
+                            section_ix_member,
+                            section_x,
+                            section_xi
                             ){
   
   moduleServer(id, function(input, output, session) {
@@ -51,7 +56,12 @@ mod_docx_server <- function(id,
                                  section_vi_school,
                                  section_vii,
                                  section_viii_int_projects,
-                                 section_viii_int_bilateral
+                                 section_viii_int_bilateral,
+                                 section_ix_award,
+                                 section_ix_review,
+                                 section_ix_member,
+                                 section_x,
+                                 section_xi
                                  )})
   
   output$download_docx<- downloadHandler(
