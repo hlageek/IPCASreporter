@@ -26,7 +26,14 @@ mod_docx_server <- function(id,
                             section_iii_postgrad,
                             section_iii_conference,
                             section_iii_lecture,
-                            section_iv){
+                            section_iv,
+                            section_v,
+                            section_vi_popular,
+                            section_vi_school,
+                            section_vii,
+                            section_viii_int_projects,
+                            section_viii_int_bilateral
+                            ){
   
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
@@ -38,7 +45,13 @@ mod_docx_server <- function(id,
                                  section_iii_postgrad,
                                  section_iii_conference,
                                  section_iii_lecture,
-                                 section_iv
+                                 section_iv,
+                                 section_v,
+                                 section_vi_popular,
+                                 section_vi_school,
+                                 section_vii,
+                                 section_viii_int_projects,
+                                 section_viii_int_bilateral
                                  )})
   
   output$download_docx<- downloadHandler(
@@ -60,9 +73,5 @@ mod_docx_server <- function(id,
   })
 }
     
-## To be copied in the UI
-# mod_docx_ui("docx_ui_1")
-    
-## To be copied in the server
-# callModule(mod_docx_server, "docx_ui_1")
+
  

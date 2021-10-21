@@ -42,25 +42,53 @@ mod_preview_ui <- function(id){
     
     br(),
     h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+    h5("1) Výuka na vysokých školách a vedení prací"),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
     htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
     
     
     br(),
+    h5("2) Příspěvky a přednášky na konferencích"),
     htmlOutput(ns("section_iii_conference_foreign"), inline = FALSE),
     htmlOutput(ns("section_iii_conference_domestic"), inline = FALSE),
     
     br(),
+    h5("3) Samostatné přednášky"),
     htmlOutput(ns("section_iii_lecture_foreign"), inline = FALSE),
     htmlOutput(ns("section_iii_lecture_domestic"), inline = FALSE),
     
     br(),
+    h4("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+    h5("Řešené či spoluřešené granty"),
     htmlOutput(ns("section_iv_funded"), inline = FALSE),
-    htmlOutput(ns("section_iv_unfunded"), inline = FALSE)
+    h5("Projekty podané a nepřijaté k financování"),
+    htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
+    
+    br(),
+    h4("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+    htmlOutput(ns("section_v"), inline = FALSE),
+    
+    br(),
+    h4("VI. POPULARIZAČNÍ ČINNOST"),
+    h5("Akce"),
+    htmlOutput(ns("section_vi_popular_events"), inline = FALSE),
+    h5("Přednášky na středních, případně základních školách"),
+    htmlOutput(ns("section_vi_school_events"), inline = FALSE),
+    
+    br(),
+    h4("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+    htmlOutput(ns("section_vii"), inline = FALSE),
+    
+    br(),
+    h4("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+    h5("Zapojení do mezinárodních projektů"),
+    htmlOutput(ns("section_viii_int_projects"), inline = FALSE),
+    h5("Mezinárodní dvoustranné dohody"),
+    htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE)
     
         
         
-        
+    
 )
   
 }
@@ -75,7 +103,14 @@ mod_preview_server <- function(id,
                                section_iii_postgrad,
                                section_iii_conference,
                                section_iii_lecture,
-                               section_iv) {
+                               section_iv,
+                               section_v,
+                               section_vi_popular,
+                               section_vi_school,
+                               section_vii,
+                               section_viii_int_projects,
+                               section_viii_int_bilateral
+                               ) {
   
   moduleServer(id, function(input, output, session) {
     
@@ -133,12 +168,47 @@ mod_preview_server <- function(id,
         output$section_iv_funded <-  renderText({
           paste(section_iv$funded)
         })
-        output$ssection_iv_unfunded <-  renderText({
+        output$section_iv_unfunded <-  renderText({
           paste(section_iv$unfunded)
         })
         
+    # Section V
+        
+        output$section_v <-  renderText({
+          paste(section_v$av21)
+        })
+        
+    # Section VI
+        
+        ## Events
+        
+        output$section_vi_popular_events <-  renderText({
+          paste(section_vi_popular$events)
+        })
+        
+        ## School events
+        
+        output$section_vi_school_events <-  renderText({
+          paste(section_vi_school$events)
+        })
+        
+    # Section VII
+        
+        output$section_vii <-  renderText({
+          paste(section_vii$public)
+        })
     
-    
+    # Section VIII
+        
+        output$section_viii_int_projects <-  renderText({
+          paste(section_viii_int_projects$projects)
+        })
+        
+        output$section_viii_int_bilateral <-  renderText({
+          paste(section_viii_int_bilateral$bilateral)
+        })        
+        
+
   }
   
   )

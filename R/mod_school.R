@@ -9,15 +9,32 @@
 #' @importFrom shiny NS tagList 
 mod_school_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  fluidRow(column(width = 6,
+                  
     
-    textInput(ns("school_title"), label = "Název přednášky či specifikace jiného druhu akce"),
-    textInput(ns("school_name"), label = "Pořadatel/škola"),
-    textAreaInput(ns("school_description"), label = "Popis činnosti" ),
+    textInput(ns("title"), label = "Název přednášky či specifikace jiného druhu akce"),
+    textInput(ns("name"), label = "Pořadatel/škola"),
+    textAreaInput(ns("description"), label = "Popis činnosti" ),
     
-    mod_add_remove_ui(ns("add_remove_ui_1"))
+    actionButton(ns("add"),
+                 label = "Add to report"
+    )
     
     
+  ),
+  
+  column(width = 6,
+
+         htmlOutput(ns("section_vi_school"), inline = FALSE),
+         
+         selectInput(ns("remove_list"), 
+                     label = "Item",
+                     choices = ""),
+         actionButton(ns("remove"),
+                      label = "Remove item from report"
+         )
+    
+  )
  
   )
 }
@@ -28,12 +45,74 @@ mod_school_ui <- function(id){
 mod_school_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+    section_vi_school <- reactiveValues()
+    
+    items <- c(
+      "title",
+      "name",
+      "description"
+    )
+    
+    item_names <- c(
+      "Název přednášky či specifikace jiného druhu akce:",
+      "Pořadatel/škola:",
+      "Popis činnosti:"
+    )
+    
+    item_values <- reactive({
+      
+      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+      
+    })
+    
+    
+    observeEvent(input$add, {
+      
+      all_items <- list()
+      
+      for (i in seq_along(items)) {
+        
+        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        
+      }
+      
+      
+      
+      section_vi_school$events[[
+        length(
+          section_vi_school$events)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_vi_school$events)
+      )
+    })
+    
+    observeEvent(input$remove, {
+      
+      
+      section_vi_school$events[as.integer(input$remove_list)] <- NULL 
+      
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_vi_school$events)
+                        
+      )
+      
+    })
+    
+    
+    output$section_vi_school <- renderText({
+      if (length(section_vi_school$events)>0) {
+        paste(paste0(seq_along(section_vi_school$events), ".<br>"),
+              section_vi_school$events)
+      } else {""}
+    })
+    
+    return(section_vi_school)
     
   })}
     
-## To be copied in the UI
-# mod_school_ui("school_ui_1")
-    
-## To be copied in the server
-# mod_school_server("school_ui_1")
+
  

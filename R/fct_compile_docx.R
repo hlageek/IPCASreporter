@@ -6,7 +6,14 @@ compile_docx <- function(identification,
                          section_iii_postgrad,
                          section_iii_conference,
                          section_iii_lecture,
-                         section_iv) {
+                         section_iv,
+                         section_v,
+                         section_vi_popular,
+                         section_vi_school,
+                         section_vii,
+                         section_viii_int_projects,
+                         section_viii_int_bilateral
+                         ) {
     
     
     doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
@@ -34,5 +41,17 @@ compile_docx <- function(identification,
         add_doc_section("funded",
                         section_iv$funded) %>% 
         add_doc_section("unfunded",
-                        section_iv$unfunded)
+                        section_iv$unfunded) %>% 
+        add_doc_section("av21",
+                        section_v$av21) %>% 
+        add_doc_section("events",
+                        section_vi_popular$events) %>% 
+        add_doc_section("school",
+                        section_vi_school$events) %>% 
+        add_doc_section("public",
+                        section_vii$public) %>% 
+        add_doc_section("int_projects",
+                        section_viii_int_projects$projects) %>% 
+        add_doc_section("int_bilateral",
+                        section_viii_int_bilateral$bilateral)
 }
