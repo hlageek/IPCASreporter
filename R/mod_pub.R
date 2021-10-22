@@ -9,108 +9,100 @@
 #' @importFrom shiny NS tagList 
 mod_pub_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  
+  fluidRow(column(width = 4,
+  
     
-    div(style="display: inline-block;vertical-align:baseline;", 
-        textInput(ns("asep_code"), label = "Insert ASEP item code", value = "0467096")),
+   uiOutput(ns("pubs"))
     
-    div(style="display: inline-block;vertical-align:baseline;",
-    actionButton(ns("asep_search"), label = "Search")),
-    
-    br(),
-    
-    uiOutput(ns("title")),
-    
-    checkboxInput(ns("significant"), label = "A significant output."),
-    
-    uiOutput(ns("additional_info")),
-    
-    mod_add_remove_ui(ns("add_remove_ui_1"))
-    
+  ),
+  
+  column(width = 8,
+         
+         
+         h2("I. VYDANÉ PUBLIKACE"),
+         p( "Včetně odkazu do ASEP"),
+         
+         htmlOutput(ns("section_i"), inline = FALSE),
+         
+         
+         )
   )
 }
     
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <-  function(id, r) {
+mod_pub_server <-  function(id, identification) {
   moduleServer(id, function(input, output, session) {
-  
 
-  
-  # observeEvent( input$asep_code  , {
-  #   
-  #   
-  #   r$pubs <- get_asep(input$asep_code)
-  #     
-  # })
-  
     
 
- 
-  
-title_source <- eventReactive(input$asep_search,{ 
     
-    if (isTruthy(input$asep_code)) {
-      
-      HTML(get_asep(input$asep_code))
-      
-    } 
- 
-  })
+    output$pubs <- renderUI({
 
-title <- renderText({ title_source() })
-  
-  
-output$title <- renderText({ 
-  if (isTruthy(title_source())) {
-  title_source() } else {
-    "Enter ASEP item code."
-  }
-  
-  })
+      if (!isTruthy(identification$employee_name)) {
+        
+        "Fill your identification details first."
+        
+      } else {
+        
+       citations <-  get_asep(identification$employee_name)
+       
+       if (!is.null(citations)) {
+       
+       displayed_citations <- purrr::map(
+         citations,
+         ~stringr::str_replace_all(.x, "<.*?>|\\\\n", " ")
+          )
+       
+       ns <- NS(id)
+       
+       tagList(
+
+        checkboxGroupInput(ns("publist"), 
+                           label ="Most recent publications in ASEP.", 
+                           width = "100%",
+                           choiceNames = displayed_citations,
+                           choiceValues = citations),
+        
+        actionButton(ns("add"),
+                     label = "Update report"
+        )
+       )
+      } else {
+        
+        paste0("No ASEP records found for author ", 
+               identification$employee_name, 
+               " in year ", 
+               format(Sys.Date(), "%Y"), 
+               " or ", 
+               format(Sys.Date()-365, "%Y"), 
+               ".")
+      }
+        
+      }
+      
+      
+    })
     
-
-  output$additional_info <- renderUI({
+    section_i <- reactiveValues()
     
-
-    if (isTruthy(input$significant)) {
+    observeEvent(input$add, {
+    
+      section_i$publist <- input$publist
       
-      tagList(
-      textAreaInput("annotation_cze", label = "Annotation in Czech", width = '80%'),
-      p("Max. 500 characters."),
-      
-      textAreaInput("annotation_eng", label = "Annotation in English", width = '80%'),
-      p("Max. 500 characters."),
-      
-      textInput("collaborator", label = "Collaborating organization(s)"),
-      
-      textInput("author_name", label = "Contact person name"),
-      textInput("author_name", label = "Contact person email"),
-      textInput("author_name", label = "Contact person phone number"),
-      
-      textAreaInput("citation", label = "Bibliographical citation", value = title() , width = '80%')
-
-      
-      )
-      
-    }
-
-  })
-  
-# create output container
-  publications <- mod_add_remove_server("add_remove_ui_1", title)
-  
-  return(publications)
-  
- 
+      output$section_i <- renderText({
+        paste(section_i$publist, collapse = "<br>")
+      })
+    
+      })
+   
+    return(section_i)
+    
   })
   
 }
     
-## To be copied in the UI
-# mod_pub_ui("pub_ui_1")
-    
-## To be copied in the server
-# callModule(mod_pub_server, "pub_ui_1")
+
  

@@ -9,7 +9,9 @@
 #' @importFrom shiny NS tagList 
 mod_av21_ui <- function(id){
   ns <- NS(id)
-  tagList(
+  
+  fluidRow(column(width = 6,
+                  
     
       textInput(ns("program"), label = "Program Strategie AV21"),
       textInput(ns("activity"), label = "Název aktivity (projektu)"),
@@ -18,15 +20,29 @@ mod_av21_ui <- function(id){
                     placeholder = "Lze zkopírovat z návrhového listu aktivity"),
       textAreaInput(ns("annotation_eng"), label = "Anotace anglicky"),
       textAreaInput(ns("results"), label = "Výstupy (včetně příp. odkazu na ASEP)"),
-      div(style="display: inline-block;vertical-align:baseline;", 
-          textInput(ns("partner"), label = "Spolupracující instituce")),
-      div(style="display: inline-block;vertical-align:baseline;",
-          actionButton(ns("add_partner"), label = "+")),
-      uiOutput(ns("partner_plus")),
 
-      mod_add_remove_ui(ns("add_remove_ui_1"))
+      textInput(ns("partner"), label = "Spolupracující instituce"),
+
+
+      actionButton(ns("add"),
+                   label = "Add to report"
+      )
     
- 
+  ),
+  
+  column(width = 6,
+         
+         htmlOutput(ns("section_v"), inline = FALSE),
+         
+         selectInput(ns("remove_list"), 
+                     label = "Item",
+                     choices = ""),
+         actionButton(ns("remove"),
+                      label = "Remove item from report"
+         )
+         
+         
+  )
   )
 }
     
@@ -36,29 +52,84 @@ mod_av21_ui <- function(id){
 mod_av21_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-    observeEvent( input$add_partner , {
+    section_v <- reactiveValues()
+    
+    items <- c(
+      "program",
+      "activity",
+      "person",
+      "annotation_cze",
+      "annotation_eng",
+      "results",
+      "partner"
+    )
+    
+    item_names <- c(
+      "Program Strategie AV21:",
+      "Název aktivity (projektu)",
+      "Řešitel aktivity (projektu):",
+      "Anotace česky:",
+      "Anotace anglicky:",
+      "Výstupy (včetně příp. odkazu na ASEP):",
+      "Spolupracující instituce:"
+    )
+    
+    item_values <- reactive({
       
-      output$partner_plus <- renderUI({
+      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+      
+    })
+    
+    
+    observeEvent(input$add, {
+      
+      all_items <- list()
+      
+      for (i in seq_along(items)) {
         
-        tagList(
-          
-          textInput(paste0(id, input$add_partner), label = "Spolupracující instituce")
+        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
         
+      }
+      
+      
+
+        section_v$av21[[
+          length(
+            section_v$av21)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list", 
+                          choices = seq_along(section_v$av21)
         )
-   
-        
-        })
-      })
+    })
+    
+    observeEvent(input$remove, {
+      
+      
+      section_v$av21[as.integer(input$remove_list)] <- NULL 
+      
+      
+      updateSelectInput(session = session,
+                        "remove_list", 
+                        choices = seq_along(section_v$av21)
+                        
+      )
+      
+    })
     
     
+    output$section_v <- renderText({
+      if (length(section_v$av21)>0) {
+        paste(paste0(seq_along(section_v$av21), ".<br>"),
+              section_v$av21)
+      } else {""}
+    })
+    
+    return(section_v)
     
   })}
  
 
     
-## To be copied in the UI
-# mod_av21_ui("av21_ui_1")
-    
-## To be copied in the server
-# callModule(mod_av21_server, "av21_ui_1")
+
  

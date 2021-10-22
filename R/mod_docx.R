@@ -11,7 +11,7 @@ mod_docx_ui <- function(id){
   ns <- NS(id)
   tagList(
  
-    downloadButton(NS(id, "download_docx"), "Download")
+    downloadButton(ns("download_docx"), "Download")
     
   )
 }
@@ -20,29 +20,61 @@ mod_docx_ui <- function(id){
 #'
 #' @noRd 
 mod_docx_server <- function(id, 
-                            r,
-                            employee_name,
-                            department,
-                            publications){
+                            identification,
+                            section_i,
+                            section_iii_undergrad,
+                            section_iii_postgrad,
+                            section_iii_conference,
+                            section_iii_lecture,
+                            section_iv,
+                            section_v,
+                            section_vi_popular,
+                            section_vi_school,
+                            section_vii,
+                            section_viii_int_projects,
+                            section_viii_int_bilateral,
+                            section_ix_award,
+                            section_ix_review,
+                            section_ix_member,
+                            section_x,
+                            section_xi
+                            ){
+  
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
  
-  doc <-  reactive({compile_docx(r,
-                                 employee_name,
-                                 department,
-                                 publications)})
+  doc <-  reactive({compile_docx(identification,
+                                 section_i,
+                                 section_iii_undergrad,
+                                 section_iii_postgrad,
+                                 section_iii_conference,
+                                 section_iii_lecture,
+                                 section_iv,
+                                 section_v,
+                                 section_vi_popular,
+                                 section_vi_school,
+                                 section_vii,
+                                 section_viii_int_projects,
+                                 section_viii_int_bilateral,
+                                 section_ix_award,
+                                 section_ix_review,
+                                 section_ix_member,
+                                 section_x,
+                                 section_xi
+                                 )})
   
   output$download_docx<- downloadHandler(
   
+   
     filename = function() {
-      paste0("ipcas_annual_report-", employee_name, ".docx")
+      paste0("ipcas_annual_report-", identification$employee_name, ".docx")
     },
     
     content = function(file) {
       doc <- doc()
         
-
+      
       print(doc, target = file)
     }
    
@@ -51,9 +83,5 @@ mod_docx_server <- function(id,
   })
 }
     
-## To be copied in the UI
-# mod_docx_ui("docx_ui_1")
-    
-## To be copied in the server
-# callModule(mod_docx_server, "docx_ui_1")
+
  

@@ -1,33 +1,7 @@
-get_asep <- function(asep_code) {
-    
-    query <- paste0("@attr 98=2 @attr 1=2426 '", asep_code, "'")
-    
-    asep_citation <- httr::GET(url = "https://asep.lib.cas.cz/i2/i2.ws.cls",
-                               query = list(method = "search", 
-                                            db = "CavUnEpca", 
-                                            query = query,
-                                            fmt = "xml")) %>% 
-        httr::content(as = "parsed", "text/html", "utf-8")
-    
-    asep_citation <- asep_citation %>% rvest::html_node("body") %>% 
-        rvest::html_nodes(xpath = '//*[@tag="Tbc"]') %>% 
-        rvest::html_text2()
-    
-    if (length(asep_citation) > 0) {
- 
-        asep_citation
-        
-    } else {
-        "No data found for the ASEP item code."
-    }
-    
-}
 
 
-
-
-############################
-# word formatting util
+#--------------------------------------
+# word formatting utils
 
 format_html_citation <- function(html_citation) {
 
@@ -53,6 +27,8 @@ format_html_citation <- function(html_citation) {
    return(value)
 }
 
+#--------------------------------------
+# word formatting utils
 
 add_blocks <- function( x, blocks, pos = "after" ){
     
@@ -72,7 +48,26 @@ add_blocks <- function( x, blocks, pos = "after" ){
     x
 }
 
+#--------------------------------------
+# add paragraphs
+
 body_add_par_n <- function(doc, value) {
+    i <- 1
+    n <- length(value)
+    while (i<=n) {
+        
+        doc <- officer::body_add_fpar(doc, 
+                                      officer::fpar(value[[i]], 
+                                                    fp_t = officer:: fp_text(font.size = 12,
+                                                                             font.family = "Times New Roman"))) 
+        i <- i+1
+    }
+    
+    doc
+}
+
+# formatted
+body_add_par_nf <- function(doc, value) {
     i <- 1
     n <- length(value)
     while (i<=n) {
@@ -82,4 +77,47 @@ body_add_par_n <- function(doc, value) {
     }
     
     doc
+}
+#--------------------------------------
+
+
+#--------------------------------------
+# collapse <br> separated reactive values for Word
+
+collapse_br <- function(list_value) {
+    if (isTruthy(list_value)) {
+purrr::reduce(list_value, paste) %>%  
+    strsplit("<br>") %>% 
+    unlist() %>% 
+        trimws()
+    } else {""}
+}
+
+# item collection from multi-input ---------------------------------------
+
+add_doc_section <- function(doc, bookmark, list_data) {
+    
+    doc %>% 
+    officer::cursor_bookmark(bookmark) %>%
+    officer::body_add_par("") %>%
+    body_add_par_n(collapse_br(list_data)) %>%
+    officer::body_replace_text_at_bkm(bookmark, "")
+}
+
+
+# item collection from multi-input ---------------------------------------
+
+collect_items <- function(items, item_names, item_values) {
+
+        all_items <- list()
+    
+    
+for (i in seq_along(items)) {
+    
+    all_items <- c(all_items, paste(item_names[i], item_values[i]))
+    
+}
+
+all_items
+
 }

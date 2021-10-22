@@ -21,6 +21,7 @@ usethis::use_package( "rvest" )
 usethis::use_package( "stringr" )
 usethis::use_package( "officer" )
 usethis::use_package( "here" )
+usethis::use_package( "dplyr")
 
 
 
@@ -29,9 +30,7 @@ usethis::use_package( "here" )
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module( name = "employee_name" ) # Name of the module
-golem::add_module( name = "department" ) # Name of the module
-golem::add_module( name = "fte" ) # Name of the module
+golem::add_module( name = "identification" ) # Name of the module
 golem::add_module( name = "pub" ) # Name of the module
 golem::add_module( name = "docx" ) # Name of the module
 golem::add_module( name = "preview" ) # Name of the module
@@ -58,24 +57,17 @@ golem::add_module( name = "various" ) # Name of the module
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Add helper functions ----
 ## Creates ftc_* and utils_*
+golem::add_fct("test_modules") # modules as apps
 golem::add_fct("compile_docx")
 golem::add_utils( "helpers" )
-golem::add_utils( "add_remove" )
+golem::add_utils( "funs", module = "pub" )
+golem::add_utils( "funs", module = "undergrad" )
+golem::add_utils( "funs", module = "postgrad" )
+
+
+
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
@@ -86,6 +78,7 @@ golem::add_css_file( "custom" )
 ## Add internal datasets ----
 ## If you have data in your package
 usethis::use_data_raw(name = "departments", open = FALSE ) 
+usethis::use_data_raw(name = "providers", open = FALSE)
 
 ## Tests ----
 ## Add one line by test you want to create

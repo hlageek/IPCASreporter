@@ -10,34 +10,36 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # List the first level UI elements here 
     fluidPage(
-      titlePanel("Submission form for IP CAS annual report"),
+      titlePanel("IP CAS annual report"),
       
-   
-
-        column(width = 7,
-               
            
-               navlistPanel(widths = c(4,8), well = F,
+               navlistPanel(widths = c(2,10), well = F,
+                            
+                            "Preview",
+                            
+                            tabPanel("NÁHLED",
+                                     
+                                     bookmarkButton(label = "Save",
+                                                    title = "Copy the generated link to resume work later."),
+                                     mod_docx_ui("docx_ui_1"),
+                                     
+                                     
+                                     mod_preview_ui("preview_ui_1"),
+                                     
+                            ),
                             
                             "Researcher's details",
                             
-                            tabPanel("IDENTIFIKAČNÍ ÚDAJE",
+                            tabPanel("IDENTIFIKAČNÍ ÚDAJE", 
                                      
-                                     mod_employee_name_ui("employee_name_ui_1"),
-                                     
-                                     mod_department_ui("department_ui_1"),
-                                     
-                                     mod_fte_ui("fte_ui_1"),
-                                     textOutput("r$fte")
-                                     
+                                     mod_identification_ui("identification_ui_1")
+                                  
                                      ),
                             "Report sections",
                             tabPanel("I. VYDANÉ PUBLIKACE", 
-                                     
-                                     h2("I. VYDANÉ PUBLIKACE"),
-                                     p( "Včetně odkazu do ASEP"),
-                                     
+
                                      mod_pub_ui("pub_ui_1")
+                                     
                                      ),
                             
                             tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ", 
@@ -57,26 +59,22 @@ app_ui <- function(request) {
                                      
                                      tabsetPanel(tabPanel("Bc. & Mgr.",
                                      
-
-                                     h3("1)	Výuka na vysokých školách a vedení prací:"),
-                                     h4("a) Bakalářské a magisterské studijní programy "),
                                      mod_undergrad_ui("undergrad_ui_1"),
                                      br(),br(),br(),br(),br(),
                                      ), 
                                      tabPanel("PhD.",
-                                     h3("1)	Výuka na vysokých školách a vedení prací:"),
-                                     h4("b) Doktorský studijní program"),
+                                      
                                      mod_postgrad_ui("postgrad_ui_1"),
                                      br(),br(),br(),br(),br(),
                                      ),
                                      
                                      tabPanel("Konference",
-                                     h3("2)	Příspěvky a přednášky na konferencích: "),
+                                     
                                      mod_conference_ui("conference_ui_1"),
                                      br(),br(),br(),br(),br(),    
                                      ),
                                      tabPanel("Přednášky",
-                                     h3("3)	 Samostatné přednášky:"),
+                                     
                                      mod_lectures_ui("lectures_ui_1"),
                                      br(),br(),br(),br(),br(),
                                      )
@@ -189,18 +187,9 @@ app_ui <- function(request) {
                             
                         
                ),
-        ),
-        column(width = 5,
-               
-               h3("Download report"),
-               
-               mod_docx_ui("docx_ui_1"),
-               
-               
-               mod_preview_ui("preview_ui_1"),
+        
     
-               
-        )
+              
         
         
     ),
