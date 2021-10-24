@@ -11,14 +11,15 @@ mod_preview_ui <- function(id){
   ns <- NS(id)
   tagList(
     
+    
     tags$style(HTML("
-                  .col-sm-5 {
-                    border: 2px solid lightgray;
+                  #preview {
+                    border: none;
                     height:100vh;
                     overflow-y:scroll
                   }
                   ")),    
-    
+    div(id = "preview",
     br(),
     h4("IDENTIFIKAČNÍ ÚDAJE"),
     "Jméno:",
@@ -31,6 +32,10 @@ mod_preview_ui <- function(id){
     br(),
     "FTE:",
     textOutput(ns("fte"), inline = TRUE),
+    
+    br(),
+    "E-mail:",
+    textOutput(ns("email"), inline = TRUE),
     
     br(),
     "Komentář:",
@@ -111,7 +116,7 @@ mod_preview_ui <- function(id){
     h4("XI. RŮZNÉ"),
     htmlOutput(ns("section_xi"), inline = FALSE)
 )
-  
+  )
 }
     
 #' preview Server Function
@@ -145,6 +150,7 @@ mod_preview_server <- function(id,
     output$employee_name <- renderText({identification$employee_name})
     output$department <- renderText({identification$department})
     output$fte <- renderText({identification$fte})
+    output$email <- renderText({identification$email})
     output$comment <- renderText({identification$comment})
     
     

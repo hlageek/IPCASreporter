@@ -23,9 +23,18 @@ compile_docx <- function(identification,
     
     # browser()
     doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
-        officer::body_replace_text_at_bkm("employee_name", identification$employee_name) %>%
-        officer::body_replace_text_at_bkm("department",identification$department) %>%
-        officer::body_replace_text_at_bkm("fte", as.character(identification$fte)) %>%
+        officer::body_replace_text_at_bkm("employee_name", 
+                                          ifelse(isTruthy(identification$employee_name), 
+                                                 identification$employee_name, 
+                                                 "")) %>%
+        officer::body_replace_text_at_bkm("department",
+                                          ifelse(isTruthy(identification$department), 
+                                                 identification$department, 
+                                                              "")) %>%
+        officer::body_replace_text_at_bkm("fte",
+                                          ifelse(isTruthy(identification$fte), 
+                                                 as.character(identification$fte), 
+                                                 "")) %>%
         add_doc_section("comment",
                         identification$comment) %>% 
         add_doc_f_section("pubsB",

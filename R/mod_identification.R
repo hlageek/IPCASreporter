@@ -18,6 +18,12 @@ mod_identification_ui <- function(id){
               placeholder = "Eva Zažímalová"
               ),
     
+    textInput(ns("email"),
+                label = "E-mailová adresa", 
+                value = "", 
+                placeholder = "@flu.cas.cz"
+    ),
+    
     selectInput(ns("department"),
                 label = "Oddělení", 
                 selected = "", 
@@ -59,6 +65,10 @@ mod_identification_ui <- function(id){
          textOutput(ns("fte"), inline = TRUE),
          
          br(),
+         "E-mail:",
+         textOutput(ns("email"), inline = TRUE),
+         
+         br(),
          "Komentář:",
          textOutput(ns("comment"), inline = TRUE)
          
@@ -82,10 +92,12 @@ mod_identification_server <- function(id) {
       identification$department <- input$department
       identification$fte <- input$fte
       identification$comment <- input$comment
+      identification$email <- input$email
       
       output$employee_name <- renderText({identification$employee_name})
       output$department <- renderText({identification$department})
       output$fte <- renderText({identification$fte})
+      output$email <- renderText({identification$email})
       output$comment <- renderText({identification$comment})
         
     })
