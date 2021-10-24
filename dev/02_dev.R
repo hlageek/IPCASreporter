@@ -22,7 +22,6 @@ usethis::use_package( "stringr" )
 usethis::use_package( "officer" )
 usethis::use_package( "here" )
 usethis::use_package( "dplyr")
-usethis::use_package( "shinyjs")
 usethis::use_package( "keyring")
 usethis::use_package( "emayili")
 
