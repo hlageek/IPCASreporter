@@ -32,12 +32,16 @@ app_ui <- function(request) {
                             
                             tabPanel("IDENTIFIKAČNÍ ÚDAJE", 
                                      
+                                     
                                      mod_identification_ui("identification_ui_1")
                                   
                                      ),
                             "Report sections",
                             tabPanel("I. VYDANÉ PUBLIKACE", 
-
+                                     
+                                     h2("I. VYDANÉ PUBLIKACE"),
+                                     p( "Včetně odkazu do ASEP"),
+                                     
                                      mod_pub_ui("pub_ui_1")
                                      
                                      ),

@@ -20,9 +20,6 @@ mod_pub_ui <- function(id){
   column(width = 8,
          
          
-         h2("I. VYDANÉ PUBLIKACE"),
-         p( "Včetně odkazu do ASEP"),
-         
          htmlOutput(ns("section_i"), inline = FALSE),
          
          
@@ -47,7 +44,7 @@ mod_pub_server <-  function(id, identification) {
         
       } else {
         
-       citations <-  get_asep(identification$employee_name)
+       citations <-  get_asep(identification$employee_name, type = "pubs")
        
        if (!is.null(citations)) {
        
@@ -67,7 +64,7 @@ mod_pub_server <-  function(id, identification) {
                            choiceValues = citations),
         
         actionButton(ns("add"),
-                     label = "Update report"
+                     label = "Add to report"
         )
        )
       } else {

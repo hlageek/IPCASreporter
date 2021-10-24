@@ -1,6 +1,6 @@
 #--------------------------------------
 # call asep api based on name
-get_asep <- function(author_name) {
+get_asep <- function(author_name, type = c("pubs", "events")) {
     
     query <- paste0("@attr 98=2 @and @and @attr 1=1 '", author_name, "' @attr 1=2462 'FLU-F' @attr 1=31 @or '", format(Sys.Date(), "%Y"), "''", format(Sys.Date()-365, "%Y"), "'")
     
@@ -35,8 +35,11 @@ get_asep <- function(author_name) {
         stringr::str_replace_all("\\\\n", ". ") %>% 
         stringr::str_replace_all("\\.{2,}", "\\.")
     
-    
+    if (type == "pubs") {
     pub_type_check <- asep_types != "U"
+    } else {
+        pub_type_check <- asep_types == "U"
+    }
     
     asep_record <- asep_record_raw[pub_type_check]
     
