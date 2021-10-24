@@ -16,11 +16,25 @@ get_asep <- function(author_name) {
     
     asep_citation <- asep_result %>% rvest::html_node("body") %>% 
         rvest::html_nodes(xpath = '//*[@tag="Tbc"]') %>% 
-        rvest::html_text2()
+        rvest::html_text2() %>% 
+        stringr::str_replace_all("\\\\n", ". ")
     
-    if (length(asep_citation) > 0) {
+    asep_handles<- asep_result %>% rvest::html_node("body") %>% 
+        rvest::html_nodes(xpath = '//*[@tag="C60"]') %>% 
+        rvest::html_text2()  
+    
+    asep_types <- asep_result %>% rvest::html_node("body") %>% 
+        rvest::html_nodes(xpath = '//*[@tag="970"]') %>% 
+        rvest::html_text2()  
+    
+    asep_record <- paste(asep_citation, 
+                         asep_handles, 
+                         "Druh:",
+                         asep_types)
+    
+    if (length(asep_record) > 0) {
         
-        asep_citation
+        asep_record
         
     } else {
        
