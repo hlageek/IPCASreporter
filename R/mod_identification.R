@@ -13,12 +13,13 @@ mod_identification_ui <- function(id){
   fluidRow(column(width = 4,
 
     textInput(ns("employee_name"), 
-              "Full name", 
-              value = ""
+              "Jméno a příjmení", 
+              value = "",
+              placeholder = "Eva Zažímalová"
               ),
     
     selectInput(ns("department"),
-                label = "Department", 
+                label = "Oddělení", 
                 selected = "", 
                 choices = c("", departments$department_name)
                 ),
@@ -32,20 +33,18 @@ mod_identification_ui <- function(id){
                 ),
     
     textAreaInput(ns("comment"), 
-                  label = "Comment",
+                  label = "Komentář",
                   placeholder = "Changes in FTE during the year or similar."
                   ),
     
     actionButton(ns("add"),
-                 label = "Update report"
+                 label = "Add to report"
                  )
  
   
   ),
   
   column(width = 8,
-         
-         h2("IDENTIFIKAČNÍ ÚDAJE"),
          
          br(),
          "Jméno:",
