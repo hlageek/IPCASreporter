@@ -93,7 +93,19 @@ purrr::reduce(list_value, paste) %>%
     } else {""}
 }
 
-# item collection from multi-input ---------------------------------------
+# filter publication by type  ---------------------------------------
+
+filter_pub_type <- function(vec, type) {
+    
+    pattern <- paste0(" Druh: ", type, ".{0,2}\\.$")
+        
+    vec %>% 
+        stringr::str_subset(pattern) %>% 
+        stringr::str_replace(pattern, "")
+        
+}
+
+# add doc section  ---------------------------------------
 
 add_doc_section <- function(doc, bookmark, list_data) {
     
@@ -104,6 +116,15 @@ add_doc_section <- function(doc, bookmark, list_data) {
     officer::body_replace_text_at_bkm(bookmark, "")
 }
 
+# add doc section formatted ---------------------------------------
+
+add_doc_f_section <- function(doc, bookmark, f_data) {
+    doc %>%
+    officer::cursor_bookmark(bookmark) %>% 
+    officer::body_add_par("") %>% 
+    body_add_par_nf(format_html_citation(f_data)) %>%
+    officer::body_replace_text_at_bkm(bookmark, "") 
+}
 
 # item collection from multi-input ---------------------------------------
 

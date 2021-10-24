@@ -42,6 +42,7 @@ mod_preview_ui <- function(id){
     
     br(),
     h4("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+    htmlOutput(ns("section_ii"), inline = FALSE),
     
     br(),
     h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
@@ -118,6 +119,7 @@ mod_preview_ui <- function(id){
 mod_preview_server <- function(id,
                                identification,
                                section_i,
+                               section_ii,
                                section_iii_undergrad,
                                section_iii_postgrad,
                                section_iii_conference,
@@ -151,6 +153,12 @@ mod_preview_server <- function(id,
     output$section_i <- renderText({
       paste(section_i$publist, collapse = "<br>")
       })
+    
+    # Section II
+    
+    output$section_ii <- renderText({
+      paste(section_ii$eventlist, collapse = "<br>")
+    })
     
     
     # Section III

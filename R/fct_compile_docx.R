@@ -2,6 +2,7 @@
 
 compile_docx <- function(identification, 
                          section_i,
+                         section_ii,
                          section_iii_undergrad,
                          section_iii_postgrad,
                          section_iii_conference,
@@ -20,17 +21,42 @@ compile_docx <- function(identification,
                          section_xi
                          ) {
     
-    
+    # browser()
     doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
         officer::body_replace_text_at_bkm("employee_name", identification$employee_name) %>%
         officer::body_replace_text_at_bkm("department",identification$department) %>%
         officer::body_replace_text_at_bkm("fte", as.character(identification$fte)) %>%
         add_doc_section("comment",
                         identification$comment) %>% 
-        officer::cursor_bookmark("pubs") %>% 
-        officer::body_add_par("") %>% 
-        body_add_par_nf(format_html_citation(section_i$publist)) %>%
-        officer::body_replace_text_at_bkm("pubs", "") %>% 
+        add_doc_f_section("pubsB",
+                          filter_pub_type(section_i$publist,
+                                          "B")) %>% 
+        add_doc_f_section("pubsM",
+                          filter_pub_type(section_i$publist,
+                                          "[M|C]")) %>% 
+        add_doc_f_section("pubsJ",
+                          filter_pub_type(section_i$publist,
+                                          "J")) %>% 
+        add_doc_f_section("pubsE",
+                          filter_pub_type(section_i$publist,
+                                          "E")) %>% 
+        add_doc_f_section("pubsR",
+                          filter_pub_type(section_i$publist,
+                                          "R")) %>% 
+        add_doc_f_section("pubsTc",
+                          filter_pub_type(section_i$publist,
+                                          "Tc")) %>% 
+        add_doc_f_section("pubsTnc",
+                          filter_pub_type(section_i$publist,
+                                          "Tnc")) %>% 
+        add_doc_f_section("pubsO",
+                          filter_pub_type(section_i$publist,
+                                          "O")) %>% 
+        add_doc_f_section("pubsRed",
+                          filter_pub_type(section_i$publist,
+                                          "Red")) %>% 
+        add_doc_f_section("events",
+                          section_ii$eventlist) %>% 
         add_doc_section("undergrad",
                         section_iii_undergrad$data) %>% 
         add_doc_section("postgrad",
