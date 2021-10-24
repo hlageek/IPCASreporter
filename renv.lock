@@ -16,6 +16,14 @@
       "Repository": "CRAN",
       "Hash": "e4c04affc2cac20c8fec18385cd14691"
     },
+    "IPCASreporter": {
+      "Package": "IPCASreporter",
+      "Version": "0.0.0.9000",
+      "Source": "Local",
+      "RemoteType": "local",
+      "RemoteUrl": "/Users/radimhladik/repos/IPCASreporter",
+      "Hash": "0d1b58f6b1f7d60fa6642e429e1721ba"
+    },
     "R6": {
       "Package": "R6",
       "Version": "2.5.0",
@@ -120,6 +128,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "31d77b09f63550cee9ecb5a08bf76e8f"
+    },
+    "cpp11": {
+      "Package": "cpp11",
+      "Version": "0.2.7",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "730eebcc741a5c36761f7d4d0f5e37b8"
     },
     "crayon": {
       "Package": "crayon",
@@ -478,6 +493,13 @@
       "Repository": "CRAN",
       "Hash": "ed95895886dab6d2a584da45503555da"
     },
+    "readr": {
+      "Package": "readr",
+      "Version": "1.4.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2639976851f71f330264a9c9c3d43a61"
+    },
     "rematch": {
       "Package": "rematch",
       "Version": "1.0.1",
@@ -582,6 +604,13 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "6e3b6ae7fe02b5859e4bb277f218b8ae"
+    },
+    "shinyjs": {
+      "Package": "shinyjs",
+      "Version": "2.0.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "9ddfc91d4280eaa34c2103951538976f"
     },
     "sourcetools": {
       "Package": "sourcetools",

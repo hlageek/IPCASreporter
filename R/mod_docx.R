@@ -10,9 +10,10 @@
 mod_docx_ui <- function(id){
   ns <- NS(id)
   tagList(
- 
+    shinyjs::useShinyjs(),
+    shinyjs::disabled(
     downloadButton(ns("download_docx"), "Download")
-    
+    )
   )
 }
     
@@ -44,7 +45,7 @@ mod_docx_server <- function(id,
   moduleServer(id, function(input, output, session) {
   ns <- session$ns
   
- 
+
   doc <-  reactive({compile_docx(identification,
                                  section_i,
                                  section_ii,
@@ -68,7 +69,7 @@ mod_docx_server <- function(id,
   
   output$download_docx<- downloadHandler(
   
-   
+
     filename = function() {
       paste0("ipcas_annual_report-", identification$employee_name, ".docx")
     },
@@ -81,8 +82,18 @@ mod_docx_server <- function(id,
     }
    
   )
- 
+
+  observeEvent(identification$employee_name, {
+    if (identification$employee_name == "")
+      shinyjs::disable("download_docx")
+    else
+      shinyjs::enable("download_docx")
   })
+   
+   
+  })
+  
+  
 }
     
 
