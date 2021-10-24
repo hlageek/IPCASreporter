@@ -2,14 +2,14 @@ radioButtons_helper <- function(ns, label, id) {
   tagList(
     
     tags$div(
-      tags$style(
-        HTML(
-          "
-        label{
-          float:left;
-        }
-      "
-        )),
+      # tags$style(
+      #   HTML(
+      #     "
+      #   label{
+      #     float:left;
+      #   }
+      # "
+      #   )),
       tags$br(),
      
     
