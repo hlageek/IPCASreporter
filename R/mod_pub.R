@@ -53,7 +53,7 @@ mod_pub_server <-  function(id, identification) {
        
        displayed_citations <- purrr::map(
          citations,
-         ~stringr::str_replace_all(.x, "<.*?>|\\\\n", " ")
+         ~stringr::str_replace_all(.x, "<.*?>", " ")
           )
        
        ns <- NS(id)
