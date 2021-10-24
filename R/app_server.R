@@ -30,6 +30,8 @@ app_server <- function( input, output, session ) {
     
     section_vi_school <- mod_school_server("school_ui_1")
     
+    section_vi_media <- mod_media_server("media_ui_1")
+    
     section_vii <- mod_public_server("public_ui_1")
     
     section_viii_int_projects <-  mod_int_projects_server("int_projects_ui_1")
@@ -41,6 +43,8 @@ app_server <- function( input, output, session ) {
     section_ix_review <- mod_other_review_server("other_review_ui_1")
     
     section_ix_member <- mod_other_member_server("other_member_ui_1")
+    
+    section_ix_editions <- mod_other_editions_server("other_editions_ui_1")
     
     section_x <- mod_wip_server("wip_ui_1")
     
@@ -59,12 +63,14 @@ app_server <- function( input, output, session ) {
                        section_v,
                        section_vi_popular,
                        section_vi_school,
+                       section_vi_media,
                        section_vii,
                        section_viii_int_projects,
                        section_viii_int_bilateral,
                        section_ix_award,
                        section_ix_review,
                        section_ix_member,
+                       section_ix_editions,
                        section_x,
                        section_xi
                        )
@@ -81,12 +87,14 @@ app_server <- function( input, output, session ) {
                     section_v,
                     section_vi_popular,
                     section_vi_school,
+                    section_vi_media,
                     section_vii,
                     section_viii_int_projects,
                     section_viii_int_bilateral,
                     section_ix_award,
                     section_ix_review,
                     section_ix_member,
+                    section_ix_editions,
                     section_x,
                     section_xi
                     )

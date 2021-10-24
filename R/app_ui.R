@@ -120,7 +120,13 @@ app_ui <- function(request) {
                                        tabPanel("Přednášky na středních, případně základních školách",
                                                 
                                                 mod_school_ui("school_ui_1")
-                                       )
+                                       ),
+                                       
+                                       tabPanel("Vystoupení a popularizační texty v médiích",
+                                                
+                                                mod_media_ui("media_ui_1")
+                                                
+                                                )
                                      
                                      )
                             ),
@@ -166,9 +172,15 @@ app_ui <- function(request) {
                                                 mod_other_review_ui("other_review_ui_1")
                                        ),
                                        
-                                       tabPanel("Členství v komisích, redakčních radách apod.",
+                                       tabPanel("Odborná grémia, redakční a oborové rady apod.",
                                                 
                                                 mod_other_member_ui("other_member_ui_1")
+                                                
+                                       ),
+                                       
+                                       tabPanel("Redakční práce",
+                                                
+                                                mod_other_editions_ui("other_editions_ui_1")
                                                 
                                        )
                                      )

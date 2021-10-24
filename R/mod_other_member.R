@@ -12,7 +12,15 @@ mod_other_member_ui <- function(id){
   
   fluidRow(column(width = 6,
                   
-                  textInput(ns("other_member_name"), label = "Název"),
+                  textInput(ns("other_member_name"), 
+                            label = "Název grémia"),
+                  
+                  textInput(ns("other_member_institute"), 
+                            label = "Název instituce"),
+                  
+                  textInput(ns("other_member_position"), 
+                            label = "Specifikujte svou funkci"),
+                  
                   radioButtons(ns("other_member_category"), 
                                label = NULL,
                                choices = c("Domácí" = "domestic",
@@ -71,11 +79,15 @@ mod_other_member_server <- function(id) {
     section_ix_member <- reactiveValues()
     
     items <- c(
-      "other_member_name"
+      "other_member_name",
+      "other_member_institute",
+      "other_member_position"
     )
     
     item_names <- c(
-      "Název:"
+      "Název:",
+      "Instituce:",
+      "Funkce:"
     )
     
     item_values <- reactive({

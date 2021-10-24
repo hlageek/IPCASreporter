@@ -1,4 +1,4 @@
-#' other_award UI Function
+#' media UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -7,23 +7,25 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_other_award_ui <- function(id){
+mod_media_ui <- function(id){
   ns <- NS(id)
   fluidRow(column(width = 6,
+                  
     
-    textAreaInput(ns("other_award_name"), 
-                  label = "Ocenění",
-                  placeholder = "Uveďte název ocenění a kým bylo uděleno."),
+    textInput(ns("title"), label = "Název pořadu nebo textu"),
+    textInput(ns("name"), label = "Médium"),
+    textAreaInput(ns("description"), label = "Doplňující informace" ),
     
     actionButton(ns("add"),
                  label = "Add to report"
     )
     
+    
   ),
   
-  column(width = 6, 
-    
-         htmlOutput(ns("section_ix_award"), inline = FALSE),
+  column(width = 6,
+
+         htmlOutput(ns("section_vi_media"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
                      label = "Item",
@@ -31,28 +33,30 @@ mod_other_award_ui <- function(id){
          actionButton(ns("remove"),
                       label = "Remove item from report"
          )
-         
-         
+    
   )
  
   )
 }
     
-#' other_award Server Function
+#' media Server Function
 #'
 #' @noRd 
-mod_other_award_server <- function(id) {
+mod_media_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-    
-    section_ix_award <- reactiveValues()
+    section_vi_media <- reactiveValues()
     
     items <- c(
-      "other_award_name"
+      "title",
+      "name",
+      "description"
     )
     
     item_names <- c(
-      "Název ocenění:"
+      "Název:",
+      "Médium:",
+      "Dopňující informace:"
     )
     
     item_values <- reactive({
@@ -74,39 +78,39 @@ mod_other_award_server <- function(id) {
       
       
       
-      section_ix_award$award[[
+      section_vi_media$media[[
         length(
-          section_ix_award$award)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+          section_vi_media$media)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
       
       updateSelectInput(session = session,
                         "remove_list", 
-                        choices = seq_along(section_ix_award$award)
+                        choices = seq_along(section_vi_media$media)
       )
     })
     
     observeEvent(input$remove, {
       
       
-      section_ix_award$award[as.integer(input$remove_list)] <- NULL 
+      section_vi_media$media[as.integer(input$remove_list)] <- NULL 
       
       
       updateSelectInput(session = session,
                         "remove_list", 
-                        choices = seq_along(section_ix_award$award)
+                        choices = seq_along(section_vi_media$media)
                         
       )
       
     })
     
     
-    output$section_ix_award <- renderText({
-      if (length(section_ix_award$award)>0) {
-        paste(paste0(seq_along(section_ix_award$award), ".<br>"),
-              section_ix_award$award)
+    output$section_vi_media <- renderText({
+      if (length(section_vi_media$media)>0) {
+        paste(paste0(seq_along(section_vi_media$media), ".<br>"),
+              section_vi_media$media)
       } else {""}
     })
     
-    return(section_ix_award)
+    return(section_vi_media)
     
   })}
     

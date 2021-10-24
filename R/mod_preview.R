@@ -84,6 +84,9 @@ mod_preview_ui <- function(id){
     htmlOutput(ns("section_vi_popular_events"), inline = FALSE),
     h5("Přednášky na středních, případně základních školách"),
     htmlOutput(ns("section_vi_school_events"), inline = FALSE),
+    h5("Vystoupení a popularizační texty v médiích"),
+    htmlOutput(ns("section_vi_media"), inline = FALSE),
+    
     
     br(),
     h4("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
@@ -102,11 +105,13 @@ mod_preview_ui <- function(id){
     htmlOutput(ns("section_ix_award"), inline = FALSE),
     h5("Posudky"),
     htmlOutput(ns("section_ix_review"), inline = FALSE),
-    h5("Členství v komisích, redakčních radách apod."),
+    h5("Odborná grémia, redakční a oborové rady apod."),
     h6("Domácí"),
     htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
     h6("Zahraniční"),
     htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
+    h5("Redakční práce"),
+    htmlOutput(ns("section_ix_editions"), inline = FALSE),
     
     br(),
     h4("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
@@ -134,12 +139,14 @@ mod_preview_server <- function(id,
                                section_v,
                                section_vi_popular,
                                section_vi_school,
+                               section_vi_media,
                                section_vii,
                                section_viii_int_projects,
                                section_viii_int_bilateral,
                                section_ix_award,
                                section_ix_review,
                                section_ix_member,
+                               section_ix_editions,
                                section_x,
                                section_xi
                                ) {
@@ -231,6 +238,12 @@ mod_preview_server <- function(id,
           paste(section_vi_school$events)
         })
         
+        ## Media
+        
+        output$section_vi_media <-  renderText({
+          paste(section_vi_media$media)
+        })
+        
     # Section VII
         
         output$section_vii <-  renderText({
@@ -264,6 +277,10 @@ mod_preview_server <- function(id,
         output$section_ix_member_foreign <-  renderText({
           paste(section_ix_member$foreign)
         })        
+        
+        output$section_ix_editions <-  renderText({
+          paste(section_ix_editions$editions)
+        })       
         
         # Section X
         

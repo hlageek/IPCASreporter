@@ -11,12 +11,14 @@ compile_docx <- function(identification,
                          section_v,
                          section_vi_popular,
                          section_vi_school,
+                         section_vi_media,
                          section_vii,
                          section_viii_int_projects,
                          section_viii_int_bilateral,
                          section_ix_award,
                          section_ix_review,
                          section_ix_member,
+                         section_ix_editions,
                          section_x,
                          section_xi
                          ) {
@@ -61,9 +63,6 @@ compile_docx <- function(identification,
         add_doc_f_section("pubsO",
                           filter_pub_type(section_i$publist,
                                           "O")) %>% 
-        add_doc_f_section("pubsRed",
-                          filter_pub_type(section_i$publist,
-                                          "Red")) %>% 
         add_doc_f_section("events",
                           section_ii$eventlist) %>% 
         add_doc_section("undergrad",
@@ -88,6 +87,8 @@ compile_docx <- function(identification,
                         section_vi_popular$events) %>% 
         add_doc_section("school",
                         section_vi_school$events) %>% 
+        add_doc_section("media",
+                        section_vi_media$media) %>% 
         add_doc_section("public",
                         section_vii$public) %>% 
         add_doc_section("int_projects",
@@ -102,6 +103,8 @@ compile_docx <- function(identification,
                         section_ix_member$domestic) %>% 
         add_doc_section("section_ix_member_foreign",
                         section_ix_member$foreign) %>% 
+        add_doc_section("pubsRed",
+                        section_ix_editions$editions) %>% 
         add_doc_section("section_x",
                         section_x$wip) %>% 
         add_doc_section("section_xi",
