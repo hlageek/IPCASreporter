@@ -20,6 +20,7 @@ mod_preview_ui <- function(id){
                   ")),    
     
     br(),
+    h4("IDENTIFIKAČNÍ ÚDAJE"),
     "Jméno:",
     textOutput(ns("employee_name"), inline = TRUE),
     

@@ -11,6 +11,7 @@ mod_docx_ui <- function(id){
   ns <- NS(id)
   tagList(
     shinyjs::useShinyjs(),
+    
     shinyjs::disabled(
     downloadButton(ns("download_docx"), "Download")
     )
@@ -71,7 +72,11 @@ mod_docx_server <- function(id,
   
 
     filename = function() {
-      paste0("ipcas_annual_report-", identification$employee_name, ".docx")
+      paste0("ipcas_annual_report-", 
+             stringr::str_replace_all(identification$employee_name,
+                                      " {1,}",  
+                                      "_"),
+             ".docx")
     },
     
     content = function(file) {
