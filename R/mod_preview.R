@@ -110,7 +110,7 @@ mod_preview_ui <- function(id){
     htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
     h6("Zahraniční"),
     htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
-    h5("Redakční práce"),
+    h6("Redakční práce"),
     htmlOutput(ns("section_ix_editions"), inline = FALSE),
     
     br(),
