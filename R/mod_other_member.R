@@ -13,13 +13,13 @@ mod_other_member_ui <- function(id){
   fluidRow(column(width = 6,
                   
                   textInput(ns("other_member_name"), 
-                            label = "Název grémia"),
+                            label = "Druh grémia"),
                   
                   textInput(ns("other_member_institute"), 
-                            label = "Název instituce"),
+                            label = "Organizace (instituce/periodikum/nakladatelství)"),
                   
                   textInput(ns("other_member_position"), 
-                            label = "Specifikujte svou funkci"),
+                            label = "Funkce a funkční období"),
                   
                   radioButtons(ns("other_member_category"), 
                                label = NULL,
@@ -85,8 +85,8 @@ mod_other_member_server <- function(id) {
     )
     
     item_names <- c(
-      "Název:",
-      "Instituce:",
+      "Grémium:",
+      "Organizace:",
       "Funkce:"
     )
     

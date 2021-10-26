@@ -24,7 +24,7 @@ app_ui <- function(request) {
                                      mod_docx_ui("docx_ui_1"),
                                      
                                      
-                                     mod_preview_ui("preview_ui_1"),
+                                     mod_preview_ui("preview_ui_1")
                                      
                             ),
                             

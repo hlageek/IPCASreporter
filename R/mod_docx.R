@@ -16,7 +16,9 @@ mod_docx_ui <- function(id){
     actionButton(ns("submit_docx"), 
                    icon = icon("paper-plane"), 
                    "Submit",
-                   class = "btn-warning")
+                   class = "btn-warning"),
+    
+    mod_guide_ui("guide_ui_1")
     
   )
 }
@@ -77,9 +79,15 @@ mod_docx_server <- function(id,
   
   output$download_docx<- downloadHandler(
   
-
+# ar_rok_oddeleni_jmeno #
     filename = function() {
-      paste0("ipcas_annual_report-", 
+      paste0("ar-", 
+             format(Sys.Date(), "%Y"),
+             "-",
+             IPCASreporter::departments %>% 
+               dplyr::filter(department_name == identification$department) %>% 
+               dplyr::pull(department_abbrev),
+             "-",
              stringr::str_replace_all(identification$employee_name,
                                       " {1,}",  
                                       "_"),
@@ -113,19 +121,28 @@ mod_docx_server <- function(id,
     
     req(identification$email)
 
-    tmp_doc <- paste0("ipcas_annual_report-", 
+    tmp_doc <- paste0("ar-", 
+                      format(Sys.Date(), "%Y"),
+                      "-",
+                      PCASreporter::departments %>% 
+                        dplyr::filter(department_name == identification$department) %>% 
+                        dplyr::pull(department_abbrev),
+                      "-",
                       stringr::str_replace_all(identification$employee_name,
                                                " {1,}",  
                                                "_"),
                       ".docx")
 
     print(doc(), target = tmp_doc)
-    
+    on.exit(file.remove(tmp_doc))
     
     email <- emayili::envelope() %>%
-      emayili::from("noreply@flu.cas.cz") %>%
+      emayili::from("flu.avcr@gmail.com") %>%
       emayili::to(identification$email) %>%
-      emayili::cc(identification$email) %>% 
+      emayili::cc(identification$email,
+                  departments %>% 
+                    dplyr::filter(department_name == identification$department) %>% 
+                    dplyr::pull(head_email)) %>% 
       emayili::subject("Výroční výkaz {{identification$employee_name}}") %>%
       emayili::text("Výroční výkaz {{identification$employee_name}} je v příloze.") %>% 
       emayili::attachment(tmp_doc)
@@ -142,12 +159,11 @@ mod_docx_server <- function(id,
     
     smtp(email, verbose = FALSE)
     
-    file.remove(tmp_doc)
     
     showModal(
       modalDialog(
         title = "Confirmation",
-        "Your report has been submitted.", 
+        "Your report has been submitted.<br>You should receive a confirmation email momentarily.", 
         easyClose = TRUE
       )
       )

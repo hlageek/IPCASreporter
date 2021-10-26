@@ -99,4 +99,6 @@ app_server <- function( input, output, session ) {
                     section_xi
                     )
     
+    mod_guide_server("guide_ui_1")
+    
 }
