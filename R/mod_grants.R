@@ -15,7 +15,7 @@ mod_grants_ui <- function(id){
     textInput(ns("grant_number"), label = "Číslo projektu"),
     
     
-    textInput(ns("grant_title"), label = "Název_projektu"),
+    textInput(ns("grant_title"), label = "Název projektu"),
     
     selectInput(ns("grant_provider"),
                 label = "Poskytovatel",

@@ -10,7 +10,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # List the first level UI elements here 
     fluidPage(
-      titlePanel("IP CAS annual report"),
+      titlePanel(title = img(src="https://www.flu.cas.cz/images/logo_web_prehozene_krivky_50.png"), "IP CAS annual report"),
       
            
                navlistPanel(widths = c(2,10), well = F,
