@@ -17,7 +17,7 @@ mod_preview_ui <- function(id){
         type = "hidden",
         tabPanelBody("panel_welcome", 
                      
-                     h2("Welcome to IPCASreporter."),
+                     h2("Welcome to IPCASreporter"),
                      
                      p("Please read the following basic instructions before using the application."),
                      

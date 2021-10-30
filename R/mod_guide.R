@@ -39,6 +39,8 @@ mod_guide_server <- function(id) {
         br(),
         tags$li("After you have filled your name in the", tags$b( "researcher's details"), "section a preview of your report will appear here."),
         
+        tags$li("Your name will be used to search the ASEP repository to provide selectable options in sections", tags$b( "I. & II.")),
+        
         tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("report sections.")),
         
         tags$li("Use the", tags$b("Save"), "button to generate a link that will restore your work on the report if you need to come back to it later."),

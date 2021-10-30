@@ -24,6 +24,7 @@ usethis::use_package( "here" )
 usethis::use_package( "dplyr")
 usethis::use_package( "keyring")
 usethis::use_package( "emayili")
+usethis::use_package( "shinythemes")
 
 
 
