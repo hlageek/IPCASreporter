@@ -117,18 +117,38 @@ mod_grants_server <- function(id) {
  
  item_values <- reactive({
    
-   unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+ unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
    
+
  })
  
  
  observeEvent(input$add, {
+   #browser()
+    
+    item_values2 <- item_values()
+    items2 <- items
+    item_names2 <- item_names
+    
+   if (input$grant_date_from != as.integer( format(Sys.Date(), "%Y"))) {
+      
+      item_values2 <- item_values2[names(item_values2) != "annotation_cze"]
+   
+      item_values2 <- item_values2[names(item_values2) != "annotation_eng"]
+   
+      item_names2 <- item_names2[item_names2 != "Anotace česky:"]
+      items2 <- items2[items2 != "annotation_cze"]
+   
+      item_names2 <- item_names2[item_names2 != "Anotace anglicky:"]
+      items2 <- items2[items2 != "annotation_eng"]
+   }
    
    all_items <- list()
    
-   for (i in seq_along(items)) {
+   for (i in seq_along(items2)) {
+      
      
-     all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+     all_items <- c(all_items, paste(item_names2[i], item_values2[i]))
      
    }
    
