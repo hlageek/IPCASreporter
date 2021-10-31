@@ -81,12 +81,23 @@ mod_docx_server <- function(id,
   
 # ar_rok_oddeleni_jmeno #
     filename = function() {
+      
+      if (!is.null(identification$department)) {
+        
+      department_abbrev <- IPCASreporter::departments %>% 
+        dplyr::filter(department_name == identification$department) %>% 
+        dplyr::pull(department_abbrev)
+      
+      } else {
+        
+      department_abbrev <- "no_dpt"
+        
+      }
+        
       paste0("ar-", 
              format(Sys.Date(), "%Y"),
              "-",
-             IPCASreporter::departments %>% 
-               dplyr::filter(department_name == identification$department) %>% 
-               dplyr::pull(department_abbrev),
+             department_abbrev,
              "-",
              stringr::str_replace_all(identification$employee_name,
                                       " {1,}",  
