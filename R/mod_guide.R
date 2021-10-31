@@ -60,7 +60,12 @@ mod_guide_server <- function(id) {
           tags$li(tags$b("Section input"), "panel for adding individual report items."),
           
           tags$li(tags$b("Section preview"), "to display previous inputs. Selected inputs can be deleted here.")
-        )
+        ),
+        
+        h2("Help"),
+        
+        p("If you need help or have a comment, please leave a message in the ", tags$b("#technicka_podpora"), "channel at", a("https://filosoficky.slack.com", href = "https://filosoficky.slack.com/"), ".")
+        
         
         
           
