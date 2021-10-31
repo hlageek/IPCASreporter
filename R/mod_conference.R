@@ -21,7 +21,7 @@ mod_conference_ui <- function(id){
                   textInput(ns("conference_name"), 
                             label = "Název konference"),
                   
-                  dateInput(ns("conference_date"), 
+                  dateRangeInput(ns("conference_date"), 
                             label = "Datum konání",
                             language = "cs"),
                   
@@ -94,15 +94,16 @@ mod_conference_server <- function(id) {
       "Datum konání:"
     )
     
+    
     item_values <- reactive({
 
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+      unlist(purrr::map(reactiveValuesToList(input)[items], format_input))
       
     })
     
     
     observeEvent(input$add, {
-      
+      #browser()
       all_items <- list()
       
       for (i in seq_along(items)) {

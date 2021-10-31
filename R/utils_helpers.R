@@ -142,3 +142,17 @@ for (i in seq_along(items)) {
 all_items
 
 }
+
+
+# format input that includes a date ---------------------------------------
+
+format_input <- function(x) { 
+    
+    if (!is.na(as.Date(x[1], optional = TRUE))) {
+        
+        x <- format(as.Date(x), "%d. %m. %Y")
+        
+    }
+    paste(as.character(unique(x)), collapse = " - ")
+    
+}

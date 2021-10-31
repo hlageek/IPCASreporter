@@ -81,7 +81,7 @@ mod_lectures_server <- function(id) {
     
     item_values <- reactive({
       
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
+      unlist(purrr::map(reactiveValuesToList(input)[items], format_input))
       
     })
     
