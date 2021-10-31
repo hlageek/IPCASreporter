@@ -27,7 +27,8 @@ mod_identification_ui <- function(id){
     selectInput(ns("department"),
                 label = "Oddělení", 
                 selected = "", 
-                choices = c("", departments$department_name)
+                choices = c("", departments$department_name),
+                multiple = TRUE
                 ),
     
     sliderInput(ns("fte"), 
@@ -89,13 +90,13 @@ mod_identification_server <- function(id) {
     observeEvent(input$add, {
      
       identification$employee_name <- input$employee_name
-      identification$department <- input$department
+      identification$department <- paste0(input$department, collapse = "; ")
       identification$fte <- input$fte
       identification$comment <- input$comment
       identification$email <- input$email
       
       output$employee_name <- renderText({identification$employee_name})
-      output$department <- renderText({identification$department})
+      output$department <- renderText({paste0(input$department, collapse = "; ")})
       output$fte <- renderText({identification$fte})
       output$email <- renderText({identification$email})
       output$comment <- renderText({identification$comment})

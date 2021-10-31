@@ -84,9 +84,18 @@ mod_docx_server <- function(id,
       
       if (!is.null(identification$department)) {
         
-      department_abbrev <- IPCASreporter::departments %>% 
-        dplyr::filter(department_name == identification$department) %>% 
-        dplyr::pull(department_abbrev)
+        multiple_dpt <- trimws(unlist(strsplit(identification$department, split = ";")))
+        
+        multiple_dpt_list <- list()
+        
+        for (i in seq_along(multiple_dpt)) {
+        multiple_dpt_list <- c(multiple_dpt_list,
+                               IPCASreporter::departments %>% 
+        dplyr::filter(department_name == multiple_dpt[i]) %>% 
+        dplyr::pull(department_abbrev))
+        }
+        
+        department_abbrev <- paste(unlist(multiple_dpt_list), collapse = "-")
       
       } else {
         
