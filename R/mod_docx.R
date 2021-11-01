@@ -82,7 +82,7 @@ mod_docx_server <- function(id,
 # ar_rok_oddeleni_jmeno #
     filename = function() {
       
-      if (!is.null(identification$department)) {
+      if (isTruthy(identification$department)) {
         
         multiple_dpt <- trimws(unlist(strsplit(identification$department, split = ";")))
         
@@ -102,15 +102,23 @@ mod_docx_server <- function(id,
       department_abbrev <- "no_dpt"
         
       }
+      
+      if (isTruthy(identification$employee_name)) {
+        
+        person_name <- stringr::str_replace_all(identification$employee_name,
+                               " {1,}",  
+                               "_")
+      } else {
+        
+        person_name <- "no_name"
+      }
         
       paste0("ar-", 
              format(Sys.Date(), "%Y"),
              "-",
              department_abbrev,
              "-",
-             stringr::str_replace_all(identification$employee_name,
-                                      " {1,}",  
-                                      "_"),
+             person_name,
              ".docx")
     },
     
