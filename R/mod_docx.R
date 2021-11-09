@@ -149,65 +149,77 @@ mod_docx_server <- function(id,
     
       showModal(
         modalDialog(
-          title = "Notification",
-          "Submissions are disabled in the test mode.", 
-          easyClose = TRUE
+          "Are you sure you want to continue?",
+          title = "Submission",
+          footer = tagList(
+            actionButton(ns("cancel"), "Cancel"),
+            actionButton(ns("ok"), "Submit", class = "btn-success")
         ))
-    # req(identification$email)
-    # 
-    # tmp_doc <- paste0("ar-", 
-    #                   format(Sys.Date(), "%Y"),
-    #                   "-",
-    #                   PCASreporter::departments %>% 
-    #                     dplyr::filter(department_name == identification$department) %>% 
-    #                     dplyr::pull(department_abbrev),
-    #                   "-",
-    #                   stringr::str_replace_all(identification$employee_name,
-    #                                            " {1,}",  
-    #                                            "_"),
-    #                   ".docx")
-    # 
-    # print(doc(), target = tmp_doc)
-    # on.exit(file.remove(tmp_doc))
-    # 
-    # email <- emayili::envelope() %>%
-    #   emayili::from("flu.avcr@gmail.com") %>%
-    #   emayili::to(identification$email) %>%
-    #   emayili::cc(identification$email,
-    #               departments %>% 
-    #                 dplyr::filter(department_name == identification$department) %>% 
-    #                 dplyr::pull(head_email)) %>% 
-    #   emayili::subject("Výroční výkaz {{identification$employee_name}}") %>%
-    #   emayili::text("Výroční výkaz {{identification$employee_name}} je v příloze.") %>% 
-    #   emayili::attachment(tmp_doc)
-    # 
-    # smtp <- emayili::server(
-    #   host = "smtps://smtp.gmail.com",
-    #   port = 465,
-    #   username = "flu.avcr@gmail.com",
-    #   reuse = FALSE,
-    #   password = keyring::key_get(service = "flumail",
-    #                               username = "flu.avcr"),
-    #   max_times = 1
-    # )
-    # 
-    # smtp(email, verbose = FALSE)
-    # 
-    # 
-    # showModal(
-    #   modalDialog(
-    #     title = "Confirmation",
-    #     "Your report has been submitted.<br>You should receive a confirmation email momentarily.", 
-    #     easyClose = TRUE
-    #   )
-    #   )
+        )
     }
+    })
+  
+  observeEvent(input$cancel, {
+    removeModal()
   })
-   
-  })
-
-
-}
+  
+  observeEvent(input$ok, {
     
+    
+    tmp_doc <- paste0("ar-",
+                      format(Sys.Date(), "%Y"),
+                      "-",
+                      PCASreporter::departments %>%
+                        dplyr::filter(department_name == identification$department) %>%
+                        dplyr::pull(department_abbrev),
+                      "-",
+                      stringr::str_replace_all(identification$employee_name,
+                                               " {1,}",
+                                               "_"),
+                      ".docx")
+    
+    print(doc(), target = tmp_doc)
+    on.exit(file.remove(tmp_doc))
+    
+    email <- emayili::envelope() %>%
+      emayili::from("flu.avcr@gmail.com") %>%
+      emayili::to(identification$email) %>%
+      emayili::cc(identification$email,
+                  departments %>%
+                    dplyr::filter(department_name == identification$department) %>%
+                    dplyr::pull(head_email)) %>%
+      emayili::subject("Výroční výkaz {{identification$employee_name}}") %>%
+      emayili::text("Výroční výkaz {{identification$employee_name}} je v příloze.") %>%
+      emayili::attachment(tmp_doc)
+    
+    smtp <- emayili::server(
+      host = "smtps://smtp.gmail.com",
+      port = 465,
+      username = "flu.avcr@gmail.com",
+      reuse = FALSE,
+      password = keyring::key_get(service = "flumail",
+                                  username = "flu.avcr"),
+      max_times = 1
+    )
+    
+    smtp(email, verbose = FALSE)
+    
+    
+    showModal(
+      modalDialog(
+        title = "Confirmation",
+        "Your report has been submitted.<br>You should receive a confirmation email momentarily.",
+        easyClose = TRUE
+      )
+    )
+    
+    showNotification("Report submitted.")
+    removeModal()
+    
+  })
 
+    
+  })
+  }
+   
  
