@@ -208,7 +208,7 @@ mod_docx_server <- function(id,
     showModal(
       modalDialog(
         title = "Confirmation",
-        "Your report has been submitted.<br>You should receive a confirmation email momentarily.",
+        "Your report has been submitted. You should receive a confirmation email momentarily.",
         easyClose = TRUE
       )
     )
