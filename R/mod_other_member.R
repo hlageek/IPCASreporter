@@ -44,7 +44,7 @@ mod_other_member_ui <- function(id){
          
          br(), br(),
          actionButton(ns("remove_domestic"),
-                      label = "Remove item from report"
+                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
          ),
          
          h3("Zahraniční"),
@@ -57,7 +57,7 @@ mod_other_member_ui <- function(id){
          
          br(), br(),
          actionButton(ns("remove_foreign"),
-                      label = "Remove item from report"
+                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
          )
          
          

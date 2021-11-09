@@ -35,7 +35,7 @@ mod_other_editions_ui <- function(id){
          
          br(), br(),
          actionButton(ns("remove"),
-                      label = "Remove item from report"
+                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
          )
          
          

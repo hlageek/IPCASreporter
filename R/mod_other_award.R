@@ -29,7 +29,7 @@ mod_other_award_ui <- function(id){
                      label = "Item",
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Remove item from report"
+                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
          )
          
          

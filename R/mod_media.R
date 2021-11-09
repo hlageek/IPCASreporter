@@ -31,7 +31,7 @@ mod_media_ui <- function(id){
                      label = "Item",
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Remove item from report"
+                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
          )
     
   )

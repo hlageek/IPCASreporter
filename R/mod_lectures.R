@@ -35,7 +35,7 @@ mod_lectures_ui <- function(id){
                        label = "Item",
                        choices = ""),
            actionButton(ns("remove_foreign"),
-                        label = "Remove item from report"
+                        label = "Remove from report", class = "btn-primary", icon = icon("trash")
            ),
            
            h4("b) Domácí:"),
@@ -45,7 +45,7 @@ mod_lectures_ui <- function(id){
                        label = "Item",
                        choices = ""),
            actionButton(ns("remove_domestic"),
-                        label = "Remove item from report"
+                        label = "Remove from report", class = "btn-primary", icon = icon("trash")
            )
            
            

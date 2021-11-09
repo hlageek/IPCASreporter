@@ -57,8 +57,8 @@ mod_grants_ui <- function(id){
     
     radioButtons(ns("funding_status"), 
                  label = "Kategorie: ", 
-                 choices = c("Přijatý k financování" = "funded",
-                             "Nepřijatý k financování" = "unfunded")
+                 choices = c("Řešený, nebo přijatý k financování" = "funded",
+                             "Posuzovaný, nebo nepřijatý k financování" = "unfunded")
                  ),
     
    br(), br(), br(),
@@ -79,10 +79,10 @@ mod_grants_ui <- function(id){
                          label = "Item",
                          choices = ""),
              actionButton(ns("remove_funded"),
-                          label = "Remove item from report"
+                          label = "Remove from report", class = "btn-primary", icon = icon("trash")
                           ),
              
-             h3("Projekty podané a nepřijaté k financování"),
+             h3("Projekty posuzované, nebo nepřijaté k financování"),
              
              htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
              
@@ -90,7 +90,7 @@ mod_grants_ui <- function(id){
                          label = "Item",
                          choices = ""),
              actionButton(ns("remove_unfunded"),
-                          label = "Remove item from report"
+                          label = "Remove from report", class = "btn-primary", icon = icon("trash")
                           )
              )
       
