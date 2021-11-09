@@ -16,7 +16,8 @@ get_asep <- function(author_name, type = c("pubs", "events")) {
 
     asep_citation <- asep_result %>% rvest::html_node("body") %>%
         rvest::html_nodes(xpath = '//*[@tag="Tbc"]') %>%
-        rvest::html_text2()
+        rvest::html_text2() %>% 
+        stringr::str_replace_all("(\\.b\\.)|(\\./b\\.)", "")
 
     asep_handles<- asep_result %>% rvest::html_node("body") %>%
         rvest::html_nodes(xpath = '//*[@tag="C60"]') %>%
