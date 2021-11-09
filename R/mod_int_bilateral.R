@@ -12,7 +12,7 @@ mod_int_bilateral_ui <- function(id){
   
   fluidRow(column(width = 6,
                   
-                  textInput(ns("int_bilateral_description"), label = "Popis spolupráce"),
+                  textInput(ns("int_bilateral_description"), label = "Bilaterální spolupráce"),
                   
                   actionButton(ns("add"),
                                label = "Add to report"
@@ -51,7 +51,7 @@ mod_int_bilateral_server <- function(id) {
     )
     
     item_names <- c(
-      "Název projektu:"
+      "Bilaterální spolupráce:"
     )
     
     item_values <- reactive({

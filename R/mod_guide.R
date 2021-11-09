@@ -33,6 +33,10 @@ mod_guide_server <- function(id) {
       
       tagList(
         
+        h2("About"),
+        
+        p("The personal work report is used, inter alia, to collect data for the annual report of the IP CAS, as well as to underpin proposals on staff remuneration, namely to determine the remuneration for exceptional performance in a given calendar year and to determine the amount of the personal compensation statement for the new calendar year, or to consolidate the data on the department's website. Only report results that are not reported in another workplace."),
+        
         h2("Instructions"),
         
         tags$li("Your name will be used to search the ASEP repository to provide selectable options in sections", tags$b( "I. & II.")),

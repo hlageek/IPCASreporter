@@ -1,15 +1,15 @@
-radioButtons_helper <- function(ns, label, id) {
+radioButtons_helper_postgrad <- function(ns, label, id) {
     tagList(
         
         tags$div(
-            tags$style(
-                HTML(
-                    "
-        label{
-          float:left;
-        }
-      "
-                )),
+      #       tags$style(
+      #           HTML(
+      #               "
+      #   label{
+      #     float:left;
+      #   }
+      # "
+      #           )),
       tags$br(),
       
       
@@ -35,7 +35,7 @@ postgrad_types <- function(id) {
     
     purrr::map2(postgrad_type, 
                 names(postgrad_type), 
-                ~radioButtons_helper(ns, label = .x, id = .y)
+                ~radioButtons_helper_postgrad(ns, label = .x, id = .y)
     )    
     
     

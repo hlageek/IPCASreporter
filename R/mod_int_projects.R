@@ -12,7 +12,8 @@ mod_int_projects_ui <- function(id){
   
   fluidRow(column(width = 6,
     
-    textInput(ns("int_projects_name"), label = "Název projektu"),
+    textInput(ns("int_projects_name"), label = "Název projektu",
+              placeholder = "např. INTER-EXCELLENCE"),
 
     actionButton(ns("add"),
                  label = "Add to report"

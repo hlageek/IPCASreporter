@@ -20,7 +20,20 @@ mod_grants_ui <- function(id){
     selectInput(ns("grant_provider"),
                 label = "Poskytovatel",
                 selected = "",
-                choices =  c("", providers$providers)),
+                choices =  c("", providers$providers, "Jiný/Other" = "other")),
+    
+    conditionalPanel(
+       condition = 'input.grant_provider == "other"',
+       ns = ns,
+       
+       tags$div(
+       textInput(ns("bespoke_provider"), label = "Jiný poskytovatel"),
+       style="display:inline-block"),
+       tags$div(
+       actionButton(ns("add_bespoke"), icon = icon("plus"), label = ""),
+       style="display:inline-block")
+       
+       ),
     
     selectInput(ns("grant_date_from"), label = "Doba řešení od",
                 selected = "",
@@ -35,8 +48,10 @@ mod_grants_ui <- function(id){
       condition = "input.grant_date_from == output.current_year",
       ns = ns,
       
-      textAreaInput(ns("annotation_cze"), label = "Anotace česky"),
-      textAreaInput(ns("annotation_eng"), label = "Anotace anglicky"),
+      textAreaInput(ns("annotation_cze"), label = "Anotace česky",
+                    placeholder = "Pro nově zahájené projekty."),
+      textAreaInput(ns("annotation_eng"), label = "Anotace anglicky",
+                    placeholder = "For newly launched projects."),
 
     ),
     
@@ -114,6 +129,18 @@ mod_grants_server <- function(id) {
    "Anotace česky:",
    "Anotace anglicky:"
  )
+ 
+ 
+ observeEvent(req(input$add_bespoke), {
+    
+    updateSelectInput(session = session,
+                      "grant_provider", 
+                      selected = input$bespoke_provider,
+                      choices  =  c(input$bespoke_provider, providers$providers, "Jiný/Other" = "other")
+                      
+    )
+    
+ })
  
  item_values <- reactive({
    

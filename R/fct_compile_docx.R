@@ -54,15 +54,12 @@ compile_docx <- function(identification,
         add_doc_f_section("pubsR",
                           filter_pub_type(section_i$publist,
                                           "R")) %>% 
-        add_doc_f_section("pubsTc",
+        add_doc_f_section("pubsT",
                           filter_pub_type(section_i$publist,
-                                          "Tc")) %>% 
-        add_doc_f_section("pubsTnc",
-                          filter_pub_type(section_i$publist,
-                                          "Tnc")) %>% 
+                                          "OT")) %>% 
         add_doc_f_section("pubsO",
                           filter_pub_type(section_i$publist,
-                                          "O")) %>% 
+                                          "O[^T]")) %>% 
         add_doc_f_section("events",
                           section_ii$eventlist) %>% 
         add_doc_section("undergrad",
@@ -83,7 +80,7 @@ compile_docx <- function(identification,
                         section_iv$unfunded) %>% 
         add_doc_section("av21",
                         section_v$av21) %>% 
-        add_doc_section("events",
+        add_doc_section("popevents",
                         section_vi_popular$events) %>% 
         add_doc_section("school",
                         section_vi_school$events) %>% 
