@@ -17,7 +17,7 @@ mod_school_ui <- function(id){
     textAreaInput(ns("description"), label = "Popis činnosti" ),
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
     
     

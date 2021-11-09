@@ -16,7 +16,7 @@ mod_other_award_ui <- function(id){
                   placeholder = "Uveďte název ocenění a kým bylo uděleno."),
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
     
   ),

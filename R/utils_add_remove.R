@@ -1,7 +1,7 @@
 make_add_remove_ui <- function(ns) {
     
     tagList(
-    actionButton(ns("save"), label = "Add to report"),
+    actionButton(ns("save"), label = "Add to report",                  icon = icon("check"),                  class = "btn-success"),
     
     actionButton(ns("remove"), label = "Remove from report")
     )

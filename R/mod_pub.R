@@ -64,7 +64,7 @@ mod_pub_server <-  function(id, identification) {
                            choiceValues = citations),
         
         actionButton(ns("add"),
-                     label = "Add to report"
+                     label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
         )
        )
       } else {

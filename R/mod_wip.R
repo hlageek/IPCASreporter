@@ -15,7 +15,7 @@ mod_wip_ui <- function(id){
     
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
     
   ),

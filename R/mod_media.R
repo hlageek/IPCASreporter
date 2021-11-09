@@ -17,7 +17,7 @@ mod_media_ui <- function(id){
     textAreaInput(ns("description"), label = "Doplňující informace" ),
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
     
     

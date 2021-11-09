@@ -15,7 +15,7 @@ mod_public_ui <- function(id){
     textAreaInput(ns("description"), label = "Popis spolupráce"),
     
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
     
     

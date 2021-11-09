@@ -15,7 +15,7 @@ mod_int_bilateral_ui <- function(id){
                   textInput(ns("int_bilateral_description"), label = "Bilaterální spolupráce"),
                   
                   actionButton(ns("add"),
-                               label = "Add to report"
+                               label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),

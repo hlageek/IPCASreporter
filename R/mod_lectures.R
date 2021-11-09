@@ -19,7 +19,7 @@ mod_lectures_ui <- function(id){
                  choices = c("Domácí" = "domestic", 
                              "Zahraniční" = "foreign")),
     actionButton(ns("add"),
-                 label = "Add to report"
+                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
     )
   ),
   

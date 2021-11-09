@@ -27,7 +27,7 @@ mod_other_member_ui <- function(id){
                                            "Zahraniční" = "foreign")),
                   
                   actionButton(ns("add"),
-                               label = "Add to report"
+                               label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),

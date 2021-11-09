@@ -19,7 +19,7 @@ mod_other_editions_ui <- function(id){
                             label = "Doplňující informace"),
                   
                   actionButton(ns("add"),
-                               label = "Add to report"
+                               label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),
