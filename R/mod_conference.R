@@ -185,6 +185,18 @@ mod_conference_server <- function(id) {
     })
     
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_iii_conference_foreign <- section_iii_conference$foreign
+        state$values$section_iii_conference_domestic <- section_iii_conference$domestic
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_iii_conference$foreign <- state$values$section_iii_conference_foreign
+        section_iii_conference$domestic <- state$values$section_iii_conference_domestic
+    })
+    
     return(section_iii_conference)
     
     

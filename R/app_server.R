@@ -37,10 +37,12 @@ app_server <- function( input, output, session ) {
     section_viii_int_projects <-  mod_int_projects_server("int_projects_ui_1")
     
     section_viii_int_bilateral <-  mod_int_bilateral_server("int_bilateral_ui_1")
-    
     section_ix_award <- mod_other_award_server("other_award_ui_1")
-    
+
     section_ix_review <- mod_other_review_server("other_review_ui_1")
+    
+    
+
     
     section_ix_member <- mod_other_member_server("other_member_ui_1")
     

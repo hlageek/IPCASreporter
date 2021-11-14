@@ -105,6 +105,17 @@ mod_various_server <- function(id) {
       } else {""}
     })
     
+    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_xi <- section_xi$data[-length(section_xi$data)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_xi$data <- state$values$section_xi 
+    })
+    
     return(section_xi)
     
   })}

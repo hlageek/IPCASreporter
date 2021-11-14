@@ -105,6 +105,15 @@ mod_int_projects_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_viii_int_projects <- section_viii_int_projects$projects[-length(section_viii_int_projects$projects)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_viii_int_projects$projects<- state$values$section_viii_int_projects 
+    })
     return(section_viii_int_projects)
     
   })}

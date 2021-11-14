@@ -94,6 +94,15 @@ mod_events_server <- function(id, identification) {
       
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_ii <- section_ii$eventlist[-length(section_ii$eventlist)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_ii$eventlist <- state$values$section_ii 
+    })    
     return(section_ii)
     
   })

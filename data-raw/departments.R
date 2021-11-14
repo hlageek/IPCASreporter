@@ -14,7 +14,7 @@ departments <- tibble::tribble(
         "Centrum globálních studií", "CGS","novotna@flu.cas.cz",
         "Kabinet pro studium vědy, techniky a společnosti", "KVTS", "novotna@flu.cas.cz",
         "Kabinet pro klasická studia", "KKS", "novotna@flu.cas.cz",
-        "Centrum medievistických studií", "CMS", "novotna@flu.cas.cz",
+        "Centrum medievistických studií", "CMS", "zurek@flu.cas.cz",
         "Archiv Jana Patočky", "AJP","novotna@flu.cas.cz"
     )
 

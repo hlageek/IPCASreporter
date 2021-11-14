@@ -113,6 +113,17 @@ mod_other_review_server <- function(id) {
               section_ix_review$review)
       } else {""}
     })
+
+    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_ix_review <- section_ix_review$review[-length(section_ix_review$review)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_ix_review$review <- state$values$section_ix_review 
+    })
     
     return(section_ix_review)
     

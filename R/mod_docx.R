@@ -169,7 +169,7 @@ mod_docx_server <- function(id,
     tmp_doc <- paste0("ar-",
                       format(Sys.Date(), "%Y"),
                       "-",
-                      PCASreporter::departments %>%
+                      IPCASreporter::departments %>%
                         dplyr::filter(department_name == identification$department) %>%
                         dplyr::pull(department_abbrev),
                       "-",
@@ -185,9 +185,13 @@ mod_docx_server <- function(id,
       emayili::from("flu.avcr@gmail.com") %>%
       emayili::to(identification$email) %>%
       emayili::cc(identification$email,
-                  departments %>%
+                  unique(c("novotna@flu.cas.cz", 
+                           IPCASreporter::departments %>%
                     dplyr::filter(department_name == identification$department) %>%
-                    dplyr::pull(head_email)) %>%
+                    dplyr::pull(head_email)
+                    )
+                    )
+                  ) %>%
       emayili::subject("Výroční výkaz {{identification$employee_name}}") %>%
       emayili::text("Výroční výkaz {{identification$employee_name}} je v příloze.") %>%
       emayili::attachment(tmp_doc)

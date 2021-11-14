@@ -122,6 +122,16 @@ mod_popular_server <- function(id) {
       } else {""}
     })
     
+    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_vi_popular <- section_vi_popular$events[-length(section_vi_popular$events)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_vi_popular$events <- state$values$section_vi_popular 
+    })
     return(section_vi_popular)
    
   })}

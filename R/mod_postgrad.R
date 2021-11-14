@@ -231,7 +231,15 @@ mod_postgrad_server <- function(id) {
   
   
   
+  # Save extra values in state$values when we bookmark
+  onBookmark(function(state) {
+      state$values$section_iii_postgrad <- section_iii_postgrad$data[-length(section_iii_postgrad$data)]
+  })
   
+  # Read values from state$values when we restore
+  onRestore(function(state) {
+      section_iii_postgrad$data <- state$values$section_iii_postgrad 
+  })
   
   
   return(section_iii_postgrad)

@@ -234,8 +234,16 @@ mod_undergrad_server <- function(id) {
       
       
         
-      
-
+        # Save extra values in state$values when we bookmark
+        onBookmark(function(state) {
+            state$values$section_iii_undergrad <- section_iii_undergrad$data[-length(section_iii_undergrad$data)]
+        })
+        
+        # Read values from state$values when we restore
+        onRestore(function(state) {
+            section_iii_undergrad$data <- state$values$section_iii_undergrad 
+        })
+        
       
       
       return(section_iii_undergrad)

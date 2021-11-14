@@ -95,6 +95,16 @@ mod_pub_server <-  function(id, identification) {
     
       })
    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_i <- section_i$publist
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_i$publist <- state$values$section_i 
+    })
+    
     return(section_i)
     
   })

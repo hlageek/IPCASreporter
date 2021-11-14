@@ -118,6 +118,16 @@ mod_other_editions_server <- function(id) {
     })
     
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_ix_editions <- section_ix_editions$editions[-length(section_ix_editions$editions)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_ix_editions$editions <- state$values$section_ix_editions 
+    })
+    
     return(section_ix_editions)
     
   })}

@@ -103,6 +103,16 @@ mod_wip_server <- function(id) {
       } else {""}
     })
     
+    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$wip <- section_x$wip[-length(section_x$wip)]
+    })
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_x$wip <- state$values$wip
+    })
+    
     return(section_x)
     
   })}

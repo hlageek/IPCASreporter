@@ -106,6 +106,16 @@ mod_public_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_vii <- section_vii$public[-length(section_vii$public)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_vii$public <- state$values$section_vii 
+    })
+    
     return(section_vii)
     
   })}

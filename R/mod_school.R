@@ -110,6 +110,16 @@ mod_school_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_vi_school <- section_vi_school$events[-length(section_vi_school$events)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_vi_school$events <- state$values$section_vi_school 
+    })
+    
     return(section_vi_school)
     
   })}

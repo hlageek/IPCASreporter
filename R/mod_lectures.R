@@ -168,6 +168,19 @@ mod_lectures_server <- function(id) {
     })    
     
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_iii_lecture_foreign <- section_iii_lecture$foreign
+        state$values$section_iii_lecture_domestic <- section_iii_lecture$domestic
+        
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_iii_lecture$foreign <- state$values$section_iii_lecture_foreign
+        section_iii_lecture$domestic <- state$values$section_iii_lecture_domestic
+    })  
+    
     return(section_iii_lecture)
     
   })}

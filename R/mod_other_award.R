@@ -72,11 +72,12 @@ mod_other_award_server <- function(id) {
         
       }
       
-      
+
       
       section_ix_award$award[[
         length(
           section_ix_award$award)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+      
       
       updateSelectInput(session = session,
                         "remove_list", 
@@ -105,6 +106,18 @@ mod_other_award_server <- function(id) {
               section_ix_award$award)
       } else {""}
     })
+    
+    
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_ix_award <- section_ix_award$award[-length(section_ix_award$award)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_ix_award$award <- state$values$section_ix_award 
+    })
+    
     
     return(section_ix_award)
     

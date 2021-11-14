@@ -105,6 +105,15 @@ mod_int_bilateral_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_viii_int_bilateral <- section_viii_int_bilateral$bilateral[-length(section_viii_int_bilateral$bilateral)]
+    })
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_viii_int_bilateral$bilateral <- state$values$section_viii_int_bilateral 
+    })
+    
     return(section_viii_int_bilateral)
     
   })}

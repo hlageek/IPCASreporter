@@ -251,7 +251,18 @@ mod_grants_server <- function(id) {
    } else {""}
  })
  
-  
+ # Save extra values in state$values when we bookmark
+ onBookmark(function(state) {
+     state$values$section_iv_funded <- section_iv$funded
+     state$values$section_iv_unfunded <- section_iv$unfunded
+     
+ })
+ 
+ # Read values from state$values when we restore
+ onRestore(function(state) {
+     section_iv$funded <- state$values$section_iv_funded
+     section_iv$unfunded <- state$values$section_iv_unfunded
+ })  
   return(section_iv)
     
     

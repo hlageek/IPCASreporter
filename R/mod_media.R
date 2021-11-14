@@ -110,6 +110,15 @@ mod_media_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_vi_media <- section_vi_media$media[-length(section_vi_media$media)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_vi_media$media <- state$values$section_vi_media 
+    })
     return(section_vi_media)
     
   })}

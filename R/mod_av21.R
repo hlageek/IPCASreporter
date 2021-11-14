@@ -125,6 +125,16 @@ mod_av21_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_v <- section_v$av21[-length(section_v$av21)]
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_v$av21 <- state$values$section_v 
+    })
+    
     return(section_v)
     
   })}

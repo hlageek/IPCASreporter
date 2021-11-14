@@ -175,6 +175,19 @@ mod_other_member_server <- function(id) {
       } else {""}
     })
     
+    # Save extra values in state$values when we bookmark
+    onBookmark(function(state) {
+        state$values$section_ix_review_domestic <- section_ix_member$domestic
+        state$values$section_ix_review_foreign <- section_ix_member$foreign
+    })
+    
+    # Read values from state$values when we restore
+    onRestore(function(state) {
+        section_ix_member$foreign <- state$values$section_ix_review_foreign
+        section_ix_member$domestic <- state$values$section_ix_review_domestic
+        
+    })
+    
     return(section_ix_member)
     
   })}
