@@ -164,9 +164,9 @@ mod_undergrad_server <- function(id) {
     
     # Update selection options based on choices
 
-    observe({
+    observeEvent(input$undergrad_school, {
       
-      if (isTruthy(input$undergrad_school)) {
+    
         
         choices_fac <- universities %>% 
           dplyr::filter(university == input$undergrad_school &
@@ -181,10 +181,10 @@ mod_undergrad_server <- function(id) {
                     choices = choices_fac
                       
                     )
-      }
+      
     })
       
-      observe({
+      observeEvent(input$undergrad_school, {
       
         choices_prog_check <- universities %>% 
           dplyr::filter(university == input$undergrad_school) %>% 

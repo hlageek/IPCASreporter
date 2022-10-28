@@ -4,7 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
-app_ui <- function(request) {
+app_ui_setup <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -15,12 +15,8 @@ app_ui <- function(request) {
            
                navlistPanel(widths = c(2,10), well = F,
                             
-                            "Preview",
-                            
-                            tabPanel("NÁHLED",
+                            tabPanel("PREVIEW",
                                      
-                                     bookmarkButton(label = "Save",
-                                                    title = "Copy the generated link to resume work later."),
                                      mod_docx_ui("docx_ui_1"),
                                      
                                      
@@ -30,9 +26,9 @@ app_ui <- function(request) {
                             
                             "Researcher's details",
                             
-                            tabPanel("IDENTIFIKAČNÍ ÚDAJE", 
+                            tabPanel("IDENTIFICATION", 
                                      
-                                     h2("IDENTIFIKAČNÍ ÚDAJE"),
+                                     h2("IDENTIFICATION"),
                                      mod_identification_ui("identification_ui_1")
                                   
                                      ),
@@ -215,6 +211,21 @@ app_ui <- function(request) {
   
 }
 
+# define some credentials
+credentials <- data.frame(
+    user = c("test", "flu"), # mandatory
+    password = c("test", "flu"), # mandatory
+    start = c("2019-04-15"), # optional (all others)
+    expire = c(NA, NA),
+    admin = c(TRUE, FALSE),
+    person_id = c(123, 456),
+    name_last = c("Hladík", "Hladík2"),
+    name_first = c("Radim", "Radim2"),
+  stringsAsFactors = FALSE
+)
+
+app_ui <- shinymanager::secure_app(app_ui_setup)
+
 #' Add external Resources to the Application
 #' 
 #' This function is internally used to add external 
@@ -239,4 +250,5 @@ golem_add_external_resources <- function(){
     # for example, you can add shinyalert::useShinyalert() 
   )
 }
+
 

@@ -160,10 +160,9 @@ mod_postgrad_server <- function(id) {
   
   # Update selection options based on choices
   
-  observe({
+  observeEvent(input$postgrad_school, {
     
-    if (isTruthy(input$postgrad_school)) {
-      
+
       choices_fac <- universities %>% 
         dplyr::filter(university == input$postgrad_school &
                         !is.na(faculty)) %>% 
@@ -177,10 +176,10 @@ mod_postgrad_server <- function(id) {
                         choices = choices_fac
                         
       )
-    }
+    
   })
   
-  observe({
+  observeEvent(input$postgrad_school, {
     
     choices_prog_check <- universities %>% 
       dplyr::filter(university == input$postgrad_school) %>% 

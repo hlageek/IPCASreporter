@@ -1,3 +1,14 @@
+ipcas_db <- pool::dbPool(
+    drv = RMariaDB::MariaDB(),
+    dbname = "ipcas",
+    username = "test",
+    password = "test"
+)
+onStop(function() {
+    pool::poolClose(ipcas_db)
+})
+
+
 #' The application server-side
 #' 
 #' @param input,output,session Internal parameters for {shiny}. 
@@ -6,9 +17,16 @@
 #' @noRd
 app_server <- function( input, output, session ) {
   # List the first level callModules here
-    
 
-    identification <- mod_identification_server("identification_ui_1")
+
+    usr <- reactiveValues()
+    
+    usr <- shinymanager::secure_server(
+        check_credentials = shinymanager::check_credentials(credentials)
+    )  
+
+    
+    identification <- mod_identification_server("identification_ui_1", usr)
 
     section_i <- mod_pub_server("pub_ui_1", identification)
     

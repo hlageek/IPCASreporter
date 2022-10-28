@@ -25,6 +25,13 @@ usethis::use_package( "dplyr")
 usethis::use_package( "keyring")
 usethis::use_package( "emayili")
 usethis::use_package( "shinythemes")
+usethis::use_package( "golem")
+usethis::use_package( "pool")
+usethis::use_package( "DBI")
+usethis::use_package( "RMariaDB")
+usethis::use_package( "shinymanager")
+
+
 
 
 
@@ -71,6 +78,7 @@ golem::add_utils( "helpers" )
 golem::add_utils( "funs", module = "pub" )
 golem::add_utils( "funs", module = "undergrad" )
 golem::add_utils( "funs", module = "postgrad" )
+golem::add_utils("db_startup")
 
 
 

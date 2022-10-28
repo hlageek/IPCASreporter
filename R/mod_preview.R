@@ -324,7 +324,7 @@ mod_preview_server <- function(id,
         
         
         # Tab panel switching
-        observe({
+        observeEvent(identification$employee_name, {
         if (isTruthy(identification$employee_name)) {
           updateTabsetPanel(session = session, inputId = "switcher", selected = "panel_preview")
         } else {

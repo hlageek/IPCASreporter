@@ -13,7 +13,12 @@ mod_pub_ui <- function(id){
   fluidRow(column(width = 4,
   
     
-   uiOutput(ns("pubs"))
+   uiOutput(ns("pubs")),
+   
+   
+   actionButton(ns("add"),
+                label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+   )
     
   ),
   
@@ -33,7 +38,8 @@ mod_pub_ui <- function(id){
 mod_pub_server <-  function(id, identification) {
   moduleServer(id, function(input, output, session) {
 
-    
+      ns <- NS(id)
+      
 
     
     output$pubs <- renderUI({
@@ -53,7 +59,6 @@ mod_pub_server <-  function(id, identification) {
          ~stringr::str_replace_all(.x, "<.*?>", " ")
           )
        
-       ns <- NS(id)
        
        tagList(
 
@@ -61,11 +66,8 @@ mod_pub_server <-  function(id, identification) {
                            label ="Most recent publications in ASEP.", 
                            width = "100%",
                            choiceNames = displayed_citations,
-                           choiceValues = citations),
-        
-        actionButton(ns("add"),
-                     label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
-        )
+                           choiceValues = citations)
+
        )
       } else {
         
@@ -87,6 +89,7 @@ mod_pub_server <-  function(id, identification) {
     
     observeEvent(input$add, {
     
+        browser()
       section_i$publist <- input$publist
       
       output$section_i <- renderText({
@@ -95,15 +98,6 @@ mod_pub_server <-  function(id, identification) {
     
       })
    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_i <- section_i$publist
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_i$publist <- state$values$section_i 
-    })
     
     return(section_i)
     
