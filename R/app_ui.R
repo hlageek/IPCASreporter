@@ -37,7 +37,7 @@ app_ui_setup <- function(request) {
                             tabPanel("I. VYDANÉ PUBLIKACE", 
                                      
                                      h2("I. VYDANÉ PUBLIKACE"),
-                                     p( "Včetně odkazu do ASEP"),
+                                     p( "Including ASEP reference."),
                                      
                                      mod_pub_ui("pub_ui_1")
                                      

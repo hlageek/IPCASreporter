@@ -17,14 +17,16 @@ mod_pub_ui <- function(id){
    
    
    actionButton(ns("add"),
-                label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                label = "Add to report",   
+                icon = icon("check"),     
+                class = "btn-success"
    )
     
   ),
   
   column(width = 8,
          
-         
+         h4("Publications selected for report"),
          htmlOutput(ns("section_i"), inline = FALSE),
          
          
@@ -35,12 +37,22 @@ mod_pub_ui <- function(id){
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <-  function(id, identification) {
+mod_pub_server <-  function(id, identification, usr) {
   moduleServer(id, function(input, output, session) {
 
       ns <- NS(id)
+      section_i <- reactiveValues()
       
-
+      observeEvent(usr$person_id, {
+          
+          section_i$publist <- ipcas_db |> 
+              dplyr::tbl("pubs") |> 
+              dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+              dplyr::pull(pub)
+          
+      })
+      
+  
     
     output$pubs <- renderUI({
 
@@ -63,7 +75,7 @@ mod_pub_server <-  function(id, identification) {
        tagList(
 
         checkboxGroupInput(ns("publist"), 
-                           label ="Most recent publications in ASEP.", 
+                           label ="Most recent publications found in ASEP.", 
                            width = "100%",
                            choiceNames = displayed_citations,
                            choiceValues = citations)
@@ -85,19 +97,47 @@ mod_pub_server <-  function(id, identification) {
       
     })
     
-    section_i <- reactiveValues()
     
     observeEvent(input$add, {
     
-        browser()
-      section_i$publist <- input$publist
       
-      output$section_i <- renderText({
-        paste(section_i$publist, collapse = "<br>")
-      })
+        pub_ids <- ipcas_db |> 
+            dplyr::tbl("pubs") |> 
+            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+            dplyr::pull(pub_id)
+        
+        if (length(pub_ids)>0) {
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM pubs WHERE pub_id IN (?)",
+                        params = list(pub_ids)
+                        )
+        }
+        
+        purrr::walk(input$publist, .f = function(x) {
+        pool::dbExecute(ipcas_db, 
+                        paste0( "INSERT INTO pubs",
+                                " (",
+                                "person_id_pubs,", 
+                                "pub",
+                                ")",
+                                " VALUES(",
+                                "'", usr$person_id, "',",
+                                "'", x, "'",
+                                ")"
+                        )
+        )
+        })
+        
+        section_i$publist <- ipcas_db |> 
+            dplyr::tbl("pubs") |> 
+            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+            dplyr::pull(pub)
     
       })
    
+    output$section_i <- renderText({
+        paste(section_i$publist, collapse = "<br><br>")
+    })
     
     return(section_i)
     

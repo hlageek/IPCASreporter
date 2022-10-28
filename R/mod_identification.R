@@ -162,6 +162,12 @@ mod_identification_server <- function(id, usr) {
     observeEvent(input$add, {
 
          #browser()
+        
+        persons <- ipcas_db |> 
+            dplyr::tbl("pubs") |> 
+            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+            dplyr::collect()
+        
         pool::dbExecute(ipcas_db, 
                         paste0( "INSERT INTO persons",
                                 " (",

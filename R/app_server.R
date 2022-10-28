@@ -28,7 +28,7 @@ app_server <- function( input, output, session ) {
     
     identification <- mod_identification_server("identification_ui_1", usr)
 
-    section_i <- mod_pub_server("pub_ui_1", identification)
+    section_i <- mod_pub_server("pub_ui_1", identification, usr)
     
     section_ii <- mod_events_server("events_ui_1", identification)
     
