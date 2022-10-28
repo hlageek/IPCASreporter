@@ -13,13 +13,18 @@ mod_events_ui <- function(id){
   fluidRow(column(width = 4,
                   
                   
-                  uiOutput(ns("events"))
+                  uiOutput(ns("events")),
+                  
+                  actionButton(ns("add"),
+                               label = "Add to report",
+                               class = "btn-success"
+                  )
                   
   ),
   
   column(width = 8,
          
-         
+         h4("Events selected for report"),
          htmlOutput(ns("section_ii"), inline = FALSE),
          
          
@@ -31,10 +36,21 @@ mod_events_ui <- function(id){
 #' events Server Function
 #'
 #' @noRd 
-mod_events_server <- function(id, identification) {
+mod_events_server <- function(id, identification, usr) {
   moduleServer(id, function(input, output, session) { 
     
-    
+      ns <- NS(id)
+      section_ii <- reactiveValues()
+      
+      observeEvent(usr$person_id, {
+          
+          section_ii$eventlist <- ipcas_db |> 
+              dplyr::tbl("events") |> 
+              dplyr::filter(person_id_events == !!usr$person_id) |> 
+              dplyr::pull(event)
+          
+      })
+      
     output$events <- renderUI({
       
       if (!isTruthy(identification$employee_name)) {
@@ -52,19 +68,14 @@ mod_events_server <- function(id, identification) {
             ~stringr::str_replace_all(.x, "<.*?>", " ")
           )
           
-          ns <- NS(id)
-          
+
           tagList(
             
             checkboxGroupInput(ns("eventlist"), 
-                               label ="Most recent events in ASEP.", 
+                               label ="Most recent events found in ASEP.", 
                                width = "100%",
                                choiceNames = displayed_citations,
-                               choiceValues = citations),
-            
-            actionButton(ns("add"),
-                         label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
-            )
+                               choiceValues = citations)
           )
         } else {
           
@@ -82,27 +93,47 @@ mod_events_server <- function(id, identification) {
       
     })
     
-    section_ii <- reactiveValues()
-    
     observeEvent(input$add, {
-      
-      section_ii$eventlist <- input$eventlist
-      
-      output$section_ii <- renderText({
+        
+        
+        event_ids <- ipcas_db |> 
+            dplyr::tbl("events") |> 
+            dplyr::filter(person_id_events == !!usr$person_id) |> 
+            dplyr::pull(event_id)
+        
+        if (length(event_ids)>0) {
+            pool::dbExecute(ipcas_db, 
+                            "DELETE FROM events WHERE event_id IN (?)",
+                            params = list(event_ids)
+            )
+        }
+        
+        purrr::walk(input$eventlist, .f = function(x) {
+            pool::dbExecute(ipcas_db, 
+                            paste0( "INSERT INTO events",
+                                    " (",
+                                    "person_id_events,", 
+                                    "event",
+                                    ")",
+                                    " VALUES(",
+                                    "'", usr$person_id, "',",
+                                    "'", x, "'",
+                                    ")"
+                            )
+            )
+        })
+        
+        section_ii$eventlist <- ipcas_db |> 
+            dplyr::tbl("events") |> 
+            dplyr::filter(person_id_events == !!usr$person_id) |> 
+            dplyr::pull(event)
+        
+    })
+    
+    output$section_ii <- renderText({
         paste(section_ii$eventlist, collapse = "<br>")
-      })
-      
     })
     
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_ii <- section_ii$eventlist[-length(section_ii$eventlist)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_ii$eventlist <- state$values$section_ii 
-    })    
     return(section_ii)
     
   })

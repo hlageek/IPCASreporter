@@ -1,3 +1,13 @@
+ipcas_db <- pool::dbPool(
+    drv = RMariaDB::MariaDB(),
+    dbname = "ipcas",
+    username = "test",
+    password = "test"
+)
+onStop(function() {
+    pool::poolClose(ipcas_db)
+})
+
 # Set options here
 options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
 

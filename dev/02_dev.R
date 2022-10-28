@@ -30,6 +30,12 @@ usethis::use_package( "pool")
 usethis::use_package( "DBI")
 usethis::use_package( "RMariaDB")
 usethis::use_package( "shinymanager")
+usethis::use_package( "purrr")
+usethis::use_package( "readr")
+usethis::use_package( "tidyr")
+
+
+
 
 
 

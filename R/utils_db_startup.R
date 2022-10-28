@@ -26,7 +26,15 @@ CREATE TABLE pubs (
         FOREIGN KEY (person_id_pubs) REFERENCES persons (person_id)
 );
 "
-
+CREATE_EVENTS_SQL <- "
+CREATE TABLE events (
+     event_id INT AUTO_INCREMENT PRIMARY KEY
+,    person_id_events INT
+,    event TEXT
+,    CONSTRAINT `person_id_events`
+        FOREIGN KEY (person_id_events) REFERENCES persons (person_id)
+);
+"
 
 clear_db <- function(pool) {
     
@@ -45,7 +53,7 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_PERSONS_SQL)
     DBI::dbExecute(pool, CREATE_DEPARTMENTS_SQL)
     DBI::dbExecute(pool, CREATE_PUBS_SQL)
-    
+    DBI::dbExecute(pool, CREATE_EVENTS_SQL)
 }
 
 # create_db_schema(pool)

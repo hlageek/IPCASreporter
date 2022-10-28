@@ -46,7 +46,7 @@ app_ui_setup <- function(request) {
                             tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ", 
                                      
                                      h2("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
-                                     p( "Včetně odkazu do ASEP"),
+                                     p( "Including ASEP reference."),
                                      
                                      mod_events_ui("events_ui_1")
                                      
