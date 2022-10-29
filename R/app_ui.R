@@ -4,7 +4,7 @@
 #'     DO NOT REMOVE.
 #' @import shiny
 #' @noRd
-app_ui_setup <- function(request) {
+app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -224,7 +224,6 @@ credentials <- data.frame(
   stringsAsFactors = FALSE
 )
 
-app_ui <- shinymanager::secure_app(app_ui_setup)
 
 #' Add external Resources to the Application
 #' 

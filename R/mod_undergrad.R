@@ -184,7 +184,7 @@ mod_undergrad_server <- function(id) {
       
     })
       
-      observeEvent(input$undergrad_school, {
+      observeEvent(input$undergrad_faculty, {
       
         choices_prog_check <- universities %>% 
           dplyr::filter(university == input$undergrad_school) %>% 
@@ -231,20 +231,7 @@ mod_undergrad_server <- function(id) {
                 section_iii_undergrad$data)
           } else {""}
           })
-      
-      
-        
-        # Save extra values in state$values when we bookmark
-        onBookmark(function(state) {
-            state$values$section_iii_undergrad <- section_iii_undergrad$data[-length(section_iii_undergrad$data)]
-        })
-        
-        # Read values from state$values when we restore
-        onRestore(function(state) {
-            section_iii_undergrad$data <- state$values$section_iii_undergrad 
-        })
-        
-      
+   
       
       return(section_iii_undergrad)
  
