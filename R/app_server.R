@@ -6,9 +6,24 @@
 #' @import shiny
 #' @noRd
 app_server <- function( input, output, session ) {
-  # List the first level callModules here
+  
+    # calling the translator sent as a golem option
+    i18n <- golem::get_golem_options(which = "translator")
 
 
+    # keep track of language object as a reactive
+    i18n_r <- reactive({
+        i18n
+    })
+ 
+    
+    # change language
+    observeEvent(input[["lang"]], {
+        shiny.i18n::update_lang(session, input[["lang"]])
+        i18n_r()$set_translation_language(input[["lang"]])
+        
+
+    })
     usr <- reactiveValues()
     
     usr <- shinymanager::secure_server(
@@ -16,7 +31,7 @@ app_server <- function( input, output, session ) {
     )  
 
     
-    identification <- mod_identification_server("identification_ui_1", usr)
+    identification <- mod_identification_server("identification_ui_1", usr, i18n_r)
 
     section_i <- mod_pub_server("pub_ui_1", identification, usr)
     

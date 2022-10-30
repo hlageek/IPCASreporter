@@ -5,6 +5,9 @@
 #' @import shiny
 #' @noRd
 app_ui <- function(request) {
+    i18n <- golem::get_golem_options(which = "translator")
+
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
@@ -12,10 +15,16 @@ app_ui <- function(request) {
     fluidPage(theme = shinythemes::shinytheme("journal"),
       titlePanel(title = img(src="https://www.flu.cas.cz/images/logo_web_prehozene_krivky_50.png"), "IP CAS annual report"),
       
-           
+      selectInput(inputId = "lang",
+                  label = "Select language",
+                  choices = i18n$get_languages()
+                  ),
+      
+      shiny.i18n::usei18n(i18n),
+      
                navlistPanel(widths = c(2,10), well = F,
                             
-                            tabPanel("PREVIEW",
+                            tabPanel(i18n$t("NÁHLED"),
                                      
                                      mod_docx_ui("docx_ui_1"),
                                      
@@ -26,10 +35,10 @@ app_ui <- function(request) {
                             
                             "Researcher's details",
                             
-                            tabPanel("IDENTIFICATION", 
+                            tabPanel("OSOBNÍ ÚDAJE", 
                                      
                                      h2("IDENTIFICATION"),
-                                     mod_identification_ui("identification_ui_1")
+                                     mod_identification_ui("identification_ui_1", i18n)
                                   
                                      ),
                             "Report sections",

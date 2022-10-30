@@ -14,6 +14,6 @@ run_app <- function(
       server = app_server,
       enableBookmarking = "server"
     ), 
-    golem_opts = list(...)
+    golem_opts = list(translator = shiny.i18n::Translator$new(translation_csvs_path = "inst/app/www/"))
   )
 }

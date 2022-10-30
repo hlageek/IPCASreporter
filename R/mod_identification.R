@@ -7,15 +7,15 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_identification_ui <- function(id){
+mod_identification_ui <- function(id, i18n){
   ns <- NS(id)
-  
+
   fluidRow(column(width = 4,
     
     uiOutput(ns("identification_ui")),
     
     actionButton(ns("add"),
-                 label = "Update report",
+                 label = i18n$t("Aktualizovat výkaz"),
                  icon = icon("check"),
                  class = "btn-success"
                  )
@@ -26,15 +26,15 @@ mod_identification_ui <- function(id){
   column(width = 8,
          
          br(),
-         "Name:",
+         i18n$t("Jméno:"),
          textOutput(ns("employee_name"), inline = TRUE),
          
          br(),
-         "Department:",
+         i18n$t("Oddělení:"),
          textOutput(ns("department"), inline = TRUE),
          
          br(),
-         "FTE:",
+         i18n$t("Úvazek:"),
          textOutput(ns("fte"), inline = TRUE),
          
          br(),
@@ -42,7 +42,7 @@ mod_identification_ui <- function(id){
          textOutput(ns("email"), inline = TRUE),
          
          br(),
-         "Comment:",
+         i18n$t("Poznámka:"),
          textOutput(ns("comment"), inline = TRUE)
          
          )
@@ -54,19 +54,20 @@ mod_identification_ui <- function(id){
 #' identification Server Function
 #'
 #' @noRd 
-mod_identification_server <- function(id, usr) {
+mod_identification_server <- function(id, usr, i18n_r) {
   moduleServer(id, function(input, output, session) {
     
     ns <- NS(id)
-      
+
+
     identification <- reactiveValues()
     
     output$identification_ui <- renderUI({
         
-        tagList(
+        tagList(shiny.i18n::usei18n(i18n_r()),
             
             textInput(ns("employee_name_first"), 
-                      "Given name", 
+                      i18n_r()$t("Jméno"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
@@ -75,7 +76,7 @@ mod_identification_server <- function(id, usr) {
             ),
             
             textInput(ns("employee_name_last"), 
-                      "Last name", 
+                      i18n_r()$t("Příjmení"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
@@ -84,7 +85,7 @@ mod_identification_server <- function(id, usr) {
             ),
             
             textInput(ns("email"),
-                      label = "E-mail address", 
+                      label = i18n_r()$t("E-mailová adresa"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
@@ -93,7 +94,7 @@ mod_identification_server <- function(id, usr) {
             ),
             
             selectInput(ns("department"),
-                        label = "Department", 
+                        label = i18n_r()$t("Oddělení"), 
                         selected = ipcas_db |> 
                             dplyr::tbl("departments") |> 
                             dplyr::filter(
@@ -104,7 +105,7 @@ mod_identification_server <- function(id, usr) {
             ),
             
             sliderInput(ns("fte"), 
-                        label = "FTE", 
+                        label = i18n_r()$t("Úvazek"), 
                         value = ifelse(isTruthy(ipcas_db |> 
                             dplyr::tbl("persons") |> 
                             dplyr::filter(person_id == !!usr$person_id) |> 
@@ -120,12 +121,12 @@ mod_identification_server <- function(id, usr) {
             ),
             
             textAreaInput(ns("comment"), 
-                          label = "Comment",
+                          label = i18n_r()$t("Poznámka"),
                           value = ipcas_db |> 
                               dplyr::tbl("persons") |> 
                               dplyr::filter(person_id == !!usr$person_id) |> 
                               dplyr::pull(comment),
-                          placeholder = "E.g. changes in FTE during the year or similar."
+                          placeholder = i18n_r()$t("Např. změny ve výši úvazku v průběhu roku.")
             )
         )
         
