@@ -11,9 +11,9 @@ mod_postgrad_ui <- function(id){
   ns <- NS(id)
   fluidRow(column(width = 6,
                   
-                  selectInput(ns("postgrad_school"), 
-                              label = "Název VŠ:", 
-                              choices = c("", unique(sort(universities$university))), 
+                  selectInput(ns("postgrad_school"),
+                              label = "Název VŠ:",
+                              choices = NULL,
                               selected = ""),
                   
                   selectInput(ns("postgrad_faculty"), 
@@ -81,7 +81,7 @@ mod_postgrad_ui <- function(id){
 mod_postgrad_server <- function(id) {
   moduleServer(id, function(input, output, session) {
   
-  
+  loc <- reactiveValues()
   section_iii_postgrad <- reactiveValues()
   
   items <- c(
@@ -117,7 +117,46 @@ mod_postgrad_server <- function(id) {
     
   )
   
-
+  #  on startup ####
+  
+  observeEvent(usr$person_id, {
+      
+      uni_choices <- IPCASreporter::universities %>% 
+          dplyr::pull(university)
+      uni_choices <- unique(uni_choices)
+      
+      updateSelectInput(session = session,
+                        "grad_school", 
+                        choices =  c("", sort(uni_choices))
+      )
+      # 
+      # loc$names <- tibble::tibble(key = items,
+      #                             names = item_names)
+      # 
+      # loc$all_df <-  ipcas_db %>% 
+      #     dplyr::tbl("undergrad") %>% 
+      #     dplyr::filter(person_id_undergrad == !!usr$person_id) %>%
+      #     dplyr::select(-person_id_undergrad) %>% 
+      #     tidyr::pivot_longer(-undergrad_id,
+      #                         names_to = "key",
+      #                         values_to = "value") %>%
+      #     dplyr::collect() %>% 
+      #     dplyr::left_join(loc$names, by = "key") %>% 
+      #     tidyr::unite("value", c(names, value), sep = " ") %>% 
+      #     dplyr::select(-key) %>% 
+      #     dplyr::group_by(undergrad_id) %>% 
+      #     dplyr::summarise(data = stringr::str_flatten(value,                                                    collapse = "<br>")) 
+      # section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
+      # 
+      # updateSelectInput(session = session,
+      #                   "remove_list", 
+      #                   choices = stats::setNames(loc$all_df$undergrad_id, seq_along(loc$all_df$undergrad_id)))
+      # 
+      
+      
+  })
+  
+  # add ####
   
   observeEvent(input$add, {
     
@@ -163,7 +202,7 @@ mod_postgrad_server <- function(id) {
   observeEvent(input$postgrad_school, {
     
 
-      choices_fac <- universities %>% 
+      choices_fac <- IPCASreporter::universities %>% 
         dplyr::filter(university == input$postgrad_school &
                         !is.na(faculty)) %>% 
         dplyr::pull(faculty) %>% 
@@ -181,14 +220,14 @@ mod_postgrad_server <- function(id) {
   
   observeEvent(input$postgrad_school, {
     
-    choices_prog_check <- universities %>% 
+    choices_prog_check <- IPCASreporter::universities %>% 
       dplyr::filter(university == input$postgrad_school) %>% 
       dplyr::pull(faculty) %>%
       unique()
     
     if (length(choices_prog_check)==1) {
       
-      choices_prog <- universities %>% 
+      choices_prog <- IPCASreporter::universities %>% 
         dplyr::filter(university == input$postgrad_school &
                         !is.na(disc_program) &
                         stringr::str_detect(type, "doktorský") 
@@ -199,7 +238,7 @@ mod_postgrad_server <- function(id) {
       
     } else {
       
-      choices_prog <- universities %>% 
+      choices_prog <- IPCASreporter::universities %>% 
         dplyr::filter(university == input$postgrad_school &
                         faculty == input$postgrad_faculty &
                         !is.na(disc_program) &
