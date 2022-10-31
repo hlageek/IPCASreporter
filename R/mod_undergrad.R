@@ -16,7 +16,7 @@ mod_undergrad_ui <- function(id){
                     
                     selectInput(ns("undergrad_school"), 
                                 label = "Název VŠ:", 
-                                choices = c("", unique(sort(IPCASreporter::universities$university))), 
+                                choices = "", 
                                 selected = ""),
                     
                     selectInput(ns("undergrad_faculty"), 
@@ -129,6 +129,11 @@ mod_undergrad_server <- function(id, usr) {
         
         observeEvent(usr$person_id, {
             
+            updateSelectInput(session = session,
+                              "undergrad_program", 
+                              choices = c("", c("", unique(sort(universities$university)))))
+            
+            undergrad_school
             loc$names <- tibble::tibble(key = items,
                                         names = item_names)
             
@@ -248,7 +253,7 @@ mod_undergrad_server <- function(id, usr) {
             
             
             
-            choices_fac <- IPCASreporter::universities %>% 
+            choices_fac <- universities %>% 
                 dplyr::filter(university == input$undergrad_school &
                                   !is.na(faculty)) %>% 
                 dplyr::pull(faculty) %>% 
@@ -266,14 +271,14 @@ mod_undergrad_server <- function(id, usr) {
         
         observeEvent(input$undergrad_faculty, {
             
-            choices_prog_check <- IPCASreporter::universities %>% 
+            choices_prog_check <- universities %>% 
                 dplyr::filter(university == input$undergrad_school) %>% 
                 dplyr::pull(faculty) %>%
                 unique()
             
             if (length(choices_prog_check)==1) {
                 
-                choices_prog <- IPCASreporter::universities %>% 
+                choices_prog <- universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       !is.na(disc_program) &
                                       stringr::str_detect(type, "bakalářský|magisterský") 
@@ -284,7 +289,7 @@ mod_undergrad_server <- function(id, usr) {
                 
             } else {
                 
-                choices_prog <- IPCASreporter::universities %>% 
+                choices_prog <- universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       faculty == input$undergrad_faculty &
                                       !is.na(disc_program) &
