@@ -78,7 +78,7 @@ mod_postgrad_ui <- function(id){
 #' postgrad Server Function
 #'
 #' @noRd 
-mod_postgrad_server <- function(id) {
+mod_postgrad_server <- function(id, usr) {
   moduleServer(id, function(input, output, session) {
   
   loc <- reactiveValues()
@@ -199,7 +199,7 @@ mod_postgrad_server <- function(id) {
   
   # Update selection options based on choices
   
-  observeEvent(input$postgrad_school, {
+  observeEvent(req(input$postgrad_school), {
     
 
       choices_fac <- IPCASreporter::universities %>% 

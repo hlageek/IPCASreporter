@@ -24,7 +24,7 @@ app_server <- function( input, output, session ) {
     
     section_iii_undergrad <- mod_undergrad_server("undergrad_ui_1", usr)
     
-    section_iii_postgrad <- mod_postgrad_server("postgrad_ui_1")
+    section_iii_postgrad <- mod_postgrad_server("postgrad_ui_1", usr)
     
     section_iii_conference <- mod_conference_server( "conference_ui_1")
     
