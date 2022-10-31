@@ -1,6 +1,6 @@
 Package: IPCASreporter
 Title: ipcasreporter
-Version: 0.0.0.4
+Version: 0.0.0.5
 Authors@R: person('Radim', 'Hladík', email = 'hladik@flu.cas.cz', role = c('cre', 'aut'))
 Description: App for annual reporting at IP CAS.
 License: What license is it under?
@@ -28,7 +28,7 @@ Imports:
     officer,
     shiny.i18n
 Encoding: UTF-8
-LazyData: false
+LazyData: true
 RoxygenNote: 7.2.1
 Depends: 
     R (>= 2.10)
