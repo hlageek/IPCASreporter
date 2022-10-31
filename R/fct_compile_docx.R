@@ -24,7 +24,7 @@ compile_docx <- function(identification,
                          ) {
     
     # browser()
-    doc <- officer::read_docx(here::here("inst", "app", "www", "annual_report_ipcas.docx")) %>%
+    doc <- officer::read_docx(system.file("app/www/annual_report_ipcas.docx", package = "IPCASreporter")) %>%
         officer::body_replace_text_at_bkm("employee_name", 
                                           ifelse(isTruthy(identification$employee_name), 
                                                  identification$employee_name, 
