@@ -1,3 +1,4 @@
+## code to prepare `universities` dataset goes here
 require(dplyr)
 
 uni_raw <-
@@ -19,4 +20,5 @@ universities <- uni_raw %>% select(
     distinct()
 
 usethis::use_data(universities, overwrite = TRUE)
+
 
