@@ -129,7 +129,7 @@ mod_undergrad_server <- function(id, usr) {
         
         observeEvent(usr$person_id, {
             
-            uni_choices <- unique(universities$university)
+            uni_choices <- unique(IPCASreporter::universities$university)
         
             updateSelectInput(session = session,
                               "undergrad_school", 
@@ -255,7 +255,7 @@ mod_undergrad_server <- function(id, usr) {
             
             
             
-            choices_fac <- universities %>% 
+            choices_fac <- IPCASreporter::universities %>% 
                 dplyr::filter(university == input$undergrad_school &
                                   !is.na(faculty)) %>% 
                 dplyr::pull(faculty) %>% 
@@ -273,14 +273,14 @@ mod_undergrad_server <- function(id, usr) {
         
         observeEvent(input$undergrad_faculty, {
             
-            choices_prog_check <- universities %>% 
+            choices_prog_check <- IPCASreporter::universities %>% 
                 dplyr::filter(university == input$undergrad_school) %>% 
                 dplyr::pull(faculty) %>%
                 unique()
             
             if (length(choices_prog_check)==1) {
                 
-                choices_prog <- universities %>% 
+                choices_prog <- IPCASreporter::universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       !is.na(disc_program) &
                                       stringr::str_detect(type, "bakalářský|magisterský") 
@@ -291,7 +291,7 @@ mod_undergrad_server <- function(id, usr) {
                 
             } else {
                 
-                choices_prog <- universities %>% 
+                choices_prog <- IPCASreporter::universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       faculty == input$undergrad_faculty &
                                       !is.na(disc_program) &
