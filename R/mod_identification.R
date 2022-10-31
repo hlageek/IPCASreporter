@@ -99,7 +99,7 @@ mod_identification_server <- function(id, usr) {
                             dplyr::filter(
                                 person_id_departments == !!usr$person_id) %>%
                             dplyr::pull(department),
-                        choices = c("", departments$department_name),
+                        choices = c("", IPCASreporter::departments$department_name),
                         multiple = FALSE
             ),
             
