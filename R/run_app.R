@@ -15,8 +15,8 @@ run_app <- function(
       enableBookmarking = "server"
     ), 
     golem_opts = list(
-        email_password = NULL,
-        email_default = NULL
+        email_password = email_password,
+        email_default = email_default
         )
   )
 }

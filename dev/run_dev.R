@@ -19,6 +19,9 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # Run the application
-(run_app(email_password = keyring::key_get(service = "flumail",
-                                           username = "flu.avcr"),
-         email_default = Sys.getenv("golem.email")))
+email_password <-  keyring::key_get(service = "flumail",
+                                 username = "flu.avcr")
+
+email_default <-  Sys.getenv("golem.email")
+
+(run_app())
