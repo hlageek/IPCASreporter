@@ -8,7 +8,7 @@ uni_raw <-
         )
     )
 
-universities <- uni_raw %>% select(
+universities_tbl <- uni_raw %>% select(
     university = 6,
     faculty = 7,
     type = 4,
@@ -19,7 +19,7 @@ universities <- uni_raw %>% select(
            disc_program = stringr::str_replace(disc_program, " \\(jednooborové\\)", "")) %>% 
     distinct()
 
-
-usethis::use_data(as.data.frame(universities), overwrite = TRUE)
+universities <- tibble::as_tibble(universities_tbl)
+usethis::use_data(universities, overwrite = TRUE)
 
 
