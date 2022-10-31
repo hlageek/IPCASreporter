@@ -19,6 +19,7 @@ universities <- uni_raw %>% select(
            disc_program = stringr::str_replace(disc_program, " \\(jednooborové\\)", "")) %>% 
     distinct()
 
-usethis::use_data(universities, overwrite = TRUE)
+
+usethis::use_data(as.data.frame(universities), overwrite = TRUE)
 
 
