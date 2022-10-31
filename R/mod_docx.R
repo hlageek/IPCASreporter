@@ -165,7 +165,11 @@ mod_docx_server <- function(id,
   
   observeEvent(input$ok, {
     
-    
+      email_password <- golem::get_golem_options(which = "email_password")
+      golem::cat_dev(email_password)
+      
+      if (!is.null(email_password)) {
+          
     tmp_doc <- paste0("ar-",
                       format(Sys.Date(), "%Y"),
                       "-",
@@ -180,33 +184,21 @@ mod_docx_server <- function(id,
     
     print(doc(), target = tmp_doc)
     on.exit(file.remove(tmp_doc))
-    
-    email <- emayili::envelope() %>%
-      emayili::from("flu.avcr@gmail.com") %>%
-      emayili::to(identification$email) %>%
-      emayili::cc(identification$email,
-                  unique(c("novotna@flu.cas.cz", 
-                           IPCASreporter::departments %>%
-                    dplyr::filter(department_name == identification$department) %>%
-                    dplyr::pull(head_email)
-                    )
-                    )
-                  ) %>%
-      emayili::subject("Výroční výkaz {{identification$employee_name}}") %>%
-      emayili::text("Výroční výkaz {{identification$employee_name}} je v příloze.") %>%
-      emayili::attachment(tmp_doc)
-    
-    smtp <- emayili::server(
-      host = "smtps://smtp.gmail.com",
-      port = 465,
-      username = "flu.avcr@gmail.com",
-      reuse = FALSE,
-      password = keyring::key_get(service = "flumail",
-                                  username = "flu.avcr"),
-      max_times = 1
-    )
-    
-    smtp(email, verbose = FALSE)
+    mailR::send.mail(from = "no-reply@flu.cas.cz",
+                     to = identification$email,
+                     cc = golem::get_golem_options(which = "email_default"),
+                     subject = paste("Výroční výkaz", identification$employee_name),
+                     body = paste("Výroční výkaz", identification$employee_name, "je v příloze."),
+                     encoding = "utf-8",
+                     smtp = list(
+                         host.name = "mail.flu.cas.cz", 
+                         port = 25, 
+                         user.name = "hladik@flu.cas.cz", 
+                         passwd = email_password, 
+                         tls = TRUE),
+                     authenticate = FALSE,
+                     send = TRUE,
+                     attach.files = tmp_doc)
     
     
     showModal(
@@ -219,7 +211,7 @@ mod_docx_server <- function(id,
     
     showNotification("Report submitted.")
     removeModal()
-    
+      }
   })
 
     

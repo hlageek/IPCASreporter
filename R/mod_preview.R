@@ -181,7 +181,7 @@ mod_preview_server <- function(id,
  
   moduleServer(id, function(input, output, session) {
     
-    # Identification
+    # Identification  ####
     output$employee_name <- renderText({identification$employee_name})
     output$department <- renderText({identification$department})
     output$fte <- renderText({identification$fte})
@@ -189,36 +189,36 @@ mod_preview_server <- function(id,
     output$comment <- renderText({identification$comment})
     
     
-    # Section I
+    # Section I  ####
     
     
     output$section_i <- renderText({
       paste(section_i$publist, collapse = "<br>")
       })
     
-    # Section II
+    # Section II  ####
     
     output$section_ii <- renderText({
       paste(section_ii$eventlist, collapse = "<br>")
     })
     
     
-    # Section III
+    # Section III  ####
     
-    ## Undergrad
+    ## Undergrad  ####
     
     
         output$section_iii_undergrad <- renderText({
           paste(section_iii_undergrad$data)
       })
         
-    ## Postgrad
+    ## Postgrad  ####
         
         output$section_iii_postgrad <- renderText({
           paste(section_iii_postgrad$data)
         })
         
-    ## Conference
+    ## Conference  ####
         
         output$section_iii_conference_foreign <-  renderText({
           paste(section_iii_conference$foreign)
@@ -226,8 +226,8 @@ mod_preview_server <- function(id,
         output$section_iii_conference_domestic <-  renderText({
           paste(section_iii_conference$domestic)
         })
-        
-    ## Lecture
+         
+    ## Lecture  ####
         
         output$section_iii_lecture_foreign <-  renderText({
           paste(section_iii_lecture$foreign)
@@ -237,7 +237,7 @@ mod_preview_server <- function(id,
         })
         
         
-    # Section IV
+    # Section IV  ####
         
         output$section_iv_funded <-  renderText({
           paste(section_iv$funded)
@@ -246,39 +246,39 @@ mod_preview_server <- function(id,
           paste(section_iv$unfunded)
         })
         
-    # Section V
+    # Section V ####
         
         output$section_v <-  renderText({
           paste(section_v$av21)
         })
         
-    # Section VI
+    # Section VI  ####
         
-        ## Events
+        ## Events  ####
         
         output$section_vi_popular_events <-  renderText({
           paste(section_vi_popular$events)
         })
         
-        ## School events
+        ## School events  ####
         
         output$section_vi_school_events <-  renderText({
           paste(section_vi_school$events)
         })
         
-        ## Media
+        ## Media  ####
         
         output$section_vi_media <-  renderText({
           paste(section_vi_media$media)
         })
         
-    # Section VII
+    # Section VII  ####
         
         output$section_vii <-  renderText({
           paste(section_vii$public)
         })
     
-    # Section VIII
+    # Section VIII  ####
         
         output$section_viii_int_projects <-  renderText({
           paste(section_viii_int_projects$projects)
@@ -288,7 +288,7 @@ mod_preview_server <- function(id,
           paste(section_viii_int_bilateral$bilateral)
         })
         
-    # Section IX
+    # Section IX  ####
         
         output$section_ix_award <-  renderText({
           paste(section_ix_award$award)
@@ -310,20 +310,20 @@ mod_preview_server <- function(id,
           paste(section_ix_editions$editions)
         })       
         
-        # Section X
+        # Section X  ####
         
         output$section_x <-  renderText({
           paste(section_x$wip)
         })
         
-        # Section XI
+        # Section XI  ####
         
         output$section_xi <-  renderText({
           paste(section_xi$data)
         })
         
         
-        # Tab panel switching
+        # Tab panel switching  ####
         observeEvent(identification$employee_name, {
         if (isTruthy(identification$employee_name)) {
           updateTabsetPanel(session = session, inputId = "switcher", selected = "panel_preview")
