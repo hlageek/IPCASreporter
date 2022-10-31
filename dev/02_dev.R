@@ -99,6 +99,7 @@ golem::add_css_file( "custom" )
 
 ## Add internal datasets ----
 ## If you have data in your package
+usethis::use_data_raw(name = "universities", open = FALSE ) 
 usethis::use_data_raw(name = "departments", open = FALSE ) 
 usethis::use_data_raw(name = "providers", open = FALSE)
 
