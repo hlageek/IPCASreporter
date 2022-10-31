@@ -16,7 +16,7 @@ mod_undergrad_ui <- function(id){
                     
                     selectInput(ns("undergrad_school"), 
                                 label = "Název VŠ:", 
-                                choices = "", 
+                                choices = NULL, 
                                 selected = ""),
                     
                     selectInput(ns("undergrad_faculty"), 
