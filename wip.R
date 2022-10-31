@@ -1,4 +1,4 @@
-# ipcas_db <- pool::dbPool(
+# pool <- pool::dbPool(
 #     drv = RMariaDB::MariaDB(),
 #     dbname = "ipcas",
 #     username = "test",
