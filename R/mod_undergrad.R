@@ -129,9 +129,12 @@ mod_undergrad_server <- function(id, usr) {
         
         observeEvent(usr$person_id, {
             
+            uni_choices <- unique(IPCASreporter::universities$university)
+        
             updateSelectInput(session = session,
                               "undergrad_school", 
-                              choices = c("", c("", unique(sort(IPCASreporter::universities$university)))))
+                              choices =  c("", sort(uni_choices))
+                              )
             
             loc$names <- tibble::tibble(key = items,
                                         names = item_names)
