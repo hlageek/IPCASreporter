@@ -20,7 +20,7 @@ mod_grants_ui <- function(id){
     selectInput(ns("grant_provider"),
                 label = "Poskytovatel",
                 selected = "",
-                choices =  c("", providers$providers, "Jiný/Other" = "other")),
+                choices =  c("", IPCASreporter::providers$providers, "Jiný/Other" = "other")),
     
     conditionalPanel(
        condition = 'input.grant_provider == "other"',
@@ -136,7 +136,7 @@ mod_grants_server <- function(id) {
     updateSelectInput(session = session,
                       "grant_provider", 
                       selected = input$bespoke_provider,
-                      choices  =  c(input$bespoke_provider, providers$providers, "Jiný/Other" = "other")
+                      choices  =  c(input$bespoke_provider, IPCASreporter::providers$providers, "Jiný/Other" = "other")
                       
     )
     
