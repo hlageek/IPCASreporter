@@ -45,9 +45,9 @@ mod_pub_server <-  function(id, identification, usr) {
       
       observeEvent(usr$person_id, {
           
-          section_i$publist <- ipcas_db |> 
-              dplyr::tbl("pubs") |> 
-              dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+          section_i$publist <- ipcas_db %>% 
+              dplyr::tbl("pubs") %>% 
+              dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
               dplyr::pull(pub)
           
       })
@@ -101,9 +101,9 @@ mod_pub_server <-  function(id, identification, usr) {
     observeEvent(input$add, {
     
       
-        pub_ids <- ipcas_db |> 
-            dplyr::tbl("pubs") |> 
-            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+        pub_ids <- ipcas_db %>% 
+            dplyr::tbl("pubs") %>% 
+            dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
             dplyr::pull(pub_id)
         
         if (length(pub_ids)>0) {
@@ -128,9 +128,9 @@ mod_pub_server <-  function(id, identification, usr) {
         )
         })
         
-        section_i$publist <- ipcas_db |> 
-            dplyr::tbl("pubs") |> 
-            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+        section_i$publist <- ipcas_db %>% 
+            dplyr::tbl("pubs") %>% 
+            dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
             dplyr::pull(pub)
     
       })

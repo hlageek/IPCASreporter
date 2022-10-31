@@ -67,37 +67,37 @@ mod_identification_server <- function(id, usr) {
             
             textInput(ns("employee_name_first"), 
                       "Given name", 
-                      value = ipcas_db |> 
-                          dplyr::tbl("persons") |> 
-                          dplyr::filter(person_id == !!usr$person_id) |> 
+                      value = ipcas_db %>% 
+                          dplyr::tbl("persons") %>% 
+                          dplyr::filter(person_id == !!usr$person_id) %>% 
                           dplyr::pull(name_first),
                       placeholder = "Eva"
             ),
             
             textInput(ns("employee_name_last"), 
                       "Last name", 
-                      value = ipcas_db |> 
-                          dplyr::tbl("persons") |> 
-                          dplyr::filter(person_id == !!usr$person_id) |> 
+                      value = ipcas_db %>% 
+                          dplyr::tbl("persons") %>% 
+                          dplyr::filter(person_id == !!usr$person_id) %>% 
                           dplyr::pull(name_last),
                       placeholder = "Zažímalová"
             ),
             
             textInput(ns("email"),
                       label = "E-mail address", 
-                      value = ipcas_db |> 
-                          dplyr::tbl("persons") |> 
-                          dplyr::filter(person_id == !!usr$person_id) |> 
+                      value = ipcas_db %>% 
+                          dplyr::tbl("persons") %>% 
+                          dplyr::filter(person_id == !!usr$person_id) %>% 
                           dplyr::pull(email), 
                       placeholder = "@flu.cas.cz"
             ),
             
             selectInput(ns("department"),
                         label = "Department", 
-                        selected = ipcas_db |> 
-                            dplyr::tbl("departments") |> 
+                        selected = ipcas_db %>% 
+                            dplyr::tbl("departments") %>% 
                             dplyr::filter(
-                                person_id_departments == !!usr$person_id) |>
+                                person_id_departments == !!usr$person_id) %>%
                             dplyr::pull(department),
                         choices = c("", departments$department_name),
                         multiple = FALSE
@@ -105,13 +105,13 @@ mod_identification_server <- function(id, usr) {
             
             sliderInput(ns("fte"), 
                         label = "FTE", 
-                        value = ifelse(isTruthy(ipcas_db |> 
-                            dplyr::tbl("persons") |> 
-                            dplyr::filter(person_id == !!usr$person_id) |> 
+                        value = ifelse(isTruthy(ipcas_db %>% 
+                            dplyr::tbl("persons") %>% 
+                            dplyr::filter(person_id == !!usr$person_id) %>% 
                             dplyr::pull(fte)),
-                            ipcas_db |> 
-                                dplyr::tbl("persons") |> 
-                                dplyr::filter(person_id == !!usr$person_id) |> 
+                            ipcas_db %>% 
+                                dplyr::tbl("persons") %>% 
+                                dplyr::filter(person_id == !!usr$person_id) %>% 
                                 dplyr::pull(fte),
                             0), 
                         min = 0, 
@@ -121,9 +121,9 @@ mod_identification_server <- function(id, usr) {
             
             textAreaInput(ns("comment"), 
                           label = "Comment",
-                          value = ipcas_db |> 
-                              dplyr::tbl("persons") |> 
-                              dplyr::filter(person_id == !!usr$person_id) |> 
+                          value = ipcas_db %>% 
+                              dplyr::tbl("persons") %>% 
+                              dplyr::filter(person_id == !!usr$person_id) %>% 
                               dplyr::pull(comment),
                           placeholder = "E.g. changes in FTE during the year or similar."
             )
@@ -133,14 +133,14 @@ mod_identification_server <- function(id, usr) {
     
     observeEvent(usr$person_id, {
 
-        persons <- ipcas_db |> 
-            dplyr::tbl("persons") |> 
-            dplyr::filter(person_id == !!usr$person_id) |> 
+        persons <- ipcas_db %>% 
+            dplyr::tbl("persons") %>% 
+            dplyr::filter(person_id == !!usr$person_id) %>% 
             dplyr::collect()
 
-        department <- ipcas_db |> 
-            dplyr::tbl("departments") |> 
-            dplyr::filter(person_id_departments == !!usr$person_id) |> 
+        department <- ipcas_db %>% 
+            dplyr::tbl("departments") %>% 
+            dplyr::filter(person_id_departments == !!usr$person_id) %>% 
             dplyr::pull("department")
         
         identification$employee_name <- paste(persons$name_first, persons$name_last)
@@ -163,9 +163,9 @@ mod_identification_server <- function(id, usr) {
 
          #browser()
         
-        persons <- ipcas_db |> 
-            dplyr::tbl("pubs") |> 
-            dplyr::filter(person_id_pubs == !!usr$person_id) |> 
+        persons <- ipcas_db %>% 
+            dplyr::tbl("pubs") %>% 
+            dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
             dplyr::collect()
         
         pool::dbExecute(ipcas_db, 
@@ -208,14 +208,14 @@ mod_identification_server <- function(id, usr) {
                         )
         )
         
-        persons <- ipcas_db |> 
-            dplyr::tbl("persons") |> 
-            dplyr::filter(person_id == !!usr$person_id) |> 
+        persons <- ipcas_db %>% 
+            dplyr::tbl("persons") %>% 
+            dplyr::filter(person_id == !!usr$person_id) %>% 
             dplyr::collect()
         
-        department <- ipcas_db |> 
-            dplyr::tbl("departments") |> 
-            dplyr::filter(person_id_departments == !!usr$person_id) |> 
+        department <- ipcas_db %>% 
+            dplyr::tbl("departments") %>% 
+            dplyr::filter(person_id_departments == !!usr$person_id) %>% 
             dplyr::pull("department")
         
         identification$employee_name <- paste(persons$name_first, persons$name_last)

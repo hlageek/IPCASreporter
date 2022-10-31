@@ -44,9 +44,9 @@ mod_events_server <- function(id, identification, usr) {
       
       observeEvent(usr$person_id, {
           
-          section_ii$eventlist <- ipcas_db |> 
-              dplyr::tbl("events") |> 
-              dplyr::filter(person_id_events == !!usr$person_id) |> 
+          section_ii$eventlist <- ipcas_db %>% 
+              dplyr::tbl("events") %>% 
+              dplyr::filter(person_id_events == !!usr$person_id) %>% 
               dplyr::pull(event)
           
       })
@@ -96,9 +96,9 @@ mod_events_server <- function(id, identification, usr) {
     observeEvent(input$add, {
         
         
-        event_ids <- ipcas_db |> 
-            dplyr::tbl("events") |> 
-            dplyr::filter(person_id_events == !!usr$person_id) |> 
+        event_ids <- ipcas_db %>% 
+            dplyr::tbl("events") %>% 
+            dplyr::filter(person_id_events == !!usr$person_id) %>% 
             dplyr::pull(event_id)
         
         if (length(event_ids)>0) {
@@ -123,9 +123,9 @@ mod_events_server <- function(id, identification, usr) {
             )
         })
         
-        section_ii$eventlist <- ipcas_db |> 
-            dplyr::tbl("events") |> 
-            dplyr::filter(person_id_events == !!usr$person_id) |> 
+        section_ii$eventlist <- ipcas_db %>% 
+            dplyr::tbl("events") %>% 
+            dplyr::filter(person_id_events == !!usr$person_id) %>% 
             dplyr::pull(event)
         
     })

@@ -4,7 +4,7 @@ ipcas_db <- pool::dbPool(
     username = "test",
     password = "test"
 )
-onStop(function() {
+shiny::onStop(function() {
     pool::poolClose(ipcas_db)
 })
 

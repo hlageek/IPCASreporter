@@ -24,11 +24,11 @@ app_ui <- function(request) {
                                      
                             ),
                             
-                            "Researcher's details",
+                            "",
                             
-                            tabPanel("IDENTIFICATION", 
+                            tabPanel("RESEARCHER'S DETAILS", 
                                      
-                                     h2("IDENTIFICATION"),
+                                     h2("RESEARCHER'S DETAILS"),
                                      mod_identification_ui("identification_ui_1")
                                   
                                      ),
