@@ -90,7 +90,6 @@ mod_undergrad_server <- function(id, usr) {
         loc <- reactiveValues()
         section_iii_undergrad <- reactiveValues()
         
-        #  on startup ####
         
         
         # names of things ####
@@ -127,9 +126,13 @@ mod_undergrad_server <- function(id, usr) {
             
         )
         
+        #  on startup ####
+        
         observeEvent(usr$person_id, {
             
-            uni_choices <- unique(IPCASreporter::universities$university)
+            uni_choices <- IPCASreporter::universities %>% 
+                dplyr::pull(university)
+            uni_choices <- unique(uni_choices)
         
             updateSelectInput(session = session,
                               "undergrad_school", 
