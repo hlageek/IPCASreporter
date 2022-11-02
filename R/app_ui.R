@@ -20,14 +20,14 @@ app_ui <- function(request) {
       titlePanel(title = img(src="https://www.flu.cas.cz/images/logo_web_prehozene_krivky_50.png"), "IP CAS annual report"),
       tags$div(
       selectInput(inputId = "lang",
-                  label = "Language",
+                  label = NULL,
                   choices = i18n$get_languages()
                   ),
-      style = "float: right;"),
-      
-               navlistPanel(widths = c(2,10), well = F, #####
+      style = "float: right; max-width: 100px"),
+
+                     navlistPanel(widths = c(2,10), well = F, #####
                             
-                            tabPanel(i18n$t("NAHLED"),
+                            tabPanel(i18n$t("NÁHLED"),
                                      
                                      mod_docx_ui("docx_ui_1",  i18n),
                                      
@@ -36,22 +36,20 @@ app_ui <- function(request) {
                                      
                             ),
                             
-                            "Researcher's details",
-                            
-                            tabPanel("OSOBNÍ ÚDAJE", 
+
+                            tabPanel(i18n$t("OSOBNÍ ÚDAJE"), 
                                      
-                                     h2("IDENTIFICATION"),
+                                     h2(i18n$t("OSOBNÍ ÚDAJE")),
                                      mod_identification_ui("identification_ui_1", i18n)
                                   
                                      ),
-                            "Report sections",
-                            
-                            tabPanel("I. VYDANÉ PUBLIKACE", 
+
+                            tabPanel(i18n$t("I. VYDANÉ PUBLIKACE"), 
                                      
-                                     h2("I. VYDANÉ PUBLIKACE"),
-                                     p( "Including ASEP reference."),
+                                     h2(i18n$t("I. VYDANÉ PUBLIKACE")),
+                                     p(i18n$t("Včetně odkazu do ASEP.")),
                                      
-                                     mod_pub_ui("pub_ui_1")
+                                     mod_pub_ui("pub_ui_1", i18n)
                                      
                                      ),
                             

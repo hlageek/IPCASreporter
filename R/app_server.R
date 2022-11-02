@@ -33,7 +33,7 @@ i18n_r <- reactive({
     
     identification <- mod_identification_server("identification_ui_1", usr, i18n_r)
 
-    section_i <- mod_pub_server("pub_ui_1", identification, usr)
+    section_i <- mod_pub_server("pub_ui_1", identification, usr, i18n_r)
     
     section_ii <- mod_events_server("events_ui_1", identification, usr)
     

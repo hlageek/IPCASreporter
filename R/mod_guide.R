@@ -13,7 +13,7 @@ mod_guide_ui <- function(id){
     
     actionButton(ns("show_guide"),
       label = "Instructions",
-      icon = icon("info-circle"))
+      icon = icon("info-circle", verify_fa = FALSE))
  
   )
 }

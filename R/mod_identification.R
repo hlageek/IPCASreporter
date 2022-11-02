@@ -17,7 +17,7 @@ mod_identification_ui <- function(id, i18n){
     
     actionButton(ns("add"),
                  label = i18n$t("Aktualizovat výkaz"),
-                 #icon = icon("check"),
+                 icon = icon("check"),
                  class = "btn-success"
                  )
  
@@ -31,19 +31,19 @@ mod_identification_ui <- function(id, i18n){
          textOutput(ns("employee_name"), inline = TRUE),
          
          br(),
-         "Oddělení:",
+         i18n$t("Oddělení:"),
          textOutput(ns("department"), inline = TRUE),
          
          br(),
-         "Úvazek:",
+         i18n$t("Úvazek:"),
          textOutput(ns("fte"), inline = TRUE),
          
          br(),
-         "E-mail:",
+         i18n$t("E-mail:"),
          textOutput(ns("email"), inline = TRUE),
          
          br(),
-         "Poznámka:",
+         i18n$t("Poznámka:"),
          textOutput(ns("comment"), inline = TRUE)
          
          )
@@ -77,7 +77,7 @@ mod_identification_server <- function(id, usr, i18n) {
             ),
             
             textInput(ns("employee_name_last"), 
-                      "Příjmení", 
+                      i18n()$t("Příjmení"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
@@ -86,7 +86,7 @@ mod_identification_server <- function(id, usr, i18n) {
             ),
             
             textInput(ns("email"),
-                      label = "E-mailová adresa", 
+                      label = i18n()$t("E-mailová adresa"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
@@ -95,7 +95,7 @@ mod_identification_server <- function(id, usr, i18n) {
             ),
             
             selectInput(ns("department"),
-                        label = "Oddělení", 
+                        label = i18n()$t("Oddělení"), 
                         selected = ipcas_db |> 
                             dplyr::tbl("departments") |> 
                             dplyr::filter(
@@ -106,7 +106,7 @@ mod_identification_server <- function(id, usr, i18n) {
             ),
             
             sliderInput(ns("fte"), 
-                        label = "Úvazek", 
+                        label = i18n()$t("Úvazek"), 
                         value = ifelse(isTruthy(ipcas_db |> 
                             dplyr::tbl("persons") |> 
                             dplyr::filter(person_id == !!usr$person_id) |> 
@@ -122,12 +122,12 @@ mod_identification_server <- function(id, usr, i18n) {
             ),
             
             textAreaInput(ns("comment"), 
-                          label = "Poznámka",
+                          label = i18n()$t("Poznámka"),
                           value = ipcas_db |> 
                               dplyr::tbl("persons") |> 
                               dplyr::filter(person_id == !!usr$person_id) |> 
                               dplyr::pull(comment),
-                          placeholder = "Např. změny ve výši úvazku v průběhu roku."
+                          placeholder = i18n()$t("Např. změny ve výši úvazku v průběhu roku.")
             )
         )
         
