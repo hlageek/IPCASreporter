@@ -9,20 +9,19 @@ app_server <- function( input, output, session ) {
   
     # calling the translator sent as a golem option
     translator <- golem::get_golem_options(which = "translator")
-    translator$set_translation_language("cz")
-    
+    #translator$set_translation_language("cz")
 
-    i18n <- reactive({
-        selected <- input$lang
-        if (length(selected) > 0 && selected %in% translator$get_languages()) {
-            translator$set_translation_language(selected)
-        }
-        translator
-    })
+i18n_r <- reactive({
+    selected <- input$lang
+    if (length(selected) > 0 && selected %in% translator$get_languages()) {
+        translator$set_translation_language(selected)
+    }
+    translator
+})
     
     observeEvent(input[["lang"]], {
         shiny.i18n::update_lang(session, input[["lang"]])
-        i18n()$set_translation_language(input[["lang"]])
+        i18n_r()$set_translation_language(input[["lang"]])
     })
     
     usr <- reactiveValues()
@@ -32,7 +31,7 @@ app_server <- function( input, output, session ) {
     )  
 
     
-    identification <- mod_identification_server("identification_ui_1", usr)
+    identification <- mod_identification_server("identification_ui_1", usr, i18n_r)
 
     section_i <- mod_pub_server("pub_ui_1", identification, usr)
     

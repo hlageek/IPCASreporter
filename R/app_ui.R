@@ -9,7 +9,7 @@ app_ui <- function(request) {
     i18n$set_translation_language("cz")
     
 
-  tagList(
+  tagList(shiny.i18n::usei18n(i18n),
     # Leave this function for adding external resources
     golem_add_external_resources(),
     
@@ -33,7 +33,7 @@ app_ui <- function(request) {
                                      mod_docx_ui("docx_ui_1"),
                                      
                                      
-                                     mod_preview_ui("preview_ui_1")
+                                     mod_preview_ui("preview_ui_1", i18n)
                                      
                             ),
                             
@@ -42,7 +42,7 @@ app_ui <- function(request) {
                             tabPanel("OSOBNÍ ÚDAJE", 
                                      
                                      h2("IDENTIFICATION"),
-                                     mod_identification_ui("identification_ui_1")
+                                     mod_identification_ui("identification_ui_1", i18n)
                                   
                                      ),
                             "Report sections",

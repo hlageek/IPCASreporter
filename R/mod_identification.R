@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_identification_ui <- function(id){
+mod_identification_ui <- function(id, i18n){
   ns <- NS(id)
 
   fluidRow(column(width = 4,
@@ -15,8 +15,8 @@ mod_identification_ui <- function(id){
     uiOutput(ns("identification_ui")),
     
     actionButton(ns("add"),
-                 label = "Aktualizovat výkaz",
-                 icon = icon("check"),
+                 label = i18n$t("Aktualizovat výkaz"),
+                 #icon = icon("check"),
                  class = "btn-success"
                  )
  
@@ -26,7 +26,7 @@ mod_identification_ui <- function(id){
   column(width = 8,
          
          br(),
-         "Jméno:",
+         i18n$t("Jméno:"),
          textOutput(ns("employee_name"), inline = TRUE),
          
          br(),
@@ -54,7 +54,7 @@ mod_identification_ui <- function(id){
 #' identification Server Function
 #'
 #' @noRd 
-mod_identification_server <- function(id, usr) {
+mod_identification_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     ns <- NS(id)
@@ -67,7 +67,7 @@ mod_identification_server <- function(id, usr) {
         tagList(
             
             textInput(ns("employee_name_first"), 
-                      "Jméno", 
+                      i18n()$t("Jméno"), 
                       value = ipcas_db |> 
                           dplyr::tbl("persons") |> 
                           dplyr::filter(person_id == !!usr$person_id) |> 
