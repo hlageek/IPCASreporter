@@ -27,7 +27,7 @@ app_ui <- function(request) {
       
                navlistPanel(widths = c(2,10), well = F, #####
                             
-                            tabPanel(i18n$t("NÁHLED"),
+                            tabPanel(i18n$t("NAHLED"),
                                      
                                      mod_docx_ui("docx_ui_1",  i18n),
                                      
