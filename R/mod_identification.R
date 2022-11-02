@@ -10,7 +10,8 @@
 mod_identification_ui <- function(id, i18n){
   ns <- NS(id)
 
-  fluidRow(column(width = 4,
+  fluidRow(shiny.i18n::usei18n(i18n),
+           column(width = 4,
     
     uiOutput(ns("identification_ui")),
     

@@ -6,16 +6,16 @@
 #' @noRd
 app_ui <- function(request) {
     i18n <- golem::get_golem_options(which = "translator")
-    i18n$set_translation_language("cz")
-    
 
-  tagList(shiny.i18n::usei18n(i18n),
+
+  tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    
+    shiny.i18n::usei18n(i18n),
     
     # List the first level UI elements here 
-    fluidPage(
+    fluidPage(     
+
               theme = shinythemes::shinytheme("journal"),
       titlePanel(title = img(src="https://www.flu.cas.cz/images/logo_web_prehozene_krivky_50.png"), "IP CAS annual report"),
       tags$div(
@@ -25,12 +25,11 @@ app_ui <- function(request) {
                   ),
       style = "float: right;"),
       
-      
-               navlistPanel(widths = c(2,10), well = F,
+               navlistPanel(widths = c(2,10), well = F, #####
                             
                             tabPanel(i18n$t("NÁHLED"),
                                      
-                                     mod_docx_ui("docx_ui_1"),
+                                     mod_docx_ui("docx_ui_1",  i18n),
                                      
                                      
                                      mod_preview_ui("preview_ui_1", i18n)
