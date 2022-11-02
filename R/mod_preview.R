@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_preview_ui <- function(id){
+mod_preview_ui <- function(id, i18n){
   ns <- NS(id)
  
     
@@ -48,7 +48,7 @@ mod_preview_ui <- function(id){
     div(id = "preview",
     br(),
     h4("IDENTIFIKAČNÍ ÚDAJE"),
-    "Jméno:",
+    i18n$t("Jméno:"),
     textOutput(ns("employee_name"), inline = TRUE),
     
     br(),

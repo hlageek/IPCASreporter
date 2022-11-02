@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_pub_ui <- function(id){
+mod_pub_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 4,
@@ -17,7 +17,7 @@ mod_pub_ui <- function(id){
    
    
    actionButton(ns("add"),
-                label = "Add to report",   
+                label = i18n$t("Aktualizovat výkaz"),   
                 icon = icon("check"),     
                 class = "btn-success"
    )
@@ -26,7 +26,7 @@ mod_pub_ui <- function(id){
   
   column(width = 8,
          
-         h4("Publications selected for report"),
+         h4(i18n$t("Publikace zařazené do výkazu")),
          htmlOutput(ns("section_i"), inline = FALSE),
          
          
@@ -37,7 +37,7 @@ mod_pub_ui <- function(id){
 #' pub Server Function
 #'
 #' @noRd 
-mod_pub_server <-  function(id, identification, usr) {
+mod_pub_server <-  function(id, identification, usr, i18n) {
   moduleServer(id, function(input, output, session) {
 
       ns <- NS(id)
@@ -58,7 +58,7 @@ mod_pub_server <-  function(id, identification, usr) {
 
       if (!isTruthy(identification$employee_name)) {
         
-        "Fill your identification details first."
+          i18n()$t("Nejprve vyplňte osobní údaje.")
         
       } else {
         
@@ -75,7 +75,7 @@ mod_pub_server <-  function(id, identification, usr) {
        tagList(
 
         checkboxGroupInput(ns("publist"), 
-                           label ="Most recent publications found in ASEP.", 
+                           label = i18n()$t("Nedávné publikace nalezené v ASEPu."), 
                            width = "100%",
                            choiceNames = displayed_citations,
                            choiceValues = citations)
@@ -83,11 +83,11 @@ mod_pub_server <-  function(id, identification, usr) {
        )
       } else {
         
-        paste0("No ASEP records found for author ", 
+        paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora "), 
                identification$employee_name, 
-               " in year ", 
+               i18n()$t(" v roce"), 
                format(Sys.Date(), "%Y"), 
-               " or ", 
+               i18n()$t(" nebo "), 
                format(Sys.Date()-365, "%Y"), 
                ".")
       }

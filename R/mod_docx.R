@@ -7,15 +7,14 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_docx_ui <- function(id){
+mod_docx_ui <- function(id, i18n){
   ns <- NS(id)
   tagList(
-
-    downloadButton(ns("download_docx"), "Download"),
+    downloadButton(ns("download_docx"), i18n$t("Stáhnout")),
     
     actionButton(ns("submit_docx"), 
                    icon = icon("paper-plane"), 
-                   "Submit",
+                   i18n$t("Odeslat"),
                    class = "btn-warning"),
     
     mod_guide_ui("guide_ui_1")
