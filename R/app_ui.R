@@ -1,3 +1,11 @@
+
+shinymanager::set_labels(
+    language = "en",
+    "Please authenticate" = "",
+    "Username:" = "User:",
+    "Password:" = "Password:"
+)
+
 #' The application User-Interface
 #'
 #' @param request Internal parameter for `{shiny}`.
@@ -6,7 +14,6 @@
 #' @noRd
 app_ui <- function(request) {
     i18n <- golem::get_golem_options(which = "translator")
-
 
   tagList(
     # Leave this function for adding external resources
@@ -221,18 +228,6 @@ app_ui <- function(request) {
 
 }
 
-# define some credentials
-credentials <- data.frame(
-    user = c("test", "flu"), # mandatory
-    password = c("test", "flu"), # mandatory
-    start = c("2019-04-15"), # optional (all others)
-    expire = c(NA, NA),
-    admin = c(TRUE, FALSE),
-    person_id = c(123, 456),
-    name_last = c("Hladík", "Hladík2"),
-    name_first = c("Radim", "Radim2"),
-  stringsAsFactors = FALSE
-)
 
 
 #' Add external Resources to the Application

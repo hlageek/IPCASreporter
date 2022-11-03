@@ -9,7 +9,9 @@ run_app(
   email_default = NULL,
   dbname = NULL,
   dbusername = NULL,
-  dbpassword = NULL
+  dbpassword = NULL,
+  credentials_path = NULL,
+  credentials_pass = NULL
 )
 }
 \arguments{

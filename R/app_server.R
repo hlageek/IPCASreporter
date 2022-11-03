@@ -7,7 +7,6 @@
 #' @noRd
 app_server <- function( input, output, session ) {
   
-    ipcas_db <- golem::get_golem_options(which = "ipcas_db")
     # calling the translator sent as a golem option
     translator <- golem::get_golem_options(which = "translator")
     #translator$set_translation_language("cz")
@@ -28,7 +27,9 @@ i18n_r <- reactive({
     usr <- reactiveValues()
     
     usr <- shinymanager::secure_server(
-        check_credentials = shinymanager::check_credentials(credentials)
+        check_credentials = shinymanager::check_credentials(
+            db = golem::get_golem_options(which = "credentials_path"),
+            passphrase = golem::get_golem_options(which = "credentials_pass"))
     )  
 
     
@@ -128,3 +129,4 @@ i18n_r <- reactive({
     mod_guide_server("guide_ui_1")
     
 }
+

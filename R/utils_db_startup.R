@@ -92,6 +92,7 @@ CREATE TABLE IF NOT EXISTS conferences (
 );
 "
 
+#' @export
 clear_db <- function(pool) {
     
     tables <- pool::dbListTables(pool)
@@ -105,6 +106,7 @@ clear_db <- function(pool) {
 
 # clear_db(pool)
 
+#' @export
 create_db_schema <- function(pool){
     # TODO: Full DB structure
     DBI::dbExecute(pool, CREATE_PERSONS_SQL)
@@ -127,5 +129,33 @@ make_pool <- quote({
             username = golem::get_golem_options("dbusername"),
             password = golem::get_golem_options("dbpassword")
     )
-        })
     
+    shiny::onStop(function() {
+        pool::poolClose(ipcas_db)
+    })
+})
+    
+
+#' @export
+create_credentials_db <- function(admin_pass, path, df = NULL) {
+    # Init DB using credentials data
+    # define some credentials
+    admin_df <- data.frame(
+        user = "admin", # mandatory
+        password = admin_pass, # mandatory
+        admin = TRUE,
+        person_id = 123,
+        level = 5,
+        stringsAsFactors = FALSE
+    )
+    
+    credentials <- dplyr::bind_rows(admin_df, df)
+
+    # Init the database
+    shinymanager::create_db(
+        credentials_data = credentials,
+        sqlite_path = path, # will be created
+        passphrase = admin_pass
+    )
+    
+}

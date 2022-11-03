@@ -1,5 +1,5 @@
 # Set options here
-options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
+options(golem.app.prod = TRUE) # TRUE = production mode, FALSE = development mode
 
 # Detach all loaded packages and clean your environment
 golem::detach_all_attached()
@@ -14,6 +14,8 @@ golem::document_and_reload()
             email_default = Sys.getenv("golem.email"),
             dbname = "ipcas",
             dbusername = "test",
-            dbpassword = "test"
+            dbpassword = "test",
+            credentials_path = "credentials.sqlite",
+            credentials_pass = "test"
             )
     )

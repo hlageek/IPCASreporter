@@ -10,10 +10,16 @@ run_app <- function(
         email_default = NULL,
         dbname = NULL,
         dbusername = NULL,
-        dbpassword = NULL) {
+        dbpassword = NULL,
+        credentials_path = NULL,
+        credentials_pass = NULL) {
   with_golem_options(
     app = shinyApp(
-      ui = shinymanager::secure_app(app_ui),
+      ui = shinymanager::secure_app(app_ui,
+                                    tags_top = tags$img(src="https://pbs.twimg.com/profile_images/1257390834074386432/wpu1564y_400x400.jpg", 
+                                                        height="30%", style = "margin-right: 20px"),
+                                    enable_admin = TRUE, 
+                                    fab_position = "bottom-left"),
       server = app_server,
       onStart = purrr::partial(eval, expr = make_pool, envir = globalenv())
       ),
@@ -22,7 +28,9 @@ run_app <- function(
         email_default = email_default,
         dbname = dbname,
         dbusername = dbusername,
-        dbpassword = dbpassword
+        dbpassword = dbpassword,
+        credentials_path = credentials_path,
+        credentials_pass = credentials_pass
         )
   )
 }
