@@ -35,13 +35,13 @@ i18n_r <- reactive({
 
     section_i <- mod_pub_server("pub_ui_1", identification, usr, i18n_r)
     
-    section_ii <- mod_events_server("events_ui_1", identification, usr)
+    section_ii <- mod_events_server("events_ui_1", identification, usr, i18n_r)
     
-    section_iii_undergrad <- mod_undergrad_server("undergrad_ui_1", usr)
+    section_iii_undergrad <- mod_undergrad_server("undergrad_ui_1", usr, i18n_r)
     
-    section_iii_postgrad <- mod_postgrad_server("postgrad_ui_1", usr)
+    section_iii_postgrad <- mod_postgrad_server("postgrad_ui_1", usr, i18n_r)
     
-    section_iii_conference <- mod_conference_server( "conference_ui_1")
+    section_iii_conference <- mod_conference_server( "conference_ui_1", usr, i18n_r)
     
     section_iii_lecture <- mod_lectures_server("lectures_ui_1")
     

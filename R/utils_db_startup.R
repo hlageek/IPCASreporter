@@ -56,6 +56,41 @@ CREATE TABLE IF NOT EXISTS undergrad (
         FOREIGN KEY (person_id_undergrad) REFERENCES persons (person_id)
 );
 "
+CREATE_POSTGRAD_SQL <- "
+CREATE TABLE IF NOT EXISTS postgrad (
+      postgrad_id INT AUTO_INCREMENT PRIMARY KEY
+,     person_id_postgrad INT
+,     postgrad_school VARCHAR(500)
+,     postgrad_faculty VARCHAR(500)
+,     postgrad_program VARCHAR(500)
+,     postgrad_year VARCHAR(100)
+,     postgrad_level VARCHAR(100)
+,     postgrad_course VARCHAR(500)
+,     postgrad_type_prednasky VARCHAR(100)
+,     postgrad_type_seminare VARCHAR(100)
+,     postgrad_type_cviceni VARCHAR(100)
+,     postgrad_type_vedeni VARCHAR(100)
+,     postgrad_type_texty VARCHAR(100)
+,     postgrad_hours INT
+,     postgrad_other TEXT
+,    CONSTRAINT `person_id_postgrad`
+        FOREIGN KEY (person_id_postgrad) REFERENCES persons (person_id)
+);
+"
+
+CREATE_CONFERENCES_SQL <- "
+CREATE TABLE IF NOT EXISTS conferences (
+     conference_id INT AUTO_INCREMENT PRIMARY KEY
+,    person_id_conferences INT
+,    conference_contribution VARCHAR(500)
+,    conference_organizer VARCHAR(500)
+,    conference_name TEXT
+,    conference_date VARCHAR(40)
+,    conference_location VARCHAR(25)
+,    CONSTRAINT `person_id_conferences`
+        FOREIGN KEY (person_id_conferences) REFERENCES persons (person_id)
+);
+"
 
 clear_db <- function(pool) {
     
@@ -77,6 +112,9 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_PUBS_SQL)
     DBI::dbExecute(pool, CREATE_EVENTS_SQL)
     DBI::dbExecute(pool, CREATE_UNDERGRAD_SQL)
+    DBI::dbExecute(pool, CREATE_POSTGRAD_SQL)
+    DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
+
 }
 
 # create_db_schema(pool)

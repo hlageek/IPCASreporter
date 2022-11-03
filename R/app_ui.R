@@ -70,18 +70,18 @@ app_ui <- function(request) {
 
                                      tabsetPanel(tabPanel("Bc. & Mgr.",
 
-                                     mod_undergrad_ui("undergrad_ui_1"),
+                                     mod_undergrad_ui("undergrad_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
                                      tabPanel("PhD.",
 
-                                     mod_postgrad_ui("postgrad_ui_1"),
+                                     mod_postgrad_ui("postgrad_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
 
                                      tabPanel("Konference",
 
-                                     mod_conference_ui("conference_ui_1"),
+                                     mod_conference_ui("conference_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
                                      tabPanel("Přednášky",

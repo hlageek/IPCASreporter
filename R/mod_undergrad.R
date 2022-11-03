@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_undergrad_ui <- function(id){
+mod_undergrad_ui <- function(id, i18n){
     ns <- NS(id)
     
     
@@ -84,7 +84,7 @@ mod_undergrad_ui <- function(id){
 #' undergrad Server Function
 #'
 #' @noRd 
-mod_undergrad_server <- function(id, usr) {
+mod_undergrad_server <- function(id, usr, i18n) {
     moduleServer(id, function(input, output, session) {
         
         loc <- reactiveValues()

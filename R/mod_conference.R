@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_conference_ui <- function(id){
+mod_conference_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 6,
@@ -27,8 +27,8 @@ mod_conference_ui <- function(id){
                   
                   radioButtons(ns("conference_location"), 
                                label = "Kategorie", 
-                               choices = c("Domácí" = "domestic",
-                                           "Zahraniční" = "foreign")
+                               choices = c("Domácí" = "Domácí",
+                                           "Zahraniční" = "Zahraniční")
                                ),
                   
                   
@@ -72,28 +72,81 @@ mod_conference_ui <- function(id){
 #' conference Server Function
 #'
 #' @noRd 
-mod_conference_server <- function(id) {
+mod_conference_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
     section_iii_conference <- reactiveValues()
-   
+    loc <- reactiveValues()
     
     
     items <- c(
       "conference_contribution",
       "conference_organizer",
       "conference_name",
-      "conference_date"
+      "conference_date",
+      "conference_location"
     )
     
     item_names <- c(
       "Název příspěvku:",
       "Pořadatel:",
       "Název konference:",
-      "Datum konání:"
+      "Datum konání:",
+      "Místo konání:"
     )
     
+    
+    
+    
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = item_names)
+
+           loc$all_df <-  ipcas_db %>%
+            dplyr::tbl("conferences") %>%
+            dplyr::filter(person_id_conferences == !!usr$person_id) %>%
+            dplyr::select(-person_id_conferences) %>%
+            tidyr::pivot_longer(-conference_id,
+                                names_to = "key",
+                                values_to = "value") %>%
+            dplyr::collect() %>%
+            dplyr::left_join(loc$names, by = "key") %>%
+            tidyr::unite("value", c(names, value), sep = " ") %>%
+            dplyr::select(-key) %>%
+            dplyr::group_by(conference_id) %>%
+            dplyr::summarise(data = stringr::str_flatten(value,                                                    collapse = "<br>"))
+           section_iii_conference$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
+           
+           
+
+           ids_domestic <-  ipcas_db %>%
+               dplyr::tbl("conferences") %>%
+               dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+               dplyr::filter(conference_location == "Domácí") %>% 
+               dplyr::pull(conference_id)
+           
+           ids_foreign <- ipcas_db %>%
+               dplyr::tbl("conferences") %>%
+               dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+               dplyr::filter(conference_location == "Zahraniční") %>% 
+               dplyr::pull(conference_id)
+           
+        updateSelectInput(session = session,
+                          "remove_list_domestic",
+                          choices = stats::setNames(
+                              ids_domestic,
+                              seq_along(ids_domestic)))
+        updateSelectInput(session = session,
+                          "remove_list_foreign",
+                          choices = stats::setNames(
+                              ids_foreign,
+                              seq_along(ids_foreign)))
+
+        
+        
+    })
     
     item_values <- reactive({
 
@@ -103,26 +156,44 @@ mod_conference_server <- function(id) {
     
     
     observeEvent(input$add, {
-      #browser()
-      all_items <- list()
+browser()
+          all_items <- purrr::map2_chr(items, item_names,
+                                       .f = function(items, item_names) {
+              
+              paste(item_names,  paste(input[[items]], collapse = "/"))
+          
+          }
+          )
       
-      for (i in seq_along(items)) {
-        
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
-        
-      }
-      
+          new_entry_df <- tibble::tibble(key = items,
+                                   values = unlist(all_items)) %>% 
+              tidyr::pivot_wider(tidyselect::everything(),
+                                 names_from = "key",
+                                 values_from = "values") %>% 
+              dplyr::mutate(person_id_conferences = usr$person_id) 
+          
+          DBI::dbAppendTable(ipcas_db, "conferences", new_entry_df)
+          
 
-      if (input$conference_location == "domestic") {
+      if (input$conference_location == "Domácí") {
         
       section_iii_conference$domestic[[
         length(
           section_iii_conference$domestic)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
       
+      ids_domestic <-  ipcas_db %>%
+          dplyr::tbl("conferences") %>%
+          dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+          dplyr::filter(conference_location == "Domácí") %>% 
+          dplyr::pull(conference_id)
+      
+      
       updateSelectInput(session = session,
-                        "remove_list_domestic", 
-                        choices = seq_along(section_iii_conference$domestic)
-      )
+                        "remove_list_domestic",
+                        choices = stats::setNames(
+                            ids_domestic,
+                            seq_along(ids_domestic)))
+      
       
       } else {
         
@@ -131,10 +202,19 @@ mod_conference_server <- function(id) {
               section_iii_conference$foreign)+1)
         ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
         
+        
+        ids_foreign <- ipcas_db %>%
+            dplyr::tbl("conferences") %>%
+            dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+            dplyr::filter(conference_location == "Zahraniční") %>% 
+            dplyr::pull(conference_id)
+        
         updateSelectInput(session = session,
-                          "remove_list_foreign", 
-                          choices = seq_along(section_iii_conference$foreign)
-        )
+                          "remove_list_foreign",
+                          choices = stats::setNames(
+                              ids_foreign,
+                              seq_along(ids_foreign)))
+        
         
       }
       
@@ -147,55 +227,63 @@ mod_conference_server <- function(id) {
       
       section_iii_conference$domestic[as.integer(input$remove_list_domestic)] <- NULL 
       
-
+      
+      pool::dbExecute(ipcas_db, 
+                      "DELETE FROM postgrad WHERE conference_id IN (?)",
+                      params = list(input$remove_list))
+      
+      ids_domestic <-  ipcas_db %>%
+          dplyr::tbl("conferences") %>%
+          dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+          dplyr::filter(conference_location == "Domácí") %>% 
+          dplyr::pull(conference_id)
+      
+      
       updateSelectInput(session = session,
-                        "remove_list_domestic", 
-                        choices = seq_along(section_iii_conference$domestic)
-                        
-      )
+                        "remove_list_domestic",
+                        choices = stats::setNames(
+                            ids_domestic,
+                            seq_along(ids_domestic)))
+
       
     })
     
     observeEvent(input$remove_foreign, {
       
-      
+     
       section_iii_conference$foreign[as.integer(input$remove_list_foreign)] <- NULL 
+      pool::dbExecute(ipcas_db, 
+                      "DELETE FROM postgrad WHERE conference_id IN (?)",
+                      params = list(input$remove_list))
       
+      ids_foreign <- ipcas_db %>%
+          dplyr::tbl("conferences") %>%
+          dplyr::filter(person_id_conferences == !!usr$person_id) %>% 
+          dplyr::filter(conference_location == "Zahraniční") %>% 
+          dplyr::pull(conference_id)
       
       updateSelectInput(session = session,
-                        "remove_list_foreign", 
-                        choices = seq_along(section_iii_conference$foreign)
-                        
-      )
+                        "remove_list_foreign",
+                        choices = stats::setNames(
+                            ids_foreign,
+                            seq_along(ids_foreign)))
       
     })
     
     output$section_iii_conferences_domestic <- renderText({
-      if (length(section_iii_conference$domestic)>0) {
+      if (!is.null(section_iii_conference$domestic)) {
         paste(paste0(seq_along(section_iii_conference$domestic), ".<br>"),
               section_iii_conference$domestic)
       } else {""}
     })
     
     output$section_iii_conferences_foreign <- renderText({
-      if (length(section_iii_conference$foreign)>0) {
+      if (!is.null(section_iii_conference$foreign)) {
         paste(paste0(seq_along(section_iii_conference$foreign), ".<br>"),
               section_iii_conference$foreign)
       } else {""}
     })
     
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_iii_conference_foreign <- section_iii_conference$foreign
-        state$values$section_iii_conference_domestic <- section_iii_conference$domestic
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_iii_conference$foreign <- state$values$section_iii_conference_foreign
-        section_iii_conference$domestic <- state$values$section_iii_conference_domestic
-    })
     
     return(section_iii_conference)
     

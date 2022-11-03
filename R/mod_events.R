@@ -36,7 +36,7 @@ mod_events_ui <- function(id){
 #' events Server Function
 #'
 #' @noRd 
-mod_events_server <- function(id, identification, usr) {
+mod_events_server <- function(id, identification, usr, i18n) {
   moduleServer(id, function(input, output, session) { 
     
       ns <- NS(id)
