@@ -1,13 +1,3 @@
-ipcas_db <- pool::dbPool(
-    drv = RMariaDB::MariaDB(),
-    dbname = "ipcas",
-    username = "test",
-    password = "test"
-)
-shiny::onStop(function() {
-    pool::poolClose(ipcas_db)
-})
-
 # Set options here
 options(golem.app.prod = FALSE) # TRUE = production mode, FALSE = development mode
 
@@ -19,9 +9,11 @@ golem::detach_all_attached()
 golem::document_and_reload()
 
 # Run the application
-email_password <-  keyring::key_get(service = "flumail",
-                                 username = "flu.avcr")
-
-email_default <-  Sys.getenv("golem.email")
-
-(run_app())
+(run_app(   email_password = keyring::key_get(service = "flumail",
+                                                username = "flu.avcr"),
+            email_default = Sys.getenv("golem.email"),
+            dbname = "ipcas",
+            dbusername = "test",
+            dbpassword = "test"
+            )
+    )

@@ -118,3 +118,14 @@ create_db_schema <- function(pool){
 }
 
 # create_db_schema(pool)
+
+
+make_pool <- quote({
+    ipcas_db <- pool::dbPool(
+            drv = RMariaDB::MariaDB(),
+            dbname = golem::get_golem_options("dbname"),
+            username = golem::get_golem_options("dbusername"),
+            password = golem::get_golem_options("dbpassword")
+    )
+        })
+    

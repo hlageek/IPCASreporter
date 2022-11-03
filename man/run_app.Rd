@@ -4,7 +4,13 @@
 \alias{run_app}
 \title{Run the Shiny Application}
 \usage{
-run_app(email_password = NULL, email_default = NULL)
+run_app(
+  email_password = NULL,
+  email_default = NULL,
+  dbname = NULL,
+  dbusername = NULL,
+  dbpassword = NULL
+)
 }
 \arguments{
 \item{...}{A series of options to be used inside the app.}
