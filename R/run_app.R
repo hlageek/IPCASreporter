@@ -7,7 +7,8 @@
 #' @importFrom golem with_golem_options
 run_app <- function(
         email_password = NULL,
-        email_default = NULL
+        email_default = NULL,
+        ipcas_db = NULL
 ) {
   with_golem_options(
     app = shinyApp(
@@ -16,7 +17,8 @@ run_app <- function(
       ),
     golem_opts = list(translator = shiny.i18n::Translator$new(translation_csvs_path = app_sys("app/www/translations")),
         email_password = email_password,
-        email_default = email_default
+        email_default = email_default,
+        ipcas_db = ipcas_db
         )
   )
 }

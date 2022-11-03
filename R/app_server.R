@@ -7,6 +7,7 @@
 #' @noRd
 app_server <- function( input, output, session ) {
   
+    ipcas_db <- golem::get_golem_options(which = "ipcas_db")
     # calling the translator sent as a golem option
     translator <- golem::get_golem_options(which = "translator")
     #translator$set_translation_language("cz")
