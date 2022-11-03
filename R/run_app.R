@@ -14,7 +14,7 @@ run_app <- function(
       ui = shinymanager::secure_app(app_ui),
       server = app_server
       ),
-    golem_opts = list(translator = shiny.i18n::Translator$new(translation_csvs_path = app_sys("app/www/")),
+    golem_opts = list(translator = shiny.i18n::Translator$new(translation_csvs_path = app_sys("app/www/translations")),
         email_password = email_password,
         email_default = email_default
         )
