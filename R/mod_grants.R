@@ -31,7 +31,7 @@ mod_grants_ui <- function(id){
        style="display:inline-block"),
        tags$div(
        actionButton(ns("add_bespoke"), icon = icon("plus"), label = ""),
-       style="display:inline-block")
+       style="display:inline-block", title = "ddf")
        
        ),
     

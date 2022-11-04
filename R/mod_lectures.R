@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_lectures_ui <- function(id){
+mod_lectures_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
  
@@ -16,10 +16,12 @@ mod_lectures_ui <- function(id){
     textInput(ns("lecture_name"), label = "Název akce"),
     dateInput(ns("lecture_date"), label = "Datum konání"),
     radioButtons(ns("lecture_location"), label = "Kategorie", 
-                 choices = c("Domácí" = "domestic", 
-                             "Zahraniční" = "foreign")),
+                 choices = c("Domácí" = "Domácí", 
+                             "Zahraniční" = "Zahraniční")),
     actionButton(ns("add"),
-                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                 label = "Add to report", 
+                 icon = icon("check"),
+                 class = "btn-success"
     )
   ),
   
@@ -57,129 +59,256 @@ mod_lectures_ui <- function(id){
 #' lectures Server Function
 #'
 #' @noRd 
-mod_lectures_server <- function(id) {
+mod_lectures_server <- function(id, usr, i18n_r) {
   moduleServer(id, function(input, output, session) {
     
     
     section_iii_lecture <- reactiveValues()
-    all_items <- list()
+    loc <- reactiveValues()
     
     
     items <- c(
       "lecture_contribution",
       "lecture_organizer",
       "lecture_name",
-      "lecture_date"
+      "lecture_date",
+      "lecture_location"
     )
     
     item_names <- c(
       "Název přednášky:",
       "Pořadatel:",
       "Název akce:",
-      "Datum konání:"
+      "Datum konání:",
+      "Místo konání:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], format_input))
-      
+    loc$names <- tibble::tibble(key = items,
+                                names = item_names)
+    
+    
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        
+        
+        loc$domestic <- transform_table(ipcas_db = ipcas_db,
+                                        person_id = usr$person_id,
+                                        tbl = "lectures",
+                                        tbl_id = "lecture_id",
+                                        filter_col = "lecture_location",
+                                        filter_val = "Domácí",
+                                        names_df = loc$names)
+        
+        loc$foreign <- transform_table(ipcas_db = ipcas_db,
+                                       person_id = usr$person_id,
+                                       tbl = "lectures",
+                                       tbl_id = "lecture_id",
+                                       filter_col = "lecture_location",
+                                       filter_val = "Zahraniční",
+                                       names_df = loc$names)
+        
+        
+        ids_domestic <- loc$domestic %>% 
+            dplyr::pull(lecture_id)
+        
+        ids_foreign <- loc$foreign %>% 
+            dplyr::pull(lecture_id)
+        
+        updateSelectInput(session = session,
+                          "remove_list_domestic",
+                          choices = stats::setNames(
+                              ids_domestic,
+                              seq_along(ids_domestic)))
+        
+        updateSelectInput(session = session,
+                          "remove_list_foreign",
+                          choices = stats::setNames(
+                              ids_foreign,
+                              seq_along(ids_foreign)))
+        
+        section_iii_lecture$domestic <- paste0("<br>", 
+                                                  loc$domestic$data,
+                                                  "<br>")
+        section_iii_lecture$foreign <- paste0("<br>", 
+                                                 loc$foreign$data,
+                                                 "<br>")
+        
     })
     
     
+    # add ####
     observeEvent(input$add, {
-      
-      
-      for (i in seq_along(items)) {
-        
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
-        
-      }
-      
-      
-      if (input$lecture_location == "domestic") {
-        
-        section_iii_lecture$domestic[[
-          length(
-            section_iii_lecture$domestic)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-        
-        updateSelectInput(session = session,
-                          "remove_list_domestic", 
-                          choices = seq_along(section_iii_lecture$domestic)
+       
+        all_items <- purrr::map_chr(items, 
+                                    .f = function(items) {
+                                        
+                                        unlist(paste(input[[items]], collapse = "/"))
+                                        
+                                    }
         )
         
-      } else {
+        new_entry_df <- tibble::tibble(key = items,
+                                       value = all_items) %>% 
+            tidyr::pivot_wider(tidyselect::everything(),
+                               names_from = "key",
+                               values_from = "value") %>% 
+            dplyr::mutate(person_id_lectures = usr$person_id) 
         
-        section_iii_lecture$foreign[[as.character(
-          length(
-            section_iii_lecture$foreign)+1)
-        ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+        DBI::dbAppendTable(ipcas_db, "lectures", new_entry_df)
         
-        updateSelectInput(session = session,
-                          "remove_list_foreign", 
-                          choices = seq_along(section_iii_lecture$foreign)
-        )
         
-      }
-      
-      
-      
+        if (input$lecture_location == "Domácí") {
+            
+            
+            loc$domestic <- transform_table(ipcas_db = ipcas_db,
+                                            person_id = usr$person_id,
+                                            tbl = "lectures",
+                                            tbl_id = "lecture_id",
+                                            filter_col = "lecture_location",
+                                            filter_val = "Domácí",
+                                            names_df = loc$names)
+            
+            ids_domestic <-  loc$domestic %>% 
+                dplyr::pull(lecture_id)
+            
+            
+            updateSelectInput(session = session,
+                              "remove_list_domestic",
+                              choices = stats::setNames(
+                                  ids_domestic,
+                                  seq_along(ids_domestic)))
+            
+            
+        } else {
+            
+            loc$foreign <- transform_table(ipcas_db = ipcas_db,
+                                           person_id = usr$person_id,
+                                           tbl = "lectures",
+                                           tbl_id = "lecture_id",
+                                           filter_col = "lecture_location",
+                                           filter_val = "Zahraniční",
+                                           names_df = loc$names)
+            
+            
+            ids_foreign <- loc$foreign %>% 
+                dplyr::pull(lecture_id)
+            
+            updateSelectInput(session = session,
+                              "remove_list_foreign",
+                              choices = stats::setNames(
+                                  ids_foreign,
+                                  seq_along(ids_foreign)))
+            
+            
+        }
+        
+        
+        section_iii_lecture$domestic <- paste0("<br>", 
+                                                  loc$domestic$data,
+                                                  "<br>")
+        section_iii_lecture$foreign <- paste0("<br>", 
+                                                 loc$foreign$data,
+                                                 "<br>")
     })
     
+    # remove domestic ####
     observeEvent(input$remove_domestic, {
-      
-      
-      section_iii_lecture$domestic[as.integer(input$remove_list_domestic)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list_domestic", 
-                        choices = seq_along(section_iii_lecture$domestic)
-                        
-      )
-      
-    })
-    
-    observeEvent(input$remove_foreign, {
-      
-      
-      section_iii_lecture$foreign[as.integer(input$remove_list_foreign)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list_foreign", 
-                        choices = seq_along(section_iii_lecture$foreign)
-                        
-      )
-      
-    })
-    
-    output$section_iii_lectures_domestic <- renderText({
-      if (length(section_iii_lecture$domestic)>0) {
-        paste(paste0(seq_along(section_iii_lecture$domestic), ".<br>"),
-              section_iii_lecture$domestic)
-      } else {""}
-    })
-    
-    output$section_iii_lectures_foreign <- renderText({
-      if (length(section_iii_lecture$foreign)>0) {
-        paste(paste0(seq_along(section_iii_lecture$foreign), ".<br>"),
-              section_iii_lecture$foreign)
-      } else {""}
-    })    
-    
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_iii_lecture_foreign <- section_iii_lecture$foreign
-        state$values$section_iii_lecture_domestic <- section_iii_lecture$domestic
+        
+        
+        loc$domestic <- loc$domestic %>% 
+            dplyr::filter(!lecture_id %in% req(input$remove_list_domestic))
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM lectures WHERE lecture_id IN (?)",
+                        params = list(input$remove_list_domestic))
+        
+        ids_domestic <-   loc$domestic %>%
+            dplyr::pull(lecture_id)
+        
+        
+        updateSelectInput(session = session,
+                          "remove_list_domestic",
+                          choices = stats::setNames(
+                              ids_domestic,
+                              seq_along(ids_domestic)))
+        
+        section_iii_lecture$domestic <- paste0("<br>", 
+                                                  loc$domestic$data,
+                                                  "<br>")
+        section_iii_lecture$foreign <- paste0("<br>", 
+                                                 loc$foreign$data,
+                                                 "<br>")
         
     })
     
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_iii_lecture$foreign <- state$values$section_iii_lecture_foreign
-        section_iii_lecture$domestic <- state$values$section_iii_lecture_domestic
-    })  
+    # remove foreign ####
+    observeEvent(input$remove_foreign, {
+        
+        
+        
+        loc$foreign <- loc$foreign %>% 
+            dplyr::filter(!lecture_id %in% req(input$remove_list_foreign))
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM lectures WHERE lecture_id IN (?)",
+                        params = list(input$remove_list_foreign))
+        
+        ids_foreign <-   loc$foreign %>%
+            dplyr::pull(lecture_id)
+        
+        
+        updateSelectInput(session = session,
+                          "remove_list_foreign",
+                          choices = stats::setNames(
+                              ids_foreign,
+                              seq_along(ids_foreign)))
+        
+        section_iii_lecture$domestic <- paste0("<br>", 
+                                                  loc$domestic$data,
+                                                  "<br>")
+        section_iii_lecture$foreign <- paste0("<br>", 
+                                                 loc$foreign$data,
+                                                 "<br>")
+        
+    })
+    
+    # output domestic ####
+    output$section_iii_lectures_domestic <- renderText({
+        
+        if ( nrow(loc$domestic)>0 ) {
+            
+            text_to_display <- loc$domestic %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+        } 
+        
+        else {""}
+        
+    })
+    
+    # output foreign ####
+    output$section_iii_lectures_foreign <- renderText({
+        
+        if ( nrow(loc$foreign)>0 ) {
+            
+            text_to_display <- loc$foreign %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+        } 
+        
+        else {""}
+        
+    })
     
     return(section_iii_lecture)
     

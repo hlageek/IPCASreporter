@@ -91,6 +91,19 @@ CREATE TABLE IF NOT EXISTS conferences (
         FOREIGN KEY (person_id_conferences) REFERENCES persons (person_id)
 );
 "
+CREATE_LECTURES_SQL <- "
+CREATE TABLE IF NOT EXISTS lectures (
+     lecture_id INT AUTO_INCREMENT PRIMARY KEY
+,    person_id_lectures INT
+,    lecture_contribution VARCHAR(500)
+,    lecture_organizer VARCHAR(500)
+,    lecture_name TEXT
+,    lecture_date VARCHAR(40)
+,    lecture_location VARCHAR(25)
+,    CONSTRAINT `person_id_lectures`
+        FOREIGN KEY (person_id_lectures) REFERENCES persons (person_id)
+);
+"
 
 #' @export
 clear_db <- function(pool) {
@@ -116,7 +129,8 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_UNDERGRAD_SQL)
     DBI::dbExecute(pool, CREATE_POSTGRAD_SQL)
     DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
-
+    DBI::dbExecute(pool, CREATE_LECTURES_SQL)
+    
 }
 
 # create_db_schema(pool)

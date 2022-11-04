@@ -59,7 +59,7 @@ app_ui <- function(request) {
                                      h2("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
                                      p( "Including ASEP reference."),
 
-                                     mod_events_ui("events_ui_1")
+                                     mod_events_ui("events_ui_1", i18n)
 
                                      ),
 
@@ -87,7 +87,7 @@ app_ui <- function(request) {
                                      ),
                                      tabPanel("Přednášky",
 
-                                     mod_lectures_ui("lectures_ui_1"),
+                                     mod_lectures_ui("lectures_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      )
                                      )

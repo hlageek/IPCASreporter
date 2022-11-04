@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_events_ui <- function(id){
+mod_events_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 4,
