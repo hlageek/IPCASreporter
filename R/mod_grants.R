@@ -201,6 +201,18 @@ mod_grants_server <- function(id, usr, i18n_r) {
  
  observeEvent(input$add, {
 
+     req(input$grant_date_from)
+     req(input$grant_date_to)
+     req(input$grant_number)
+     req(input$grant_title)
+     req(input$grant_provider)
+     
+     if (input$grant_date_from == as.integer( format(Sys.Date(), "%Y"))) {
+     req(input$annotation_cze)
+     req(input$annotation_eng)
+     }
+  
+     
      all_items <- purrr::map_chr(items, 
                                  .f = function(items) {
                                      
