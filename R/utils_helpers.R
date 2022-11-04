@@ -156,3 +156,35 @@ format_input <- function(x) {
     paste(as.character(unique(x)), collapse = " - ")
     
 }
+
+
+# transform table ---------------------------------------
+
+
+transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL, filter_val = NULL, names_df) {
+  
+  pre_filter <- ipcas_db %>%
+      dplyr::tbl(tbl) %>%
+      dplyr::filter(.data[[paste0("person_id_", tbl)]] == person_id)
+  
+  if (!is.null(filter_col)) {
+      post_filter <- pre_filter %>% 
+          dplyr::filter(.data[[filter_col]] == filter_val)
+          
+  } else {
+      post_filter <- pre_filter
+  }
+  
+  post_filter %>% 
+      dplyr::select(-.data[[paste0("person_id_", tbl)]]) %>%
+      tidyr::pivot_longer(-.data[[tbl_id]],
+                          names_to = "key",
+                          values_to = "value") %>%
+      dplyr::collect() %>%
+      dplyr::left_join(names_df, by = "key") %>%
+      tidyr::unite("value", c(names, value), sep = " ") %>%
+      dplyr::select(-key) %>%
+      dplyr::group_by(.data[[tbl_id]]) %>%
+      dplyr::summarise(data = stringr::str_flatten(value, collapse = "<br>"))
+
+}
