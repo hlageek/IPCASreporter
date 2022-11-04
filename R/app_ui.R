@@ -98,7 +98,7 @@ app_ui <- function(request) {
                                      h2("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
                                      p("Uveďte i projekty podané a nepřijaté k financování."),
 
-                                     mod_grants_ui("grants_ui_1")
+                                     mod_grants_ui("grants_ui_1", i18n)
 
 
                                      ),

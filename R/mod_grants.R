@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_grants_ui <- function(id){
+mod_grants_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 6,
@@ -20,7 +20,7 @@ mod_grants_ui <- function(id){
     selectInput(ns("grant_provider"),
                 label = "Poskytovatel",
                 selected = "",
-                choices =  c("", "Jiný/Other" = "other")),
+                choices =  c("", IPCASreporter::providers$providers, "Jiný/Other" = "other")),
     
     conditionalPanel(
        condition = 'input.grant_provider == "other"',
@@ -31,7 +31,7 @@ mod_grants_ui <- function(id){
        style="display:inline-block"),
        tags$div(
        actionButton(ns("add_bespoke"), icon = icon("plus"), label = ""),
-       style="display:inline-block", title = "ddf")
+       style="display:inline-block", title = "Add provider")
        
        ),
     
@@ -100,7 +100,7 @@ mod_grants_ui <- function(id){
 #' grants Server Function
 #'
 #' @noRd 
-mod_grants_server <- function(id) {
+mod_grants_server <- function(id, usr, i18n_r) {
   moduleServer(id, function(input, output, session) {
     
  output$current_year <- renderText({format(Sys.time(), "%Y")})
@@ -108,7 +108,7 @@ mod_grants_server <- function(id) {
  
 
  section_iv <- reactiveValues()
-
+ loc <- reactiveValues()
  
  items <- c(
    "grant_number",
@@ -131,6 +131,9 @@ mod_grants_server <- function(id) {
  )
  
  
+ loc$names <- tibble::tibble(key = items,
+                             names = item_names)
+ 
  observeEvent(req(input$add_bespoke), {
     
     updateSelectInput(session = session,
@@ -142,134 +145,229 @@ mod_grants_server <- function(id) {
     
  })
  
- item_values <- reactive({
-   
- unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-   
-
+ 
+ # init ####
+ observeEvent(usr$person_id, {
+     
+     loc$funded <- transform_table(ipcas_db = ipcas_db,
+                                     person_id = usr$person_id,
+                                     tbl = "grants",
+                                     tbl_id = "grant_id",
+                                     filter_col = "funding_status",
+                                     filter_val = "funded",
+                                     names_df = loc$names)
+     
+     loc$unfunded <- transform_table(ipcas_db = ipcas_db,
+                                    person_id = usr$person_id,
+                                    tbl = "grants",
+                                    tbl_id = "grant_id",
+                                    filter_col = "funding_status",
+                                    filter_val = "unfunded",
+                                    names_df = loc$names)
+     
+     
+     ids_funded <-  loc$funded %>% 
+         dplyr::pull(grant_id)
+     
+     section_iv$funded <- paste0("<br>", 
+                                 loc$funded$data,
+                                 "<br>")
+     
+     updateSelectInput(session = session,
+                       "remove_list_funded",
+                       choices = stats::setNames(
+                           ids_funded,
+                           seq_along(ids_funded)))
+     
+     ids_unfunded <-  loc$unfunded %>% 
+         dplyr::pull(grant_id)
+     
+     
+     section_iv$unfunded <- paste0("<br>", 
+                                   loc$unfunded$data,
+                                   "<br>")
+     
+     updateSelectInput(session = session,
+                       "remove_list_unfunded",
+                       choices = stats::setNames(
+                           ids_unfunded,
+                           seq_along(ids_unfunded)))
+     
  })
+ 
+
+ # add ####
  
  
  observeEvent(input$add, {
-   #browser()
-    
-    item_values2 <- item_values()
-    items2 <- items
-    item_names2 <- item_names
-    
-   if (input$grant_date_from != as.integer( format(Sys.Date(), "%Y"))) {
-      
-      item_values2 <- item_values2[names(item_values2) != "annotation_cze"]
-   
-      item_values2 <- item_values2[names(item_values2) != "annotation_eng"]
-   
-      item_names2 <- item_names2[item_names2 != "Anotace česky:"]
-      items2 <- items2[items2 != "annotation_cze"]
-   
-      item_names2 <- item_names2[item_names2 != "Anotace anglicky:"]
-      items2 <- items2[items2 != "annotation_eng"]
-   }
-   
-   all_items <- list()
-   
-   for (i in seq_along(items2)) {
-      
-     
-     all_items <- c(all_items, paste(item_names2[i], item_values2[i]))
-     
-   }
-   
-   
-   if (input$funding_status == "funded") {
-     
-     section_iv$funded[[
-       length(
-         section_iv$funded)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-     
-     updateSelectInput(session = session,
-                       "remove_list_funded", 
-                       choices = seq_along(section_iv$funded)
+
+     all_items <- purrr::map_chr(items, 
+                                 .f = function(items) {
+                                     
+                                     unlist(paste(input[[items]], collapse = "/"))
+                                     
+                                 }
      )
      
-   } else {
+     new_entry_df <- tibble::tibble(key = items,
+                                    value = all_items) %>% 
+         tidyr::pivot_wider(tidyselect::everything(),
+                            names_from = "key",
+                            values_from = "value") %>% 
+         dplyr::mutate(person_id_grants = usr$person_id,
+                       grant_id_year = as.integer( format(Sys.Date(), "%Y")),
+                       funding_status = input$funding_status) 
      
-     section_iv$unfunded[[as.character(
-       length(
-         section_iv$unfunded)+1)
-     ]] <- paste(c(all_items,"<br>"), collapse = "<br>")
+     DBI::dbAppendTable(ipcas_db, "grants", new_entry_df)
      
-     updateSelectInput(session = session,
-                       "remove_list_unfunded", 
-                       choices = seq_along(section_iv$unfunded)
-     )
-     
-   }
-   
+     if (input$funding_status == "funded") {
+         
+         
+
+        loc$funded <- transform_table(ipcas_db = ipcas_db,
+                                   person_id = usr$person_id,
+                                   tbl = "grants",
+                                   tbl_id = "grant_id",
+                                   filter_col = "funding_status",
+                                   filter_val = "funded",
+                                   names_df = loc$names)
+         
+         ids_funded <-  loc$funded %>% 
+             dplyr::pull(grant_id)
+         
+         section_iv$funded <- paste0("<br>", 
+                                       loc$funded$data,
+                                       "<br>")
+         
+         updateSelectInput(session = session,
+                           "remove_list_funded",
+                           choices = stats::setNames(
+                               ids_funded,
+                               seq_along(ids_funded)))
+             
+     } else {
+         
+
+             loc$unfunded <- transform_table(ipcas_db = ipcas_db,
+                                           person_id = usr$person_id,
+                                           tbl = "grants",
+                                           tbl_id = "grant_id",
+                                           filter_col = "funding_status",
+                                           filter_val = "unfunded",
+                                           names_df = loc$names)
+         
+         
+         ids_unfunded <-  loc$unfunded %>% 
+             dplyr::pull(grant_id)
+         
+         
+         section_iv$unfunded <- paste0("<br>", 
+                                      loc$unfunded$data,
+                                      "<br>")
+         
+         updateSelectInput(session = session,
+                           "remove_list_unfunded",
+                           choices = stats::setNames(
+                               ids_unfunded,
+                               seq_along(ids_unfunded)))
+         
+     }
    
    
  })
+ 
+ # remove funded ####
  
  observeEvent(input$remove_funded, {
    
+     
+     
+     loc$funded <- loc$funded %>% 
+         dplyr::filter(!grant_id %in% req(input$remove_list_funded))
+     
+     pool::dbExecute(ipcas_db, 
+                     "DELETE FROM grants WHERE grant_id IN (?)",
+                     params = list(input$remove_list_funded))
    
-   section_iv$funded[as.integer(input$remove_list_funded)] <- NULL 
-   
-   
-   updateSelectInput(session = session,
-                     "remove_list_funded", 
-                     choices = seq_along(section_iv$funded)
-                     
-   )
+     ids_funded <-  loc$funded %>% 
+         dplyr::pull(grant_id)
+     
+     section_iv$funded <- paste0("<br>", 
+                                 loc$funded$data,
+                                 "<br>")
+     
+     updateSelectInput(session = session,
+                       "remove_list_funded",
+                       choices = stats::setNames(
+                           ids_funded,
+                           seq_along(ids_funded)))
    
  })
+ 
+ 
+ # remove unfunded ####
  
  observeEvent(input$remove_unfunded, {
    
-   
-   section_iv$unfunded[as.integer(input$remove_list_unfunded)] <- NULL 
-   
-   
-   updateSelectInput(session = session,
-                     "remove_list_unfunded", 
-                     choices = seq_along(section_iv$unfunded)
-                     
-   )
+     
+     loc$unfunded <- loc$unfunded %>% 
+         dplyr::filter(!grant_id %in% req(input$remove_list_unfunded))
+     
+     pool::dbExecute(ipcas_db, 
+                     "DELETE FROM grants WHERE grant_id IN (?)",
+                     params = list(input$remove_list_unfunded))
+     
+     ids_unfunded <-  loc$unfunded %>% 
+         dplyr::pull(grant_id)
+     
+     section_iv$unfunded <- paste0("<br>", 
+                                 loc$unfunded$data,
+                                 "<br>")
+     
+     updateSelectInput(session = session,
+                       "remove_list_unfunded",
+                       choices = stats::setNames(
+                           ids_unfunded,
+                           seq_along(ids_unfunded)))
    
  })
+ 
+ # output funded ####
  
  output$section_iv_funded <- renderText({
-   if (length(section_iv$funded)>0) {
-     paste(paste0(seq_along(section_iv$funded), ".<br>"),
-           section_iv$funded)
+   if (nrow(loc$funded)>0) {
+  
+       text_to_display <- loc$funded %>% 
+           dplyr::pull(data)
+       
+       paste0(
+           paste0(seq_along(text_to_display), ".<br>"),
+           text_to_display,
+           "<br><br>")
+       
    } else {""}
  })
+ 
+ # output funded ####
  
  output$section_iv_unfunded <- renderText({
-   if (length(section_iv$unfunded)>0) {
-     paste(paste0(seq_along(section_iv$unfunded), ".<br>"),
-           section_iv$unfunded)
-   } else {""}
+
+     if (nrow(loc$unfunded)>0) {
+         
+         text_to_display <- loc$unfunded %>% 
+             dplyr::pull(data)
+         
+         paste0(
+             paste0(seq_along(text_to_display), ".<br>"),
+             text_to_display,
+             "<br><br>")
+         
+     } else {""}
  })
  
- # Save extra values in state$values when we bookmark
- onBookmark(function(state) {
-     state$values$section_iv_funded <- section_iv$funded
-     state$values$section_iv_unfunded <- section_iv$unfunded
-     
- })
- 
- # Read values from state$values when we restore
- onRestore(function(state) {
-     section_iv$funded <- state$values$section_iv_funded
-     section_iv$unfunded <- state$values$section_iv_unfunded
- })  
   return(section_iv)
     
     
   })}
     
-## To be copied in the UI
-# mod_grants_ui("grants_ui_1")
-    
 
- 

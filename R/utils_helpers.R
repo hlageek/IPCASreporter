@@ -182,6 +182,8 @@ transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL,
                           values_to = "value") %>%
       dplyr::collect() %>%
       dplyr::left_join(names_df, by = "key") %>%
+      dplyr::filter(!is.na(names)) %>% 
+      dplyr::filter(value != "") %>% 
       tidyr::unite("value", c(names, value), sep = " ") %>%
       dplyr::select(-key) %>%
       dplyr::group_by(.data[[tbl_id]]) %>%

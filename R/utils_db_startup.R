@@ -104,6 +104,23 @@ CREATE TABLE IF NOT EXISTS lectures (
         FOREIGN KEY (person_id_lectures) REFERENCES persons (person_id)
 );
 "
+CREATE_GRANTS_SQL <- "
+CREATE TABLE IF NOT EXISTS grants (
+     grant_id INT AUTO_INCREMENT PRIMARY KEY
+,    grant_id_year INT
+,    person_id_grants INT
+,    grant_number VARCHAR(100)
+,    grant_title TEXT
+,    grant_provider VARCHAR(500)
+,    grant_date_from INT
+,    grant_date_to INT
+,    annotation_cze TEXT
+,    annotation_eng TEXT
+,    funding_status VARCHAR(10)
+,    CONSTRAINT `person_id_grants`
+        FOREIGN KEY (person_id_grants) REFERENCES persons (person_id)
+);
+"
 
 #' @export
 clear_db <- function(pool) {
@@ -130,6 +147,8 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_POSTGRAD_SQL)
     DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
     DBI::dbExecute(pool, CREATE_LECTURES_SQL)
+    DBI::dbExecute(pool, CREATE_GRANTS_SQL)
+    
     
 }
 

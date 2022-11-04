@@ -185,7 +185,9 @@ mod_conference_server <- function(id, usr, i18n) {
       ids_domestic <-  loc$domestic %>% 
           dplyr::pull(conference_id)
       
-      
+      section_iii_conference$domestic <- paste0("<br>", 
+                                                loc$domestic$data,
+                                                "<br>")
       updateSelectInput(session = session,
                         "remove_list_domestic",
                         choices = stats::setNames(
@@ -207,22 +209,19 @@ mod_conference_server <- function(id, usr, i18n) {
         ids_foreign <- loc$foreign %>% 
             dplyr::pull(conference_id)
         
+        section_iii_conference$foreign <- paste0("<br>", 
+                                                 loc$foreign$data,
+                                                 "<br>")
+        
         updateSelectInput(session = session,
                           "remove_list_foreign",
                           choices = stats::setNames(
                               ids_foreign,
                               seq_along(ids_foreign)))
         
-        
       }
-      
-   
-          section_iii_conference$domestic <- paste0("<br>", 
-                                                    loc$domestic$data,
-                                                    "<br>")
-          section_iii_conference$foreign <- paste0("<br>", 
-                                                   loc$foreign$data,
-                                                   "<br>")
+    
+
     })
     
     # remove domestic ####

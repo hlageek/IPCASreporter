@@ -47,7 +47,7 @@ i18n_r <- reactive({
     
     section_iii_lecture <- mod_lectures_server("lectures_ui_1", usr, i18n_r)
     
-    section_iv <- mod_grants_server("grants_ui_1")
+    section_iv <- mod_grants_server("grants_ui_1", usr, i18n_r)
     
     section_v <- mod_av21_server("av21_ui_1")
     
