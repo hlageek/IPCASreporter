@@ -122,7 +122,7 @@ create_db_schema <- function(pool){
 # create_db_schema(pool)
 
 
-make_pool <- quote({
+make_globals <- quote({
     ipcas_db <- pool::dbPool(
             drv = RMariaDB::MariaDB(),
             dbname = golem::get_golem_options("dbname"),
@@ -133,6 +133,13 @@ make_pool <- quote({
     shiny::onStop(function() {
         pool::poolClose(ipcas_db)
     })
+    
+    shinymanager::set_labels(
+        language = "en",
+        "Please authenticate" = "Výroční výkaz (Annual report)",
+        "Username:" = "User:",
+        "Password:" = "Password:"
+    )
 })
     
 

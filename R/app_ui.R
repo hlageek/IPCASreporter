@@ -8,18 +8,12 @@
 app_ui <- function(request) {
     i18n <- golem::get_golem_options(which = "translator")
 
-
     
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shiny.i18n::usei18n(i18n),
-    shinymanager::set_labels(
-        language = "en",
-        "Please authenticate" = "",
-        "Username:" = "User:",
-        "Password:" = "Password:"
-    ),
+    
     # List the first level UI elements here
     fluidPage(
 
