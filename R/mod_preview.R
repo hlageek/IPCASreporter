@@ -47,65 +47,65 @@ mod_preview_ui <- function(id, i18n){
                   ")),    
     div(id = "preview",
     br(),
-    h4("IDENTIFIKAČNÍ ÚDAJE"),
+    h4(i18n$t("OSOBNÍ ÚDAJE")),
     i18n$t("Jméno:"),
     textOutput(ns("employee_name"), inline = TRUE),
     
     br(),
-    "Oddělení:",
+    i18n$t("Oddělení:"),
     textOutput(ns("department"), inline = TRUE),
     
     br(),
-    "FTE:",
+    i18n$t("Úvazek:"),
     textOutput(ns("fte"), inline = TRUE),
     
     br(),
-    "E-mail:",
+    i18n$t("E-mail:"),
     textOutput(ns("email"), inline = TRUE),
     
     br(),
-    "Komentář:",
+    i18n$t("Komentář:"),
     textOutput(ns("comment"), inline = TRUE),
     
     
     br(),
-    h4("I. VYDANÉ PUBLIKACE"),
+    h4(i18n$t("I. VYDANÉ PUBLIKACE")),
     htmlOutput(ns("section_i"), inline = FALSE),
     
     br(),
-    h4("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+    h4(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ")),
     htmlOutput(ns("section_ii"), inline = FALSE),
     
     br(),
-    h4("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+    h4(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
     h5("1) Výuka na vysokých školách a vedení prací"),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
     htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
     
     
     br(),
-    h5("2) Příspěvky a přednášky na konferencích"),
+    h5(i18n$t("2) Příspěvky a přednášky na konferencích")),
     htmlOutput(ns("section_iii_conference_foreign"), inline = FALSE),
     htmlOutput(ns("section_iii_conference_domestic"), inline = FALSE),
     
     br(),
-    h5("3) Samostatné přednášky"),
+    h5(i18n$t("3) Samostatné přednášky")),
     htmlOutput(ns("section_iii_lecture_foreign"), inline = FALSE),
     htmlOutput(ns("section_iii_lecture_domestic"), inline = FALSE),
     
     br(),
-    h4("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+    h4(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
     h5("Řešené či spoluřešené granty"),
     htmlOutput(ns("section_iv_funded"), inline = FALSE),
     h5("Projekty podané a nepřijaté k financování"),
     htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
     
     br(),
-    h4("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+    h4(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21")),
     htmlOutput(ns("section_v"), inline = FALSE),
     
     br(),
-    h4("VI. POPULARIZAČNÍ ČINNOST"),
+    h4(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
     h5("Akce"),
     htmlOutput(ns("section_vi_popular_events"), inline = FALSE),
     h5("Přednášky na středních, případně základních školách"),
@@ -115,18 +115,18 @@ mod_preview_ui <- function(id, i18n){
     
     
     br(),
-    h4("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+    h4(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU")),
     htmlOutput(ns("section_vii"), inline = FALSE),
     
     br(),
-    h4("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+    h4(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE")),
     h5("Zapojení do mezinárodních projektů"),
     htmlOutput(ns("section_viii_int_projects"), inline = FALSE),
     h5("Mezinárodní dvoustranné dohody"),
     htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE),
     
     br(),
-    h4("IX. OSTATNÍ"),
+    h4(i18n$t("IX. OSTATNÍ")),
     h5("Ocenění odbornou komunitou"),
     htmlOutput(ns("section_ix_award"), inline = FALSE),
     h5("Posudky"),
@@ -140,11 +140,11 @@ mod_preview_ui <- function(id, i18n){
     htmlOutput(ns("section_ix_editions"), inline = FALSE),
     
     br(),
-    h4("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+    h4(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY")),
     htmlOutput(ns("section_x"), inline = FALSE),
     
     br(),
-    h4("XI. RŮZNÉ"),
+    h4(i18n$t("XI. RŮZNÉ")),
     htmlOutput(ns("section_xi"), inline = FALSE)
     
     )))

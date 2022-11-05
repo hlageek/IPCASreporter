@@ -54,18 +54,18 @@ app_ui <- function(request) {
 
                                      ),
 
-                            tabPanel("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ",
+                            tabPanel(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
 
-                                     h2("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
+                                     h2(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ")),
                                      p( "Including ASEP reference."),
 
                                      mod_events_ui("events_ui_1", i18n)
 
                                      ),
 
-                            tabPanel("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST",
+                            tabPanel(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
 
-                                     h2("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST"),
+                                     h2(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
 
                                      p("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ."),
 
@@ -93,9 +93,9 @@ app_ui <- function(request) {
                                      )
                                      ),
 
-                            tabPanel("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY",
+                            tabPanel(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
 
-                                     h2("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
+                                     h2(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
                                      p("Uveďte i projekty podané a nepřijaté k financování."),
 
                                      mod_grants_ui("grants_ui_1", i18n)
@@ -104,17 +104,17 @@ app_ui <- function(request) {
                                      ),
 
 
-                            tabPanel("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21",
+                            tabPanel(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
 
-                                     h2("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
+                                     h2(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21")),
                                      p("Včetně anotace (min. 300 znaků) a výstupů (publikace, konference, přednáška atd.)."),
 
                                      mod_av21_ui("av21_ui_1", i18n)
 
 
                                      ),
-                            tabPanel("VI. POPULARIZAČNÍ ČINNOST",
-                                     h2("VI. POPULARIZAČNÍ ČINNOST"),
+                            tabPanel(i18n$t("VI. POPULARIZAČNÍ ČINNOST"),
+                                     h2(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
                                      p("(Příklad: název akce: Týden vědy a techniky, popis aktivity: odborná přednáška; popularizační přednáška; čtení atd.)"),
 
                                      tabsetPanel(
@@ -137,15 +137,15 @@ app_ui <- function(request) {
 
                                      )
                             ),
-                            tabPanel("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU",
-                                     h2("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+                            tabPanel(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
+                                     h2(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU")),
                                      p("(Např. členství v panelu GAČR; hodnocení pro RIV; hodnocení pro RVVI; odborné expertizy a vědecké poradenství – s uvedením zadavatele apod.)."),
 
                                      mod_public_ui("public_ui_1")
 
                                      ),
-                            tabPanel("VIII. ZAHRANIČNÍ SPOLUPRÁCE",
-                                     h2("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+                            tabPanel(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),
+                                     h2(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE")),
 
                                      tabsetPanel(
 
@@ -163,8 +163,8 @@ app_ui <- function(request) {
 
 
                                      ),
-                            tabPanel("IX. OSTATNÍ",
-                                     h2("IX. OSTATNÍ"),
+                            tabPanel(i18n$t("IX. OSTATNÍ"),
+                                     h2(i18n$t("IX. OSTATNÍ")),
 
                                      tabsetPanel(
 
@@ -194,8 +194,8 @@ app_ui <- function(request) {
 
 
                                      ),
-                            tabPanel("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY",
-                                     h2("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+                            tabPanel(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
+                                     h2(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY")),
                                      p("Uveďte prosím analogicky podle části I, udejte množství v normostranách [1 normostrana - 1800 znaků vč. mezer], které bylo vypracováno v tomto období; uveďte a specifikujte rovněž případnou práci na databázích"),
 
                                      mod_wip_ui("wip_ui_1")
@@ -203,8 +203,8 @@ app_ui <- function(request) {
 
 
                                      ),
-                            tabPanel("XI. RŮZNÉ",
-                                     h2("XI. RŮZNÉ"),
+                            tabPanel(i18n$t("XI. RŮZNÉ"),
+                                     h2(i18n$t("XI. RŮZNÉ")),
                                      p("Uveďte vše další, co pokládáte za důležité a relevantní pro Vaši práci v daném období."),
                                      mod_various_ui("various_ui_1")
                                      )
