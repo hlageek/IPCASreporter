@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS grants (
 ,    grant_date_to INT
 ,    grant_annotation_cze TEXT
 ,    grant_annotation_eng TEXT
-,    funding_status VARCHAR(10)
+,    grant_funding_status VARCHAR(10)
 ,    CONSTRAINT `person_id_grants`
         FOREIGN KEY (person_id_grants) REFERENCES persons (person_id)
 );

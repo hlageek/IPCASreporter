@@ -55,7 +55,7 @@ mod_grants_ui <- function(id, i18n){
 
     ),
     
-    radioButtons(ns("funding_status"), 
+    radioButtons(ns("grant_funding_status"), 
                  label = "Kategorie: ", 
                  choices = c("Řešený, nebo přijatý k financování" = "funded",
                              "Posuzovaný, nebo nepřijatý k financování" = "unfunded")
@@ -153,7 +153,7 @@ mod_grants_server <- function(id, usr, i18n) {
                                      person_id = usr$person_id,
                                      tbl = "grants",
                                      tbl_id = "grant_id",
-                                     filter_col = "funding_status",
+                                     filter_col = "grant_funding_status",
                                      filter_val = "funded",
                                      names_df = loc$names)
      
@@ -161,7 +161,7 @@ mod_grants_server <- function(id, usr, i18n) {
                                     person_id = usr$person_id,
                                     tbl = "grants",
                                     tbl_id = "grant_id",
-                                    filter_col = "funding_status",
+                                    filter_col = "grant_funding_status",
                                     filter_val = "unfunded",
                                     names_df = loc$names)
      
@@ -220,11 +220,11 @@ mod_grants_server <- function(id, usr, i18n) {
                             values_from = "value") %>% 
          dplyr::mutate(person_id_grants = usr$person_id,
                        grant_id_year = as.integer( format(Sys.Date(), "%Y")),
-                       funding_status = input$funding_status) 
+                       grant_funding_status = input$grant_funding_status) 
      
      DBI::dbAppendTable(ipcas_db, "grants", new_entry_df)
      
-     if (input$funding_status == "funded") {
+     if (input$grant_funding_status == "funded") {
          
          
 
@@ -232,7 +232,7 @@ mod_grants_server <- function(id, usr, i18n) {
                                    person_id = usr$person_id,
                                    tbl = "grants",
                                    tbl_id = "grant_id",
-                                   filter_col = "funding_status",
+                                   filter_col = "grant_funding_status",
                                    filter_val = "funded",
                                    names_df = loc$names)
          
@@ -256,7 +256,7 @@ mod_grants_server <- function(id, usr, i18n) {
                                            person_id = usr$person_id,
                                            tbl = "grants",
                                            tbl_id = "grant_id",
-                                           filter_col = "funding_status",
+                                           filter_col = "grant_funding_status",
                                            filter_val = "unfunded",
                                            names_df = loc$names)
          
