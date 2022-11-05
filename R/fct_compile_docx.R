@@ -59,7 +59,7 @@ compile_docx <- function(identification,
                                           "OT.")) %>% 
         add_doc_f_section("pubsO",
                           filter_pub_type(section_i$publist,
-                                          "O[^T]")) %>% 
+                                          "[^BCEJMRJ][^T]")) %>% 
         add_doc_f_section("events",
                           section_ii$eventlist) %>% 
         add_doc_section("undergrad",

@@ -10,9 +10,9 @@ CREATE TABLE IF NOT EXISTS persons (
 "
 CREATE_DEPARTMENTS_SQL <- "
 CREATE TABLE IF NOT EXISTS departments (
-     membership_id INT AUTO_INCREMENT PRIMARY KEY
+     department_id INT AUTO_INCREMENT PRIMARY KEY
 ,    person_id_departments INT UNIQUE
-,    department VARCHAR(100)
+,    department VARCHAR(200)
 ,    CONSTRAINT `person_id_departments`
         FOREIGN KEY (person_id_departments) REFERENCES persons (person_id)
 );
