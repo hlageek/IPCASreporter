@@ -211,6 +211,17 @@ CREATE TABLE IF NOT EXISTS int_bilateral (
         FOREIGN KEY (person_id_int_bilateral) REFERENCES persons (person_id)
 );
 "
+CREATE_OTHER_AWARDS_SQL <- "
+CREATE TABLE IF NOT EXISTS other_awards (
+     other_awards_id INT AUTO_INCREMENT PRIMARY KEY
+,    other_awards_id_year INT
+,    person_id_other_awards INT
+,    other_awards_description VARCHAR(500)
+,    CONSTRAINT `person_id_other_awards`
+        FOREIGN KEY (person_id_other_awards) REFERENCES persons (person_id)
+);
+"
+
 
 
 #' @export
@@ -246,6 +257,8 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_GOV_SQL)
     DBI::dbExecute(pool, CREATE_INT_PROJECTS_SQL)
     DBI::dbExecute(pool, CREATE_INT_BILATERAL_SQL)
+    DBI::dbExecute(pool, CREATE_OTHER_AWARDS_SQL)
+    
     
 }
 

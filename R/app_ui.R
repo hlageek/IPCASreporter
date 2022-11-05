@@ -170,7 +170,7 @@ app_ui <- function(request) {
 
                                        tabPanel("Ocenění odbornou komunitou",
 
-                                                mod_other_award_ui("other_award_ui_1")
+                                                mod_other_award_ui("other_award_ui_1", i18n)
                                        ),
 
                                        tabPanel("Posudky",

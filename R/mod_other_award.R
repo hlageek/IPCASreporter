@@ -7,11 +7,11 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_other_award_ui <- function(id){
+mod_other_award_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
     
-    textAreaInput(ns("other_award_name"), 
+    textAreaInput(ns("other_awards_description"), 
                   label = "Ocenění",
                   placeholder = "Uveďte název ocenění a kým bylo uděleno."),
     
@@ -41,81 +41,133 @@ mod_other_award_ui <- function(id){
 #' other_award Server Function
 #'
 #' @noRd 
-mod_other_award_server <- function(id) {
+mod_other_award_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
-    section_ix_award <- reactiveValues()
+      
+      section_ix_award <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
-      "other_award_name"
+      "other_awards_description"
     )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Název ocenění:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$award <- transform_table(ipcas_db = ipcas_db,
+                                       person_id = usr$person_id,
+                                       tbl = "other_awards",
+                                       tbl_id = "other_awards_id",
+                                       filter_col = NULL,
+                                       filter_val = NULL,
+                                       names_df = loc$names )
+        
+        # updates after action
+        section_ix_award$award <- paste0("<br>", 
+                                            loc$award$data,
+                                            "<br>")
+        ids_award <- loc$award %>% 
+            dplyr::pull(other_awards_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_award,
+                              seq_along(ids_award)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = NULL)
         
-      }
-      
-
-      
-      section_ix_award$award[[
-        length(
-          section_ix_award$award)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_ix_award$award)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "other_awards", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "other_awards", new_entry_df)
+        
+        loc$award <-  transform_table(ipcas_db = ipcas_db,
+                                        person_id = usr$person_id,
+                                        tbl = "other_awards",
+                                        tbl_id = "other_awards_id",
+                                        filter_col = NULL,
+                                        filter_val = NULL,
+                                        names_df = loc$names)
+        
+        # updates after action
+        section_ix_award$award <- paste0("<br>", 
+                                            loc$award$data,
+                                            "<br>")
+        ids_award <- loc$award %>% 
+            dplyr::pull(other_awards_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_award,
+                              seq_along(ids_award)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_ix_award$award[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_ix_award$award)
-                        
-      )
-      
+        
+        loc$award <- loc$award %>% 
+            dplyr::filter(!other_awards_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM other_awards WHERE other_awards_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_ix_award$award <- paste0("<br>", 
+                                            loc$award$data,
+                                            "<br>")
+        ids_award <- loc$award %>% 
+            dplyr::pull(other_awards_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_award,
+                              seq_along(ids_award)))
+        
     })
     
+    # output award ####
     
     output$section_ix_award <- renderText({
-      if (length(section_ix_award$award)>0) {
-        paste(paste0(seq_along(section_ix_award$award), ".<br>"),
-              section_ix_award$award)
-      } else {""}
-    })
-    
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_ix_award <- section_ix_award$award[-length(section_ix_award$award)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_ix_award$award <- state$values$section_ix_award 
+        if (nrow(loc$award)>0) {
+            
+            text_to_display <- loc$award %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
     
