@@ -201,16 +201,15 @@ mod_grants_server <- function(id, usr, i18n_r) {
  
  observeEvent(input$add, {
 
-     req(input$grant_date_from)
-     req(input$grant_date_to)
-     req(input$grant_number)
-     req(input$grant_title)
-     req(input$grant_provider)
-     
-     if (input$grant_date_from == as.integer( format(Sys.Date(), "%Y"))) {
-     req(input$annotation_cze)
-     req(input$annotation_eng)
-     }
+          # check and require inputs
+          checks <- stats::setNames(item_names, items)
+          checks_no_annotation <- checks[!grepl("annotation", names(checks))]
+          check_inputs(input, checks_no_annotation)
+          
+          if (input$grant_date_from == as.integer( format(Sys.Date(), "%Y"))) {
+              checks_annotation <- checks[grepl("annotation", names(checks))]
+              check_inputs(input, checks_annotation)
+          }
   
      
      all_items <- purrr::map_chr(items, 

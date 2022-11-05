@@ -78,7 +78,6 @@ body_add_par_nf <- function(doc, value) {
     
     doc
 }
-#--------------------------------------
 
 
 #--------------------------------------
@@ -189,4 +188,17 @@ transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL,
       dplyr::group_by(.data[[tbl_id]]) %>%
       dplyr::summarise(data = stringr::str_flatten(value, collapse = "<br>"))
 
+}
+
+# check inputs --------------------------------------
+
+check_inputs <- function(input, list, text = "Zadejte") {
+    
+    purrr::walk2(names(list), list, .f = function(x, y) {
+               if (!isTruthy(input[[x]])) showNotification(paste(text, y))
+    })
+    
+   purrr::walk(names(list), ~req(input[[.x]]))
+    
+    
 }
