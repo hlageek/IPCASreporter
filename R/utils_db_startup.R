@@ -246,7 +246,37 @@ CREATE TABLE IF NOT EXISTS other_member (
         FOREIGN KEY (person_id_other_member) REFERENCES persons (person_id)
 );
 "
-
+CREATE_OTHER_EDITIONS_SQL <- "
+CREATE TABLE IF NOT EXISTS other_editions (
+     other_editions_id INT AUTO_INCREMENT PRIMARY KEY
+,    other_editions_id_year INT
+,    person_id_other_editions INT
+,    other_editions_name VARCHAR(250)
+,    other_editions_description TEXT
+,    CONSTRAINT `person_id_other_editions`
+        FOREIGN KEY (person_id_other_editions) REFERENCES persons (person_id)
+);
+"
+CREATE_WIP_SQL <- "
+CREATE TABLE IF NOT EXISTS wip (
+     wip_id INT AUTO_INCREMENT PRIMARY KEY
+,    wip_id_year INT
+,    person_id_wip INT
+,    wip_description TEXT
+,    CONSTRAINT `person_id_wip`
+        FOREIGN KEY (person_id_wip) REFERENCES persons (person_id)
+);
+"
+CREATE_VARIOUS_SQL <- "
+CREATE TABLE IF NOT EXISTS various (
+     various_id INT AUTO_INCREMENT PRIMARY KEY
+,    various_id_year INT
+,    person_id_various INT
+,    various_description TEXT
+,    CONSTRAINT `person_id_various`
+        FOREIGN KEY (person_id_various) REFERENCES persons (person_id)
+);
+"
 
 #' @export
 clear_db <- function(pool) {
@@ -284,8 +314,9 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_OTHER_AWARDS_SQL)
     DBI::dbExecute(pool, CREATE_OTHER_REVIEWS_SQL)
     DBI::dbExecute(pool, CREATE_OTHER_MEMBER_SQL)
-    
-    
+    DBI::dbExecute(pool, CREATE_OTHER_EDITIONS_SQL)
+    DBI::dbExecute(pool, CREATE_WIP_SQL)
+    DBI::dbExecute(pool, CREATE_VARIOUS_SQL)
 }
 
 # create_db_schema(pool)

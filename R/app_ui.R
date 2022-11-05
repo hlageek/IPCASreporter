@@ -187,7 +187,7 @@ app_ui <- function(request) {
 
                                        tabPanel("Redakční práce",
 
-                                                mod_other_editions_ui("other_editions_ui_1")
+                                                mod_other_editions_ui("other_editions_ui_1", i18n)
 
                                        )
                                      )

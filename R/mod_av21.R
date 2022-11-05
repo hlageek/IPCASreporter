@@ -65,7 +65,7 @@ mod_av21_server <- function(id, usr, i18n) {
       "av21_partner"
     )
     
-    loc$item_names <- 
+    item_names <- 
         c(
       "Program Strategie AV21:",
       "Název aktivity (projektu)",
@@ -76,11 +76,13 @@ mod_av21_server <- function(id, usr, i18n) {
       "Spolupracující instituce:"
     )
     
+    names_df <- tibble::tibble(key = items,
+                                names = item_names)
+    
     # init ####
     observeEvent(usr$person_id, {
       
-        loc$names <- tibble::tibble(key = items,
-                                    names = loc$item_names)
+
         
         loc$av21 <- transform_table(ipcas_db = ipcas_db,
                                       person_id = usr$person_id,
@@ -88,7 +90,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                       tbl_id = "av21_id",
                                       filter_col = NULL,
                                       filter_val = NULL,
-                                      names_df = loc$names)
+                                      names_df = names_df)
         
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
@@ -110,7 +112,7 @@ mod_av21_server <- function(id, usr, i18n) {
     observeEvent(input$add, {
        
         # check and require inputs
-        checks <- stats::setNames(loc$item_names, items)
+        checks <- stats::setNames(item_names, items)
         check_inputs(input, checks, text = "Zadejte")
 
         all_items <- collect_items(items, input)
@@ -131,7 +133,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                      tbl_id = "av21_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = loc$names)
+                                     names_df = names_df)
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
         

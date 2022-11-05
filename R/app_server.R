@@ -69,7 +69,7 @@ i18n_r <- reactive({
     
     section_ix_member <- mod_other_member_server("other_member_ui_1", usr, i18n_r)
     
-    section_ix_editions <- mod_other_editions_server("other_editions_ui_1")
+    section_ix_editions <- mod_other_editions_server("other_editions_ui_1", usr, i18n_r)
     
     section_x <- mod_wip_server("wip_ui_1")
     
