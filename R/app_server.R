@@ -59,9 +59,9 @@ i18n_r <- reactive({
     
     section_vii <- mod_public_server("public_ui_1", usr, i18n_r)
     
-    section_viii_int_projects <-  mod_int_projects_server("int_projects_ui_1")
+    section_viii_int_projects <-  mod_int_projects_server("int_projects_ui_1", usr, i18n_r)
     
-    section_viii_int_bilateral <-  mod_int_bilateral_server("int_bilateral_ui_1")
+    section_viii_int_bilateral <-  mod_int_bilateral_server("int_bilateral_ui_1", usr, i18n_r)
     section_ix_award <- mod_other_award_server("other_award_ui_1")
 
     section_ix_review <- mod_other_review_server("other_review_ui_1")

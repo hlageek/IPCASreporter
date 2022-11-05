@@ -151,12 +151,12 @@ app_ui <- function(request) {
 
                                        tabPanel("Zapojení do mezinárodních projektů",
 
-                                                mod_int_projects_ui("int_projects_ui_1")
+                                                mod_int_projects_ui("int_projects_ui_1", i18n)
                                        ),
 
                                        tabPanel("Mezinárodní dvoustranné dohody",
 
-                                                mod_int_bilateral_ui("int_bilateral_ui_1")
+                                                mod_int_bilateral_ui("int_bilateral_ui_1", i18n)
                                        )
 
                                      )

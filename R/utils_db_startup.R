@@ -190,6 +190,29 @@ CREATE TABLE IF NOT EXISTS gov (
 );
 "
 
+CREATE_INT_PROJECTS_SQL <- "
+CREATE TABLE IF NOT EXISTS int_projects (
+     int_projects_id INT AUTO_INCREMENT PRIMARY KEY
+,    int_projects_id_year INT
+,    person_id_int_projects INT
+,    int_projects_name VARCHAR(500)
+,    CONSTRAINT `person_id_int_projects`
+        FOREIGN KEY (person_id_int_projects) REFERENCES persons (person_id)
+);
+"
+
+CREATE_INT_BILATERAL_SQL <- "
+CREATE TABLE IF NOT EXISTS int_bilateral (
+     int_bilateral_id INT AUTO_INCREMENT PRIMARY KEY
+,    int_bilateral_id_year INT
+,    person_id_int_bilateral INT
+,    int_bilateral_description VARCHAR(500)
+,    CONSTRAINT `person_id_int_bilateral`
+        FOREIGN KEY (person_id_int_bilateral) REFERENCES persons (person_id)
+);
+"
+
+
 #' @export
 clear_db <- function(pool) {
     
@@ -221,6 +244,8 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_SCHOOL_SQL)
     DBI::dbExecute(pool, CREATE_MEDIA_SQL)
     DBI::dbExecute(pool, CREATE_GOV_SQL)
+    DBI::dbExecute(pool, CREATE_INT_PROJECTS_SQL)
+    DBI::dbExecute(pool, CREATE_INT_BILATERAL_SQL)
     
 }
 

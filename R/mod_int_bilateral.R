@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_int_bilateral_ui <- function(id){
+mod_int_bilateral_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 6,
@@ -40,78 +40,132 @@ mod_int_bilateral_ui <- function(id){
 #' int_bilateral Server Function
 #'
 #' @noRd 
-mod_int_bilateral_server <- function(id) {
+mod_int_bilateral_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
     section_viii_int_bilateral <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
       "int_bilateral_description"
     )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Bilaterální spolupráce:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$int_bilateral <- transform_table(ipcas_db = ipcas_db,
+                                            person_id = usr$person_id,
+                                            tbl = "int_bilateral",
+                                            tbl_id = "int_bilateral_id",
+                                            filter_col = NULL,
+                                            filter_val = NULL,
+                                            names_df = loc$names)
+        
+        # updates after action
+        section_viii_int_bilateral$bilateral <- paste0("<br>", 
+                                                   loc$int_bilateral$data,
+                                                   "<br>")
+        ids_int_bilateral <- loc$int_bilateral %>% 
+            dplyr::pull(int_bilateral_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_bilateral,
+                              seq_along(ids_int_bilateral)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = NULL)
         
-      }
-      
-      
-      
-      section_viii_int_bilateral$bilateral[[
-        length(
-          section_viii_int_bilateral$bilateral)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_viii_int_bilateral$bilateral)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "int_bilateral", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "int_bilateral", new_entry_df)
+        
+        loc$int_bilateral <-  transform_table(ipcas_db = ipcas_db,
+                                             person_id = usr$person_id,
+                                             tbl = "int_bilateral",
+                                             tbl_id = "int_bilateral_id",
+                                             filter_col = NULL,
+                                             filter_val = NULL,
+                                             names_df = loc$names)
+        
+        # updates after action
+        section_viii_int_bilateral$bilateral <- paste0("<br>", 
+                                                   loc$int_bilateral$data,
+                                                   "<br>")
+        ids_int_bilateral <- loc$int_bilateral %>% 
+            dplyr::pull(int_bilateral_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_bilateral,
+                              seq_along(ids_int_bilateral)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_viii_int_bilateral$bilateral[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_viii_int_bilateral$bilateral)
-                        
-      )
-      
+        
+        loc$int_bilateral <- loc$int_bilateral %>% 
+            dplyr::filter(!int_bilateral_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM int_bilateral WHERE int_bilateral_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_viii_int_bilateral$bilateral <- paste0("<br>", 
+                                                   loc$int_bilateral$data,
+                                                   "<br>")
+        ids_int_bilateral <- loc$int_bilateral %>% 
+            dplyr::pull(int_bilateral_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_bilateral,
+                              seq_along(ids_int_bilateral)))
+        
     })
     
+    # output int_bilateral ####
     
     output$section_viii_int_bilateral <- renderText({
-      if (length(section_viii_int_bilateral$bilateral)>0) {
-        paste(paste0(seq_along(section_viii_int_bilateral$bilateral), ".<br>"),
-              section_viii_int_bilateral$bilateral)
-      } else {""}
-    })
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_viii_int_bilateral <- section_viii_int_bilateral$bilateral[-length(section_viii_int_bilateral$bilateral)]
-    })
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_viii_int_bilateral$bilateral <- state$values$section_viii_int_bilateral 
+        if (nrow(loc$int_bilateral)>0) {
+            
+            text_to_display <- loc$int_bilateral %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
     return(section_viii_int_bilateral)

@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_int_projects_ui <- function(id){
+mod_int_projects_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 6,
@@ -40,80 +40,134 @@ mod_int_projects_ui <- function(id){
 #' int_projects Server Function
 #'
 #' @noRd 
-mod_int_projects_server <- function(id) {
+mod_int_projects_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
     section_viii_int_projects <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
       "int_projects_name"
     )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Název projektu:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$int_projects <- transform_table(ipcas_db = ipcas_db,
+                                       person_id = usr$person_id,
+                                       tbl = "int_projects",
+                                       tbl_id = "int_projects_id",
+                                       filter_col = NULL,
+                                       filter_val = NULL,
+                                       names_df = loc$names)
+        
+        # updates after action
+        section_viii_int_projects$projects <- paste0("<br>", 
+                                            loc$int_projects$data,
+                                            "<br>")
+        ids_int_projects <- loc$int_projects %>% 
+            dplyr::pull(int_projects_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_projects,
+                              seq_along(ids_int_projects)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = NULL)
         
-      }
-      
-      
-      
-      section_viii_int_projects$projects[[
-        length(
-          section_viii_int_projects$projects)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_viii_int_projects$projects)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "int_projects", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "int_projects", new_entry_df)
+        
+        loc$int_projects <-  transform_table(ipcas_db = ipcas_db,
+                                        person_id = usr$person_id,
+                                        tbl = "int_projects",
+                                        tbl_id = "int_projects_id",
+                                        filter_col = NULL,
+                                        filter_val = NULL,
+                                        names_df = loc$names)
+        
+        # updates after action
+        section_viii_int_projects$projects <- paste0("<br>", 
+                                            loc$int_projects$data,
+                                            "<br>")
+        ids_int_projects <- loc$int_projects %>% 
+            dplyr::pull(int_projects_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_projects,
+                              seq_along(ids_int_projects)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_viii_int_projects$projects[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_viii_int_projects$projects)
-                        
-      )
-      
+        
+        loc$int_projects <- loc$int_projects %>% 
+            dplyr::filter(!int_projects_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM int_projects WHERE int_projects_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_viii_int_projects$projects <- paste0("<br>", 
+                                            loc$int_projects$data,
+                                            "<br>")
+        ids_int_projects <- loc$int_projects %>% 
+            dplyr::pull(int_projects_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_int_projects,
+                              seq_along(ids_int_projects)))
+        
     })
     
+    # output int_projects ####
     
     output$section_viii_int_projects <- renderText({
-      if (length(section_viii_int_projects$projects)>0) {
-        paste(paste0(seq_along(section_viii_int_projects$projects), ".<br>"),
-              section_viii_int_projects$projects)
-      } else {""}
+        if (nrow(loc$int_projects)>0) {
+            
+            text_to_display <- loc$int_projects %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_viii_int_projects <- section_viii_int_projects$projects[-length(section_viii_int_projects$projects)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_viii_int_projects$projects<- state$values$section_viii_int_projects 
-    })
     return(section_viii_int_projects)
     
   })}
