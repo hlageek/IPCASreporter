@@ -7,15 +7,15 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_other_review_ui <- function(id){
+mod_other_review_ui <- function(id, i18n){
   ns <- NS(id)
   
   
   fluidRow(column(width = 6,
                   
-                  textInput(ns("other_review_name"), 
+                  textInput(ns("other_reviews_name"), 
                             label = "Název"),
-                  textAreaInput(ns("other_review_description"), 
+                  textAreaInput(ns("other_reviews_description"), 
                                 label = "Doplňující informace"),
                   
                   
@@ -48,14 +48,15 @@ mod_other_review_ui <- function(id){
 #' other_review Server Function
 #'
 #' @noRd 
-mod_other_review_server <- function(id) {
+mod_other_review_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
   
     section_ix_review <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
-      "other_review_name",
-      "other_review_description"
+      "other_reviews_name",
+      "other_reviews_description"
     )
     
     item_names <- c(
@@ -63,67 +64,120 @@ mod_other_review_server <- function(id) {
       "Doplňující informace:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = item_names)
+        
+        loc$review <- transform_table(ipcas_db = ipcas_db,
+                                     person_id = usr$person_id,
+                                     tbl = "other_reviews",
+                                     tbl_id = "other_reviews_id",
+                                     filter_col = NULL,
+                                     filter_val = NULL,
+                                     names_df = loc$names )
+        
+        # updates after action
+        section_ix_review$review <- paste0("<br>", 
+                                         loc$review$data,
+                                         "<br>")
+        ids_review <- loc$review %>% 
+            dplyr::pull(other_reviews_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_review,
+                              seq_along(ids_review)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
       
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
+        # check and require inputs
+        checks <- stats::setNames(item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = "description")
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        all_items <- collect_items(items, input)
         
-      }
-      
-      
-      
-      section_ix_review$review[[
-        length(
-          section_ix_review$review)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_ix_review$review)
-      )
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "other_reviews", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "other_reviews", new_entry_df)
+        
+        loc$review <-  transform_table(ipcas_db = ipcas_db,
+                                      person_id = usr$person_id,
+                                      tbl = "other_reviews",
+                                      tbl_id = "other_reviews_id",
+                                      filter_col = NULL,
+                                      filter_val = NULL,
+                                      names_df = loc$names)
+        
+        # updates after action
+        section_ix_review$review <- paste0("<br>", 
+                                         loc$review$data,
+                                         "<br>")
+        ids_review <- loc$review %>% 
+            dplyr::pull(other_reviews_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_review,
+                              seq_along(ids_review)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_ix_review$review[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_ix_review$review)
-                        
-      )
-      
+        
+        loc$review <- loc$review %>% 
+            dplyr::filter(!other_reviews_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM other_reviews WHERE other_reviews_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_ix_review$review <- paste0("<br>", 
+                                         loc$review$data,
+                                         "<br>")
+        ids_review <- loc$review %>% 
+            dplyr::pull(other_reviews_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_review,
+                              seq_along(ids_review)))
+        
     })
     
+    # output review ####
     
     output$section_ix_review <- renderText({
-      if (length(section_ix_review$review)>0) {
-        paste(paste0(seq_along(section_ix_review$review), ".<br>"),
-              section_ix_review$review)
-      } else {""}
+        if (nrow(loc$review)>0) {
+            
+            text_to_display <- loc$review %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
-
     
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_ix_review <- section_ix_review$review[-length(section_ix_review$review)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_ix_review$review <- state$values$section_ix_review 
-    })
     
     return(section_ix_review)
     

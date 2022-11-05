@@ -176,12 +176,12 @@ app_ui <- function(request) {
                                        tabPanel("Posudky",
                                                 p("Posudky článků pro časopisy, knih pro nakladatelství (počet posuzovaných stran), diplomových a doktorských prací (počet posuzovaných stran), grantů a projektů"),
 
-                                                mod_other_review_ui("other_review_ui_1")
+                                                mod_other_review_ui("other_review_ui_1", i18n)
                                        ),
 
                                        tabPanel("Odborná grémia, redakční a oborové rady apod.",
 
-                                                mod_other_member_ui("other_member_ui_1")
+                                                mod_other_member_ui("other_member_ui_1", i18n)
 
                                        ),
 

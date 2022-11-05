@@ -222,6 +222,30 @@ CREATE TABLE IF NOT EXISTS other_awards (
 );
 "
 
+CREATE_OTHER_REVIEWS_SQL <- "
+CREATE TABLE IF NOT EXISTS other_reviews (
+     other_reviews_id INT AUTO_INCREMENT PRIMARY KEY
+,    other_reviews_id_year INT
+,    person_id_other_reviews INT
+,    other_reviews_name VARCHAR(500)
+,    other_reviews_description TEXT
+,    CONSTRAINT `person_id_other_reviews`
+        FOREIGN KEY (person_id_other_reviews) REFERENCES persons (person_id)
+);
+"
+CREATE_OTHER_MEMBER_SQL <- "
+CREATE TABLE IF NOT EXISTS other_member (
+     other_member_id INT AUTO_INCREMENT PRIMARY KEY
+,    other_member_id_year INT
+,    person_id_other_member INT
+,    other_member_name VARCHAR(250)
+,    other_member_institute VARCHAR(250)
+,    other_member_position VARCHAR(250)
+,    other_member_location VARCHAR(25)
+,    CONSTRAINT `person_id_other_member`
+        FOREIGN KEY (person_id_other_member) REFERENCES persons (person_id)
+);
+"
 
 
 #' @export
@@ -258,6 +282,8 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_INT_PROJECTS_SQL)
     DBI::dbExecute(pool, CREATE_INT_BILATERAL_SQL)
     DBI::dbExecute(pool, CREATE_OTHER_AWARDS_SQL)
+    DBI::dbExecute(pool, CREATE_OTHER_REVIEWS_SQL)
+    DBI::dbExecute(pool, CREATE_OTHER_MEMBER_SQL)
     
     
 }

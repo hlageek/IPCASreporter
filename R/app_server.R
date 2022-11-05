@@ -65,9 +65,9 @@ i18n_r <- reactive({
     
     section_ix_award <- mod_other_award_server("other_award_ui_1", usr, i18n_r)
 
-    section_ix_review <- mod_other_review_server("other_review_ui_1")
+    section_ix_review <- mod_other_review_server("other_review_ui_1", usr, i18n_r)
     
-    section_ix_member <- mod_other_member_server("other_member_ui_1")
+    section_ix_member <- mod_other_member_server("other_member_ui_1", usr, i18n_r)
     
     section_ix_editions <- mod_other_editions_server("other_editions_ui_1")
     
