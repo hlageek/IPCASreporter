@@ -86,7 +86,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
         
-        section_ix_editions$other_editions <- paste0("<br>", 
+        section_ix_editions$editions  <- paste0("<br>", 
                                  loc$other_editions$data,
                                  "<br>")
         
@@ -104,7 +104,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = "Zadejte")
+        check_inputs(input, checks, text = "Zadejte", exclude = "description")
         
         all_items <- collect_items(items, input)
         
@@ -128,7 +128,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
         
-        section_ix_editions$other_editions <- paste0("<br>", 
+        section_ix_editions$editions  <- paste0("<br>", 
                                  loc$other_editions$data,
                                  "<br>")
         
@@ -155,7 +155,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
         
-        section_ix_editions$other_editions <- paste0("<br>", 
+        section_ix_editions$editions  <- paste0("<br>", 
                                  loc$other_editions$data,
                                  "<br>")
         

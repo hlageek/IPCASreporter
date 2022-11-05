@@ -198,7 +198,7 @@ app_ui <- function(request) {
                                      h2(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY")),
                                      p("Uveďte prosím analogicky podle části I, udejte množství v normostranách [1 normostrana - 1800 znaků vč. mezer], které bylo vypracováno v tomto období; uveďte a specifikujte rovněž případnou práci na databázích"),
 
-                                     mod_wip_ui("wip_ui_1")
+                                     mod_wip_ui("wip_ui_1", i18n)
 
 
 
@@ -206,7 +206,7 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("XI. RŮZNÉ"),
                                      h2(i18n$t("XI. RŮZNÉ")),
                                      p("Uveďte vše další, co pokládáte za důležité a relevantní pro Vaši práci v daném období."),
-                                     mod_various_ui("various_ui_1")
+                                     mod_various_ui("various_ui_1", i18n)
                                      )
 
 

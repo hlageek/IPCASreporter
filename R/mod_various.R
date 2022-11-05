@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_various_ui <- function(id){
+mod_various_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
                   
@@ -40,11 +40,12 @@ mod_various_ui <- function(id){
 #' various Server Function
 #'
 #' @noRd 
-mod_various_server <- function(id) {
+mod_various_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
     section_xi <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
       "various_description"
@@ -54,75 +55,124 @@ mod_various_server <- function(id) {
       "Popis:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    names_df <- tibble::tibble(key = items,
+                               names = item_names)
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        
+        
+        loc$various <- transform_table(ipcas_db = ipcas_db,
+                                    person_id = usr$person_id,
+                                    tbl = "various",
+                                    tbl_id = "various_id",
+                                    filter_col = NULL,
+                                    filter_val = NULL,
+                                    names_df = names_df)
+        
+        ids_various <- loc$various %>% 
+            dplyr::pull(various_id)
+        
+        section_xi$various <- paste0("<br>", 
+                                 loc$various$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_various,
+                              seq_along(ids_various)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(item_names, items)
+        check_inputs(input, checks, text = "Zadejte")
         
-      }
-      
-      
-      
-      section_xi$data[[
-        length(
-          section_xi$data)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_xi$data)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            "various", 
+            usr$person_id, 
+            as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "various", new_entry_df)
+        
+        loc$various <-  transform_table(ipcas_db = ipcas_db,
+                                     person_id = usr$person_id,
+                                     tbl = "various",
+                                     tbl_id = "various_id",
+                                     filter_col = NULL,
+                                     filter_val = NULL,
+                                     names_df = names_df)
+        ids_various <- loc$various %>% 
+            dplyr::pull(various_id)
+        
+        section_xi$various <- paste0("<br>", 
+                                 loc$various$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_various,
+                              seq_along(ids_various)))
+        
     })
+    
+    # remove various ####
     
     observeEvent(input$remove, {
-      
-      
-      section_xi$data[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_xi$data)
-                        
-      )
-      
+        
+        loc$various <- loc$various %>% 
+            dplyr::filter(!various_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM various WHERE various_id IN (?)",
+                        params = list(input$remove_list))
+        
+        ids_various <- loc$various %>% 
+            dplyr::pull(various_id)
+        
+        section_xi$various <- paste0("<br>", 
+                                 loc$various$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_various,
+                              seq_along(ids_various)))
+        
     })
     
+    # output various ####
     
     output$section_xi <- renderText({
-      if (length(section_xi$data)>0) {
-        paste(paste0(seq_along(section_xi$data), ".<br>"),
-              section_xi$data)
-      } else {""}
-    })
-    
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_xi <- section_xi$data[-length(section_xi$data)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_xi$data <- state$values$section_xi 
+        if (nrow(loc$various)>0) {
+            
+            text_to_display <- loc$various %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
     return(section_xi)
     
   })}
     
-## To be copied in the UI
-# mod_various_ui("various_ui_1")
-    
-## To be copied in the server
-# mod_various_server("various_ui_1")
- 
+

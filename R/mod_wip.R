@@ -7,7 +7,7 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_wip_ui <- function(id){
+mod_wip_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
     
@@ -39,10 +39,11 @@ mod_wip_ui <- function(id){
 #' wip Server Function
 #'
 #' @noRd 
-mod_wip_server <- function(id) {
+mod_wip_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     section_x <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
       "wip_description"
@@ -52,67 +53,121 @@ mod_wip_server <- function(id) {
       "Popis:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    names_df <- tibble::tibble(key = items,
+                               names = item_names)
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        
+        
+        loc$wip <- transform_table(ipcas_db = ipcas_db,
+                                    person_id = usr$person_id,
+                                    tbl = "wip",
+                                    tbl_id = "wip_id",
+                                    filter_col = NULL,
+                                    filter_val = NULL,
+                                    names_df = names_df)
+        
+        ids_wip <- loc$wip %>% 
+            dplyr::pull(wip_id)
+        
+        section_x$wip <- paste0("<br>", 
+                                 loc$wip$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_wip,
+                              seq_along(ids_wip)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(item_names, items)
+        check_inputs(input, checks, text = "Zadejte")
         
-      }
-      
-      
-      
-      section_x$wip[[
-        length(
-          section_x$wip)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_x$wip)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            "wip", 
+            usr$person_id, 
+            as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "wip", new_entry_df)
+        
+        loc$wip <-  transform_table(ipcas_db = ipcas_db,
+                                     person_id = usr$person_id,
+                                     tbl = "wip",
+                                     tbl_id = "wip_id",
+                                     filter_col = NULL,
+                                     filter_val = NULL,
+                                     names_df = names_df)
+        ids_wip <- loc$wip %>% 
+            dplyr::pull(wip_id)
+        
+        section_x$wip <- paste0("<br>", 
+                                 loc$wip$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_wip,
+                              seq_along(ids_wip)))
+        
     })
+    
+    # remove wip ####
     
     observeEvent(input$remove, {
-      
-      
-      section_x$wip[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_x$wip)
-                        
-      )
-      
+        
+        loc$wip <- loc$wip %>% 
+            dplyr::filter(!wip_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM wip WHERE wip_id IN (?)",
+                        params = list(input$remove_list))
+        
+        ids_wip <- loc$wip %>% 
+            dplyr::pull(wip_id)
+        
+        section_x$wip <- paste0("<br>", 
+                                 loc$wip$data,
+                                 "<br>")
+        
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_wip,
+                              seq_along(ids_wip)))
+        
     })
     
+    # output wip ####
     
     output$section_x <- renderText({
-      if (length(section_x$wip)>0) {
-        paste(paste0(seq_along(section_x$wip), ".<br>"),
-              section_x$wip)
-      } else {""}
+        if (nrow(loc$wip)>0) {
+            
+            text_to_display <- loc$wip %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
-    
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$wip <- section_x$wip[-length(section_x$wip)]
-    })
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_x$wip <- state$values$wip
-    })
-    
     return(section_x)
     
   })}

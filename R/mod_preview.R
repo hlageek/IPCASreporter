@@ -319,7 +319,7 @@ mod_preview_server <- function(id,
         # Section XI  ####
         
         output$section_xi <-  renderText({
-          paste(section_xi$data)
+          paste(section_xi$various)
         })
         
         
