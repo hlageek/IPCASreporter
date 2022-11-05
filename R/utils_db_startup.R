@@ -137,6 +137,48 @@ CREATE TABLE IF NOT EXISTS av21 (
         FOREIGN KEY (person_id_av21) REFERENCES persons (person_id)
 );
 "
+CREATE_POPULAR_SQL <- "
+CREATE TABLE IF NOT EXISTS popular (
+     popular_id INT AUTO_INCREMENT PRIMARY KEY
+,    popular_id_year INT
+,    person_id_popular INT
+,    popular_contribution VARCHAR(500)
+,    popular_description TEXT
+,    popular_organizer_primary VARCHAR(250)
+,    popular_organizer_secondary VARCHAR(250)
+,    popular_place VARCHAR(250)
+,    popular_date VARCHAR(40)
+,    CONSTRAINT `person_id_popular`
+        FOREIGN KEY (person_id_popular) REFERENCES persons (person_id)
+);
+"
+
+CREATE_SCHOOL_SQL <- "
+CREATE TABLE IF NOT EXISTS school (
+     school_id INT AUTO_INCREMENT PRIMARY KEY
+,    school_id_year INT
+,    person_id_school INT
+,    school_contribution VARCHAR(500)
+,    school_name VARCHAR(500)
+,    school_description TEXT
+,    CONSTRAINT `person_id_school`
+        FOREIGN KEY (person_id_school) REFERENCES persons (person_id)
+);
+"
+
+CREATE_MEDIA_SQL <- "
+CREATE TABLE IF NOT EXISTS media (
+     media_id INT AUTO_INCREMENT PRIMARY KEY
+,    media_id_year INT
+,    person_id_media INT
+,    media_contribution VARCHAR(500)
+,    media_name VARCHAR(500)
+,    media_description TEXT
+,    CONSTRAINT `person_id_media`
+        FOREIGN KEY (person_id_media) REFERENCES persons (person_id)
+);
+"
+
 #' @export
 clear_db <- function(pool) {
     
@@ -164,6 +206,9 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_LECTURES_SQL)
     DBI::dbExecute(pool, CREATE_GRANTS_SQL)
     DBI::dbExecute(pool, CREATE_AV21_SQL)
+    DBI::dbExecute(pool, CREATE_POPULAR_SQL)
+    DBI::dbExecute(pool, CREATE_SCHOOL_SQL)
+    DBI::dbExecute(pool, CREATE_MEDIA_SQL)
     
     
 }

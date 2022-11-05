@@ -7,14 +7,14 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_school_ui <- function(id){
+mod_school_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
                   
     
-    textInput(ns("title"), label = "Název přednášky či specifikace jiného druhu akce"),
-    textInput(ns("name"), label = "Pořadatel/škola"),
-    textAreaInput(ns("description"), label = "Popis činnosti" ),
+    textInput(ns("school_contribution"), label = "Název přednášky či specifikace jiného druhu akce"),
+    textInput(ns("school_name"), label = "Pořadatel/škola"),
+    textAreaInput(ns("school_description"), label = "Popis činnosti" ),
     
     actionButton(ns("add"),
                  label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
@@ -42,82 +42,135 @@ mod_school_ui <- function(id){
 #' school Server Function
 #'
 #' @noRd 
-mod_school_server <- function(id) {
+mod_school_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     section_vi_school <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
-      "title",
-      "name",
-      "description"
+      "school_contribution",
+      "school_name",
+      "school_description"
     )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Název přednášky či specifikace jiného druhu akce:",
       "Pořadatel/škola:",
       "Popis činnosti:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$school <- transform_table(ipcas_db = ipcas_db,
+                                       person_id = usr$person_id,
+                                       tbl = "school",
+                                       tbl_id = "school_id",
+                                       filter_col = NULL,
+                                       filter_val = NULL,
+                                       names_df = loc$names)
+        
+        # updates after action
+        section_vi_school$events <- paste0("<br>", 
+                                            loc$school$data,
+                                            "<br>")
+        ids_school <- loc$school %>% 
+            dplyr::pull(school_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_school,
+                              seq_along(ids_school)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = "description")
         
-      }
-      
-      
-      
-      section_vi_school$events[[
-        length(
-          section_vi_school$events)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vi_school$events)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "school", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "school", new_entry_df)
+        
+        loc$school <-  transform_table(ipcas_db = ipcas_db,
+                                        person_id = usr$person_id,
+                                        tbl = "school",
+                                        tbl_id = "school_id",
+                                        filter_col = NULL,
+                                        filter_val = NULL,
+                                        names_df = loc$names)
+        
+        # updates after action
+        section_vi_school$events <- paste0("<br>", 
+                                            loc$school$data,
+                                            "<br>")
+        ids_school <- loc$school %>% 
+            dplyr::pull(school_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_school,
+                              seq_along(ids_school)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_vi_school$events[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vi_school$events)
-                        
-      )
-      
+        
+        loc$school <- loc$school %>% 
+            dplyr::filter(!school_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM school WHERE school_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_vi_school$events <- paste0("<br>", 
+                                            loc$school$data,
+                                            "<br>")
+        ids_school <- loc$school %>% 
+            dplyr::pull(school_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_school,
+                              seq_along(ids_school)))
+        
     })
     
+    # output school ####
     
     output$section_vi_school <- renderText({
-      if (length(section_vi_school$events)>0) {
-        paste(paste0(seq_along(section_vi_school$events), ".<br>"),
-              section_vi_school$events)
-      } else {""}
-    })
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_vi_school <- section_vi_school$events[-length(section_vi_school$events)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_vi_school$events <- state$values$section_vi_school 
+        if (nrow(loc$school)>0) {
+            
+            text_to_display <- loc$school %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
     return(section_vi_school)

@@ -7,19 +7,19 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_popular_ui <- function(id){
+mod_popular_ui <- function(id, i18n){
   ns <- NS(id)
   
   fluidRow(column(width = 6,
                   
     
 
-    textInput(ns("contribution"), label = "Název akce"),
-    textInput(ns("description"), label = "Popis aktivity"),
-    textInput(ns("organizer_primary"), label = "Hlavní pořadatel"),
-    textInput(ns("organizer_secondary"), label = "Spolupořadatel"),
-    textInput(ns("place"), label = "Místo konání akce"),
-    dateInput(ns("date"), label = "Datum konání akce"),
+    textInput(ns("popular_contribution"), label = "Název akce"),
+    textInput(ns("popular_description"), label = "Popis aktivity"),
+    textInput(ns("popular_organizer_primary"), label = "Hlavní pořadatel"),
+    textInput(ns("popular_organizer_secondary"), label = "Spolupořadatel"),
+    textInput(ns("popular_place"), label = "Místo konání akce"),
+    dateInput(ns("popular_date"), label = "Datum konání akce"),
     
     actionButton(ns("add"),
                  label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
@@ -47,22 +47,23 @@ mod_popular_ui <- function(id){
 #' popular Server Function
 #'
 #' @noRd 
-mod_popular_server <- function(id) {
+mod_popular_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     
     section_vi_popular <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
-      "contribution",
-      "description",
-      "organizer_primary",
-      "organizer_secondary",
-      "place",
-      "date"
+      "popular_contribution",
+      "popular_description",
+      "popular_organizer_primary",
+      "popular_organizer_secondary",
+      "popular_place",
+      "popular_date"
       )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Název akce:",
       "Popis aktivity:",
       "Hlavní pořadatel:",
@@ -71,67 +72,118 @@ mod_popular_server <- function(id) {
       "Datum konání akce:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], format_input))
-      
+    # init ####
+    observeEvent(usr$person_id, {
+
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$popular <- transform_table(ipcas_db = ipcas_db,
+                                    person_id = usr$person_id,
+                                    tbl = "popular",
+                                    tbl_id = "popular_id",
+                                    filter_col = NULL,
+                                    filter_val = NULL,
+                                    names_df = loc$names)
+        
+        # updates after action
+        section_vi_popular$events <- paste0("<br>", 
+                                 loc$popular$data,
+                                 "<br>")
+        ids_popular <- loc$popular %>% 
+            dplyr::pull(popular_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_popular,
+                              seq_along(ids_popular)))
     })
+   
     
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = "popular_organizer_secondary")
         
-      }
-      
-      
-      
-      section_vi_popular$events[[
-        length(
-          section_vi_popular$events)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vi_popular$events)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "popular", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "popular", new_entry_df)
+        
+        loc$popular <-  transform_table(ipcas_db = ipcas_db,
+                                     person_id = usr$person_id,
+                                     tbl = "popular",
+                                     tbl_id = "popular_id",
+                                     filter_col = NULL,
+                                     filter_val = NULL,
+                                     names_df = loc$names)
+        
+        # updates after action
+        section_vi_popular$events <- paste0("<br>", 
+                                            loc$popular$data,
+                                            "<br>")
+        ids_popular <- loc$popular %>% 
+            dplyr::pull(popular_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_popular,
+                              seq_along(ids_popular)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_vi_popular$events[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vi_popular$events)
-                        
-      )
-      
+        
+        loc$popular <- loc$popular %>% 
+            dplyr::filter(!popular_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM popular WHERE popular_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_vi_popular$events <- paste0("<br>", 
+                                            loc$popular$data,
+                                            "<br>")
+        ids_popular <- loc$popular %>% 
+            dplyr::pull(popular_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_popular,
+                              seq_along(ids_popular)))
+        
     })
     
+    # output popular ####
     
     output$section_vi_popular <- renderText({
-      if (length(section_vi_popular$events)>0) {
-        paste(paste0(seq_along(section_vi_popular$events), ".<br>"),
-              section_vi_popular$events)
-      } else {""}
+        if (nrow(loc$popular)>0) {
+            
+            text_to_display <- loc$popular %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
-    
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_vi_popular <- section_vi_popular$events[-length(section_vi_popular$events)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_vi_popular$events <- state$values$section_vi_popular 
-    })
     return(section_vi_popular)
    
   })}

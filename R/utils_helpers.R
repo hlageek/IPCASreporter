@@ -206,8 +206,12 @@ transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL,
 
 # check inputs --------------------------------------
 
-check_inputs <- function(input, list, text = "Zadejte") {
+check_inputs <- function(input, list, text = "Zadejte", exclude = NULL) {
     
+    if (!is.null(exclude)) {
+        list <- list[!grepl(exclude, names(list))]
+    }
+
     purrr::walk2(names(list), list, .f = function(x, y) {
                if (!isTruthy(input[[x]])) showNotification(paste(text, y))
     })

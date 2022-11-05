@@ -121,17 +121,17 @@ app_ui <- function(request) {
 
                                        tabPanel("Akce",
 
-                                                mod_popular_ui("popular_ui_1")
+                                                mod_popular_ui("popular_ui_1", i18n)
                                                 ),
 
                                        tabPanel("Přednášky na středních, případně základních školách",
 
-                                                mod_school_ui("school_ui_1")
+                                                mod_school_ui("school_ui_1", i18n)
                                        ),
 
                                        tabPanel("Vystoupení a popularizační texty v médiích",
 
-                                                mod_media_ui("media_ui_1")
+                                                mod_media_ui("media_ui_1", i18n)
 
                                                 )
 
