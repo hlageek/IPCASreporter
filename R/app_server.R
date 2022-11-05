@@ -57,7 +57,7 @@ i18n_r <- reactive({
     
     section_vi_media <- mod_media_server("media_ui_1", usr, i18n_r)
     
-    section_vii <- mod_public_server("public_ui_1")
+    section_vii <- mod_public_server("public_ui_1", usr, i18n_r)
     
     section_viii_int_projects <-  mod_int_projects_server("int_projects_ui_1")
     

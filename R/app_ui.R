@@ -141,7 +141,7 @@ app_ui <- function(request) {
                                      h2(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU")),
                                      p("(Např. členství v panelu GAČR; hodnocení pro RIV; hodnocení pro RVVI; odborné expertizy a vědecké poradenství – s uvedením zadavatele apod.)."),
 
-                                     mod_public_ui("public_ui_1")
+                                     mod_public_ui("public_ui_1", i18n)
 
                                      ),
                             tabPanel(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE"),

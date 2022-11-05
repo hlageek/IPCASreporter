@@ -7,12 +7,12 @@
 #' @noRd 
 #'
 #' @importFrom shiny NS tagList 
-mod_public_ui <- function(id){
+mod_public_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
                   
-    textInput(ns("body"), label = "Instituce státní nebo veřejné správy"),
-    textAreaInput(ns("description"), label = "Popis spolupráce"),
+    textInput(ns("gov_body"), label = "Instituce státní nebo veřejné správy"),
+    textAreaInput(ns("gov_description"), label = "Popis spolupráce"),
     
     actionButton(ns("add"),
                  label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
@@ -40,81 +40,135 @@ mod_public_ui <- function(id){
 #' public Server Function
 #'
 #' @noRd 
-mod_public_server <- function(id) {
+mod_public_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     section_vii <- reactiveValues()
+    loc <- reactiveValues()
     
     items <- c(
-      "body",
-      "description"
+      "gov_body",
+      "gov_description"
     )
     
-    item_names <- c(
+    loc$item_names <- c(
       "Instituce státní nebo veřejné správy:",
       "Popis spolupráce:"
     )
     
-    item_values <- reactive({
-      
-      unlist(purrr::map(reactiveValuesToList(input)[items], as.character))
-      
+    
+    # init ####
+    observeEvent(usr$person_id, {
+        
+        loc$names <- tibble::tibble(key = items,
+                                    names = loc$item_names)
+        
+        loc$gov <- transform_table(ipcas_db = ipcas_db,
+                                       person_id = usr$person_id,
+                                       tbl = "gov",
+                                       tbl_id = "gov_id",
+                                       filter_col = NULL,
+                                       filter_val = NULL,
+                                       names_df = loc$names)
+        
+        # updates after action
+        section_vii$public <- paste0("<br>", 
+                                            loc$gov$data,
+                                            "<br>")
+        ids_gov <- loc$gov %>% 
+            dplyr::pull(gov_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_gov,
+                              seq_along(ids_gov)))
     })
     
+    
+    # add ####
     
     observeEvent(input$add, {
-      
-      all_items <- list()
-      
-      for (i in seq_along(items)) {
         
-        all_items <- c(all_items, paste(item_names[i], item_values()[i]))
+        # check and require inputs
+        checks <- stats::setNames(loc$item_names, items)
+        check_inputs(input, checks, text = "Zadejte", exclude = NULL)
         
-      }
-      
-      
-      
-      section_vii$public[[
-        length(
-          section_vii$public)+1]] <- paste(c(all_items,"<br>"), collapse = "<br>")
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vii$public)
-      )
+        all_items <- collect_items(items, input)
+        
+        new_entry_df <- prep_new_entry(
+            items, 
+            all_items, 
+            tbl = "gov", 
+            person_id = usr$person_id, 
+            year = as.integer( format(Sys.Date(), "%Y"))
+        )
+        
+        DBI::dbAppendTable(ipcas_db, "gov", new_entry_df)
+        
+        loc$gov <-  transform_table(ipcas_db = ipcas_db,
+                                        person_id = usr$person_id,
+                                        tbl = "gov",
+                                        tbl_id = "gov_id",
+                                        filter_col = NULL,
+                                        filter_val = NULL,
+                                        names_df = loc$names)
+        
+        # updates after action
+        section_vii$public <- paste0("<br>", 
+                                            loc$gov$data,
+                                            "<br>")
+        ids_gov <- loc$gov %>% 
+            dplyr::pull(gov_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_gov,
+                              seq_along(ids_gov)))
+        
     })
+    
+    # remove  ####
     
     observeEvent(input$remove, {
-      
-      
-      section_vii$public[as.integer(input$remove_list)] <- NULL 
-      
-      
-      updateSelectInput(session = session,
-                        "remove_list", 
-                        choices = seq_along(section_vii$public)
-                        
-      )
-      
+        
+        loc$gov <- loc$gov %>% 
+            dplyr::filter(!gov_id %in% req(input$remove_list))
+        
+        
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM gov WHERE gov_id IN (?)",
+                        params = list(input$remove_list))
+        
+        # updates after action
+        section_vii$public <- paste0("<br>", 
+                                            loc$gov$data,
+                                            "<br>")
+        ids_gov <- loc$gov %>% 
+            dplyr::pull(gov_id)
+        updateSelectInput(session = session,
+                          "remove_list",
+                          choices = stats::setNames(
+                              ids_gov,
+                              seq_along(ids_gov)))
+        
     })
     
+    # output gov ####
     
     output$section_vii <- renderText({
-      if (length(section_vii$public)>0) {
-        paste(paste0(seq_along(section_vii$public), ".<br>"),
-              section_vii$public)
-      } else {""}
+        if (nrow(loc$gov)>0) {
+            
+            text_to_display <- loc$gov %>% 
+                dplyr::pull(data)
+            
+            paste0(
+                paste0(seq_along(text_to_display), ".<br>"),
+                text_to_display,
+                "<br><br>")
+            
+        } else {""}
     })
     
-    # Save extra values in state$values when we bookmark
-    onBookmark(function(state) {
-        state$values$section_vii <- section_vii$public[-length(section_vii$public)]
-    })
-    
-    # Read values from state$values when we restore
-    onRestore(function(state) {
-        section_vii$public <- state$values$section_vii 
-    })
     
     return(section_vii)
     

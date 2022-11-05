@@ -178,6 +178,17 @@ CREATE TABLE IF NOT EXISTS media (
         FOREIGN KEY (person_id_media) REFERENCES persons (person_id)
 );
 "
+CREATE_GOV_SQL <- "
+CREATE TABLE IF NOT EXISTS gov (
+     gov_id INT AUTO_INCREMENT PRIMARY KEY
+,    gov_id_year INT
+,    person_id_gov INT
+,    gov_body VARCHAR(500)
+,    gov_description TEXT
+,    CONSTRAINT `person_id_gov`
+        FOREIGN KEY (person_id_gov) REFERENCES persons (person_id)
+);
+"
 
 #' @export
 clear_db <- function(pool) {
@@ -209,7 +220,7 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_POPULAR_SQL)
     DBI::dbExecute(pool, CREATE_SCHOOL_SQL)
     DBI::dbExecute(pool, CREATE_MEDIA_SQL)
-    
+    DBI::dbExecute(pool, CREATE_GOV_SQL)
     
 }
 
