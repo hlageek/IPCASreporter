@@ -96,9 +96,10 @@ purrr::reduce(list_value, paste) %>%
 
 filter_pub_type <- function(vec, type) {
     
-    pattern <- paste0(" Druh: ", type, ".{0,2}\\.$")
+    pattern <- paste0(" Druh: ", type, "{0,2}\\.$")
         
     vec %>% 
+        stringr::str_replace_all(" {2,}", "") %>% 
         stringr::str_subset(pattern) %>% 
         stringr::str_replace(pattern, "")
         

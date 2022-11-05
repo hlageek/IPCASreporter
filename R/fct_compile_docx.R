@@ -23,7 +23,7 @@ compile_docx <- function(identification,
                          section_xi
                          ) {
     
-    # browser()
+     #browser()
     doc <- officer::read_docx(system.file("app/www/annual_report_ipcas.docx", package = "IPCASreporter")) %>%
         officer::body_replace_text_at_bkm("employee_name", 
                                           ifelse(isTruthy(identification$employee_name), 
@@ -41,22 +41,22 @@ compile_docx <- function(identification,
                         identification$comment) %>% 
         add_doc_f_section("pubsB",
                           filter_pub_type(section_i$publist,
-                                          "B")) %>% 
+                                          "B.")) %>% 
         add_doc_f_section("pubsM",
                           filter_pub_type(section_i$publist,
-                                          "[M|C]")) %>% 
+                                          "[M|C].")) %>% 
         add_doc_f_section("pubsJ",
                           filter_pub_type(section_i$publist,
-                                          "J")) %>% 
+                                          "J.")) %>% 
         add_doc_f_section("pubsE",
                           filter_pub_type(section_i$publist,
-                                          "E")) %>% 
+                                          "E.")) %>% 
         add_doc_f_section("pubsR",
                           filter_pub_type(section_i$publist,
-                                          "R")) %>% 
+                                          "R.")) %>% 
         add_doc_f_section("pubsT",
                           filter_pub_type(section_i$publist,
-                                          "OT")) %>% 
+                                          "OT.")) %>% 
         add_doc_f_section("pubsO",
                           filter_pub_type(section_i$publist,
                                           "O[^T]")) %>% 
