@@ -16,7 +16,7 @@ mod_events_ui <- function(id, i18n){
                   uiOutput(ns("events")),
                   
                   actionButton(ns("add"),
-                               label = "Add to report",
+                               label = "Zadat do výkazu",
                                class = "btn-success",
                                icon = icon("check")
                   )

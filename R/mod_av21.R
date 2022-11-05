@@ -25,7 +25,7 @@ mod_av21_ui <- function(id, i18n){
 
 
       actionButton(ns("add"),
-                   label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                   label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
       )
     
   ),
@@ -35,10 +35,10 @@ mod_av21_ui <- function(id, i18n){
          htmlOutput(ns("section_v"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          )
          
          

@@ -34,7 +34,7 @@ mod_conference_ui <- function(id, i18n){
                   
 
                   actionButton(ns("add"),
-                               label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
                   )
   ),
   
@@ -47,20 +47,20 @@ mod_conference_ui <- function(id, i18n){
          htmlOutput(ns("section_iii_conferences_foreign"), inline = FALSE),
          
          selectInput(ns("remove_list_foreign"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          actionButton(ns("remove_foreign"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          ),
          
          h4("b) Domácí:"),
          htmlOutput(ns("section_iii_conferences_domestic"), inline = FALSE),
          
          selectInput(ns("remove_list_domestic"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          actionButton(ns("remove_domestic"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          )
          
   )

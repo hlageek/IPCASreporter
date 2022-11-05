@@ -17,7 +17,7 @@ mod_media_ui <- function(id, i18n){
     textAreaInput(ns("media_description"), label = "Doplňující informace" ),
     
     actionButton(ns("add"),
-                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
     )
     
     
@@ -28,10 +28,10 @@ mod_media_ui <- function(id, i18n){
          htmlOutput(ns("section_vi_media"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          )
     
   )

@@ -11,9 +11,9 @@ mod_add_remove_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    actionButton(ns("save"), label = "Add to report",                  icon = icon("check"),                  class = "btn-success"),
+    actionButton(ns("save"), label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"),
     
-    actionButton(ns("remove"), label = "Remove from report")
+    actionButton(ns("remove"), label = "Odstranit z výkazu")
     
     
   )
@@ -31,7 +31,7 @@ mod_add_remove_server <- function(id, data) {
     
     input_value <- reactiveVal(c())
     
-    # Add to report
+    # Zadat do výkazu
     
     observeEvent( input$save , {
       input_value <- input_value(c(input_value(), data()))
@@ -39,7 +39,7 @@ mod_add_remove_server <- function(id, data) {
 
     })
     
-    # Remove from report
+    # Remove 
     
     observeEvent( input$remove , {
       

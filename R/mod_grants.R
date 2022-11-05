@@ -64,7 +64,7 @@ mod_grants_ui <- function(id, i18n){
    br(), br(), br(),
    
     actionButton(ns("add"),
-                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
                  )
     
     ),
@@ -76,10 +76,10 @@ mod_grants_ui <- function(id, i18n){
              htmlOutput(ns("section_iv_funded"), inline = FALSE),
              
              selectInput(ns("remove_list_funded"), 
-                         label = "Item",
+                         label = "Položka",
                          choices = ""),
              actionButton(ns("remove_funded"),
-                          label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                          label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
                           ),
              
              h3("Projekty posuzované, nebo nepřijaté k financování"),
@@ -87,10 +87,10 @@ mod_grants_ui <- function(id, i18n){
              htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
              
              selectInput(ns("remove_list_unfunded"), 
-                         label = "Item",
+                         label = "Položka",
                          choices = ""),
              actionButton(ns("remove_unfunded"),
-                          label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                          label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
                           )
              )
       

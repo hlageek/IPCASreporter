@@ -1,9 +1,9 @@
 make_add_remove_ui <- function(ns) {
     
     tagList(
-    actionButton(ns("save"), label = "Add to report",                  icon = icon("check"),                  class = "btn-success"),
+    actionButton(ns("save"), label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"),
     
-    actionButton(ns("remove"), label = "Remove from report")
+    actionButton(ns("remove"), label = "Odstranit z výkazu")
     )
 }
 

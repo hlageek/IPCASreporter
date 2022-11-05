@@ -27,7 +27,7 @@ mod_other_member_ui <- function(id){
                                            "Zahraniční" = "foreign")),
                   
                   actionButton(ns("add"),
-                               label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),
@@ -39,12 +39,12 @@ mod_other_member_ui <- function(id){
          htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
          
          selectInput(ns("remove_list_domestic"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove_domestic"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          ),
          
          h3("Zahraniční"),
@@ -52,12 +52,12 @@ mod_other_member_ui <- function(id){
          htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
          
          selectInput(ns("remove_list_foreign"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove_foreign"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          )
          
          

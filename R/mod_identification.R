@@ -16,7 +16,7 @@ mod_identification_ui <- function(id, i18n){
     uiOutput(ns("identification_ui")),
 
     actionButton(ns("add"),
-                 label = i18n$t("Aktualizovat výkaz"),
+                 label = i18n$t("Zadat do výkazu"),
                  icon = icon("check"),
                  class = "btn-success"
                  )

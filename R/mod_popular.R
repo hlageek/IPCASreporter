@@ -22,7 +22,7 @@ mod_popular_ui <- function(id, i18n){
     dateInput(ns("popular_date"), label = "Datum konání akce"),
     
     actionButton(ns("add"),
-                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
     )
     
 
@@ -33,10 +33,10 @@ mod_popular_ui <- function(id, i18n){
           htmlOutput(ns("section_vi_popular"), inline = FALSE),
           
           selectInput(ns("remove_list"), 
-                      label = "Item",
+                      label = "Položka",
                       choices = ""),
           actionButton(ns("remove"),
-                       label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                       label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
           )
           
           

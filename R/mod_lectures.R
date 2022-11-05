@@ -19,7 +19,7 @@ mod_lectures_ui <- function(id, i18n){
                  choices = c("Domácí" = "Domácí", 
                              "Zahraniční" = "Zahraniční")),
     actionButton(ns("add"),
-                 label = "Add to report", 
+                 label = "Zadat do výkazu", 
                  icon = icon("check"),
                  class = "btn-success"
     )
@@ -34,20 +34,20 @@ mod_lectures_ui <- function(id, i18n){
            htmlOutput(ns("section_iii_lectures_foreign"), inline = FALSE),
            
            selectInput(ns("remove_list_foreign"), 
-                       label = "Item",
+                       label = "Položka",
                        choices = ""),
            actionButton(ns("remove_foreign"),
-                        label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                        label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
            ),
            
            h4("b) Domácí:"),
            htmlOutput(ns("section_iii_lectures_domestic"), inline = FALSE),
            
            selectInput(ns("remove_list_domestic"), 
-                       label = "Item",
+                       label = "Položka",
                        choices = ""),
            actionButton(ns("remove_domestic"),
-                        label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                        label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
            )
            
            

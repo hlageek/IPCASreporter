@@ -16,7 +16,7 @@ mod_various_ui <- function(id){
     
     
     actionButton(ns("add"),
-                 label = "Add to report",                  icon = icon("check"),                  class = "btn-success"
+                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
     )
     
   ),
@@ -26,12 +26,12 @@ mod_various_ui <- function(id){
          htmlOutput(ns("section_xi"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Item",
+                     label = "Položka",
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove"),
-                      label = "Remove from report", class = "btn-primary", icon = icon("trash")
+                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
          )
   ) 
   )
