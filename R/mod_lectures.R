@@ -59,7 +59,7 @@ mod_lectures_ui <- function(id, i18n){
 #' lectures Server Function
 #'
 #' @noRd 
-mod_lectures_server <- function(id, usr, i18n_r) {
+mod_lectures_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
     

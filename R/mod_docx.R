@@ -165,8 +165,7 @@ mod_docx_server <- function(id,
   observeEvent(input$ok, {
     
       email_password <- golem::get_golem_options(which = "email_password")
-      golem::cat_dev(email_password)
-      
+
       if (!is.null(email_password)) {
           
     tmp_doc <- paste0("ar-",

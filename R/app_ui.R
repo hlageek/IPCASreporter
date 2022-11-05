@@ -24,7 +24,7 @@ app_ui <- function(request) {
                   label = NULL,
                   choices = i18n$get_languages()
                   ),
-      style = "float: right; max-width: 100px"),
+      style = "float: right; max-width: 70px"),
 
                      navlistPanel(widths = c(2,10), well = F, #####
 
@@ -109,7 +109,7 @@ app_ui <- function(request) {
                                      h2("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
                                      p("Včetně anotace (min. 300 znaků) a výstupů (publikace, konference, přednáška atd.)."),
 
-                                     mod_av21_ui("av21_ui_1")
+                                     mod_av21_ui("av21_ui_1", i18n)
 
 
                                      ),

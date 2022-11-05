@@ -127,21 +127,34 @@ add_doc_f_section <- function(doc, bookmark, f_data) {
 
 # item collection from multi-input ---------------------------------------
 
-collect_items <- function(items, item_names, item_values) {
+collect_items <- function(items, input) {
 
-        all_items <- list()
-    
-    
-for (i in seq_along(items)) {
-    
-    all_items <- c(all_items, paste(item_names[i], item_values[i]))
-    
-}
-
-all_items
+    purrr::map_chr(items, 
+                   .f = function(items) {
+                       
+                       unlist(paste(input[[items]], collapse = "/"))
+                       
+                   }
+    )
 
 }
 
+# prepare new entry  ---------------------------------------
+
+prep_new_entry <- function(items, all_items, tbl, person_id, year) {
+    
+    entry_df <- tibble::tibble(key = items,
+                   value = all_items) %>% 
+        tidyr::pivot_wider(tidyselect::everything(),
+                           names_from = "key",
+                           values_from = "value")
+    
+    entry_df[[paste0("person_id_", tbl)]] <- person_id
+    entry_df[[paste0(tbl, "_id_year")]] <- year
+
+    entry_df
+    
+}
 
 # format input that includes a date ---------------------------------------
 

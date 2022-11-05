@@ -114,14 +114,29 @@ CREATE TABLE IF NOT EXISTS grants (
 ,    grant_provider VARCHAR(500)
 ,    grant_date_from INT
 ,    grant_date_to INT
-,    annotation_cze TEXT
-,    annotation_eng TEXT
+,    grant_annotation_cze TEXT
+,    grant_annotation_eng TEXT
 ,    funding_status VARCHAR(10)
 ,    CONSTRAINT `person_id_grants`
         FOREIGN KEY (person_id_grants) REFERENCES persons (person_id)
 );
 "
-
+CREATE_AV21_SQL <- "
+CREATE TABLE IF NOT EXISTS av21 (
+     av21_id INT AUTO_INCREMENT PRIMARY KEY
+,    av21_id_year INT
+,    person_id_av21 INT
+,    av21_program VARCHAR(250)
+,    av21_activity VARCHAR(500)
+,    av21_person VARCHAR(250)
+,    av21_annotation_cze TEXT
+,    av21_annotation_eng TEXT
+,    av21_results TEXT
+,    av21_partner TEXT
+,    CONSTRAINT `person_id_av21`
+        FOREIGN KEY (person_id_av21) REFERENCES persons (person_id)
+);
+"
 #' @export
 clear_db <- function(pool) {
     
@@ -148,6 +163,7 @@ create_db_schema <- function(pool){
     DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
     DBI::dbExecute(pool, CREATE_LECTURES_SQL)
     DBI::dbExecute(pool, CREATE_GRANTS_SQL)
+    DBI::dbExecute(pool, CREATE_AV21_SQL)
     
     
 }
@@ -156,6 +172,14 @@ create_db_schema <- function(pool){
 
 
 make_globals <- quote({
+    
+    shinymanager::set_labels(
+        language = "en",
+        "Please authenticate" = "Výroční výkaz (Annual report)",
+        "Username:" = "User:",
+        "Password:" = "Password:"
+    )
+    
     ipcas_db <- pool::dbPool(
             drv = RMariaDB::MariaDB(),
             dbname = golem::get_golem_options("dbname"),
@@ -167,12 +191,7 @@ make_globals <- quote({
         pool::poolClose(ipcas_db)
     })
     
-    shinymanager::set_labels(
-        language = "en",
-        "Please authenticate" = "Výroční výkaz (Annual report)",
-        "Username:" = "User:",
-        "Password:" = "Password:"
-    )
+
 })
     
 

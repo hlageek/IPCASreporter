@@ -48,9 +48,9 @@ mod_grants_ui <- function(id, i18n){
       condition = "input.grant_date_from == output.current_year",
       ns = ns,
       
-      textAreaInput(ns("annotation_cze"), label = "Anotace česky",
+      textAreaInput(ns("grant_annotation_cze"), label = "Anotace česky",
                     placeholder = "Pro nově zahájené projekty."),
-      textAreaInput(ns("annotation_eng"), label = "Anotace anglicky",
+      textAreaInput(ns("grant_annotation_eng"), label = "Anotace anglicky",
                     placeholder = "For newly launched projects."),
 
     ),
@@ -100,7 +100,7 @@ mod_grants_ui <- function(id, i18n){
 #' grants Server Function
 #'
 #' @noRd 
-mod_grants_server <- function(id, usr, i18n_r) {
+mod_grants_server <- function(id, usr, i18n) {
   moduleServer(id, function(input, output, session) {
     
  output$current_year <- renderText({format(Sys.time(), "%Y")})
@@ -116,8 +116,8 @@ mod_grants_server <- function(id, usr, i18n_r) {
    "grant_provider",
    "grant_date_from",
    "grant_date_to",
-   "annotation_cze",
-   "annotation_eng"
+   "grant_annotation_cze",
+   "grant_annotation_eng"
  )
  
  item_names <- c(
@@ -197,14 +197,13 @@ mod_grants_server <- function(id, usr, i18n_r) {
  
 
  # add ####
- 
- 
+
  observeEvent(input$add, {
 
           # check and require inputs
           checks <- stats::setNames(item_names, items)
           checks_no_annotation <- checks[!grepl("annotation", names(checks))]
-          check_inputs(input, checks_no_annotation)
+          check_inputs(input, checks_no_annotation, text = "Zadejte")
           
           if (input$grant_date_from == as.integer( format(Sys.Date(), "%Y"))) {
               checks_annotation <- checks[grepl("annotation", names(checks))]
@@ -212,13 +211,7 @@ mod_grants_server <- function(id, usr, i18n_r) {
           }
   
      
-     all_items <- purrr::map_chr(items, 
-                                 .f = function(items) {
-                                     
-                                     unlist(paste(input[[items]], collapse = "/"))
-                                     
-                                 }
-     )
+     all_items <- collect_items(items, input)
      
      new_entry_df <- tibble::tibble(key = items,
                                     value = all_items) %>% 

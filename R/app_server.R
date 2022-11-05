@@ -49,7 +49,7 @@ i18n_r <- reactive({
     
     section_iv <- mod_grants_server("grants_ui_1", usr, i18n_r)
     
-    section_v <- mod_av21_server("av21_ui_1")
+    section_v <- mod_av21_server("av21_ui_1", usr, i18n_r)
     
     section_vi_popular <- mod_popular_server("popular_ui_1")
     
@@ -65,9 +65,6 @@ i18n_r <- reactive({
     section_ix_award <- mod_other_award_server("other_award_ui_1")
 
     section_ix_review <- mod_other_review_server("other_review_ui_1")
-    
-    
-
     
     section_ix_member <- mod_other_member_server("other_member_ui_1")
     
