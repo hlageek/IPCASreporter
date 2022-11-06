@@ -148,7 +148,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
                 tbl = "undergrad", 
                 tbl_id = "undergrad_id", 
                 person_id = usr$person_id,
-                names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                names_df = names_df)
             
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
             
@@ -187,7 +187,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
                 tbl = "undergrad", 
                 tbl_id = "undergrad_id", 
                 person_id = usr$person_id,
-                names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                names_df = names_df)
           
            
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
@@ -218,7 +218,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
                 tbl = "undergrad", 
                 tbl_id = "undergrad_id", 
                 person_id = usr$person_id,
-                names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                names_df = names_df)
             
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
             

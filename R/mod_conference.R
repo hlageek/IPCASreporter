@@ -111,7 +111,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                            tbl_id = "conference_id",
                                            filter_col = "conference_location",
                                            filter_val = "Domácí",
-                                           names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                           names_df = names_df)
            
            loc$foreign <- transform_table(ipcas_db = ipcas_db,
                                           person_id = usr$person_id,
@@ -119,7 +119,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                          names_df = names_df)
            
       
            ids_domestic <- loc$domestic %>% 
@@ -178,7 +178,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Domácí",
-                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                          names_df = names_df)
           
       ids_domestic <-  loc$domestic %>% 
           dplyr::pull(conference_id)
@@ -201,7 +201,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                          names_df = names_df)
         
         
         ids_foreign <- loc$foreign %>% 

@@ -107,7 +107,7 @@ mod_other_member_server <- function(id, usr, i18n) {
                                       tbl_id = "other_member_id",
                                       filter_col = "other_member_location",
                                       filter_val = "Domácí",
-                                      names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                      names_df = names_df)
         
         loc$foreign <- transform_table(ipcas_db = ipcas_db,
                                         person_id = usr$person_id,
@@ -115,7 +115,7 @@ mod_other_member_server <- function(id, usr, i18n) {
                                         tbl_id = "other_member_id",
                                         filter_col = "other_member_location",
                                         filter_val = "Zahraniční",
-                                        names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                        names_df = names_df)
         
         
         section_ix_member$domestic <- paste0("<br>", 
@@ -175,7 +175,7 @@ mod_other_member_server <- function(id, usr, i18n) {
                                           tbl_id = "other_member_id",
                                           filter_col = "other_member_location",
                                           filter_val = "Domácí",
-                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                          names_df = names_df)
             
             
             section_ix_member$domestic <- paste0("<br>", 
@@ -198,7 +198,7 @@ mod_other_member_server <- function(id, usr, i18n) {
                                             tbl_id = "other_member_id",
                                             filter_col = "other_member_location",
                                             filter_val = "Zahraniční",
-                                            names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                            names_df = names_df)
             
             
             section_ix_member$foreign <- paste0("<br>", 

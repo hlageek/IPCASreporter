@@ -90,7 +90,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                       tbl_id = "av21_id",
                                       filter_col = NULL,
                                       filter_val = NULL,
-                                      names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                      names_df = names_df)
         
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
@@ -133,7 +133,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                      tbl_id = "av21_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                     names_df = names_df)
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
         

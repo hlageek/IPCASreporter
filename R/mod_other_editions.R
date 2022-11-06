@@ -81,7 +81,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
                                     tbl_id = "other_editions_id",
                                     filter_col = NULL,
                                     filter_val = NULL,
-                                    names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                    names_df = names_df)
         
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
@@ -124,7 +124,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
                                      tbl_id = "other_editions_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
+                                     names_df = names_df)
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
         
