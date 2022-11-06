@@ -24,6 +24,8 @@ mod_guide_ui <- function(id){
 mod_guide_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+      ns <- NS(id)
+
     observeEvent(input$show_guide, {
     showModal(modalDialog(
       size = "l",
@@ -47,9 +49,9 @@ mod_guide_server <- function(id) {
         
         tags$li("Use the", tags$b("Download"), "button to generate a MS Word version of the report."),
         
-        tags$li("Use the", tags$b("Submit"), "button to submit the report. You will receive a confirmation email after the submission."),
+        #tags$li("Use the", tags$b("Submit"), "button to submit the report. You will receive a confirmation email after the submission."),
         
-        tags$li(HTML("<i class='fa fa-warning'></i>"), "To avoid data loss, do not refresh the browser while using the app!", style = "color:red"),
+        #tags$li(HTML("<i class='fa fa-warning'></i>"), "To avoid data loss, do not refresh the browser while using the app!", style = "color:red"),
         
         h3("Navigation"),
         
@@ -68,9 +70,12 @@ mod_guide_server <- function(id) {
         
         h2("Help"),
         
-        p("If you need help or have a comment, please leave a message in the ", tags$b("#technicka_podpora"), "channel at", a("https://filosoficky.slack.com", href = "https://filosoficky.slack.com/",  target="_blank"), ".")
+        p("If you need help or have a comment, please leave a message in the ", tags$b("#technicka_podpora"), "channel at", a("https://filosoficky.slack.com", href = "https://filosoficky.slack.com/",  target="_blank"), "."),
         
+        p(""),p(""),p(""),
         
+        p(paste("Version:", as.character(packageVersion("IPCASreporter")))
+)
         
           
         )
@@ -78,6 +83,7 @@ mod_guide_server <- function(id) {
 ))
     
     })
+    
   }
   
   )}
