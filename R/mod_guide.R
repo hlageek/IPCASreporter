@@ -35,15 +35,15 @@ mod_guide_server <- function(id) {
       
       tagList(
         
-        h2("About"),
+        h2("O aplikaci"),
         
-        p("The personal work report is used, inter alia, to collect data for the annual report of the IP CAS, as well as to underpin proposals on staff remuneration, namely to determine the remuneration for exceptional performance in a given calendar year and to determine the amount of the personal compensation statement for the new calendar year, or to consolidate the data on the department's website. Only report results that are not reported in another workplace."),
+        p("Pracovní výkaz slouží mj. ke sběru dat k výroční zprávě FLÚ, dále jako podklad pro návrhy v oblasti odměnovaní zaměstnanců, konkrétně pro stanovení odměn za mimořádný pracovní výkon v daném kalendářním roce a určení výše osobního příplatku pro nový kalendářní rok, event. k atualizaci údajů na webové stránce oddělení.", tags$b("Do výkazu zanášejte jen ty výsledky, které nevykazujete na jiném pracovišti.")),
         
         h2("Instructions"),
         
         tags$li("Your name will be used to search the ASEP repository to provide selectable options in sections", tags$b( "I. & II.")),
         
-        tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("report sections.")),
+        tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("sekce výkazu.")),
         
         tags$li("Use the", tags$b("Save"), "button to generate a link that will restore your work on the report if you need to come back to it later."),
         
@@ -59,7 +59,7 @@ mod_guide_server <- function(id) {
             width="100%"),
         
         tags$ol(
-          tags$li(tags$b("Vertical navigation"), "for the application and switching between", tags$b("Preview"), "and", tags$b("Report sections"), "."),
+          tags$li(tags$b("Vertical navigation"), "for the application and switching between", tags$b("Preview"), "and", tags$b("sekce výkazu"), "."),
           
           tags$li(tags$b("Horizontal navigation"), "for the inside of the report sections. (Only appears in subdivided sections.)"),
           

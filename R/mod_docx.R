@@ -154,7 +154,7 @@ mod_docx_server <- function(id,
           title = "Submission",
           footer = tagList(
             actionButton(ns("cancel"), "Cancel"),
-            actionButton(ns("ok"), "Submit", class = "btn-success")
+            actionButton(ns("ok"), i18n$t("Odeslat"), class = "btn-success")
         ))
         )
     }

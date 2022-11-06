@@ -17,22 +17,23 @@ mod_preview_ui <- function(id, i18n){
         type = "hidden",
         tabPanelBody("panel_welcome", 
                      
-                     h2("Welcome to IPCASreporter"),
-                     
-                     p("Please read the following basic instructions before using the application."),
-                     
+                h2("Vítejte v aplikaci IPCASreporter"),
                      br(),
-                    tags$li("After you have filled your name in the", tags$b( "researcher's details"), "section a preview of your report will appear here."),
+                    p("Aplikace nyní nahrává Vaše data. Počkejte prosím."),
+                      br(),
+                    p("Před prvním použitím aplikace si přečtěte základní instrukce.")
                     
-                    tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("report sections.")),
-                    
-                    tags$li("Use the", tags$b("Save"), "button to generate a link that will restore your work on the report if you need to come back to it later."),
-                    
-                    tags$li("Use the", tags$b("Download"), "button to generate a MS Word version of the report."),
-                    
-                    tags$li("Use the", tags$b("Submit"), "button to submit the report. You will receive a confirmation email after the submission."),
-                    
-                    tags$li(HTML("<i class='fa fa-warning'></i>"), "To avoid data loss, do not refresh the browser while using the app!", style = "color:red"),
+                    # tags$li("After you have filled your name in the", tags$b( "researcher's details"), "section a preview of your report will appear here."),
+                    # 
+                    # tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("sekce výkazu.")),
+                    # 
+                    # tags$li("Use the", tags$b("Save"), "button to generate a link that will restore your work on the report if you need to come back to it later."),
+                    # 
+                    # tags$li("Use the", tags$b("Download"), "button to generate a MS Word version of the report."),
+                    # 
+                    # tags$li("Use the", tags$b("Submit"), "button to submit the report. You will receive a confirmation email after the submission."),
+                    # 
+                    # tags$li(HTML("<i class='fa fa-warning'></i>"), "To avoid data loss, do not refresh the browser while using the app!", style = "color:red"),
                      
                      
                      ),
