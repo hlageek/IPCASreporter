@@ -14,15 +14,15 @@ mod_popular_ui <- function(id, i18n){
                   
     
 
-    textInput(ns("popular_contribution"), label = "Název akce"),
-    textInput(ns("popular_description"), label = "Popis aktivity"),
-    textInput(ns("popular_organizer_primary"), label = "Hlavní pořadatel"),
-    textInput(ns("popular_organizer_secondary"), label = "Spolupořadatel"),
-    textInput(ns("popular_place"), label = "Místo konání akce"),
-    dateInput(ns("popular_date"), label = "Datum konání akce"),
+    textInput(ns("popular_contribution"), label = i18n$t("Název akce") ),
+    textInput(ns("popular_description"), label = i18n$t("Popis aktivity") ),
+    textInput(ns("popular_organizer_primary"), label = i18n$t("Hlavní pořadatel") ),
+    textInput(ns("popular_organizer_secondary"), label = i18n$t("Spolupořadatel") ),
+    textInput(ns("popular_place"), label = i18n$t("Místo konání akce") ),
+    dateInput(ns("popular_date"), label = i18n$t("Datum konání akce") ),
     
     actionButton(ns("add"),
-                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                 label = i18n$t("Zadat do výkazu") ,                  icon = icon("check"),                  class = "btn-success"
     )
     
 
@@ -33,10 +33,10 @@ mod_popular_ui <- function(id, i18n){
           htmlOutput(ns("section_vi_popular"), inline = FALSE),
           
           selectInput(ns("remove_list"), 
-                      label = "Položka",
+                      label = i18n$t("Položka") ,
                       choices = ""),
           actionButton(ns("remove"),
-                       label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                       label = i18n$t("Odstranit z výkazu") , class = "btn-primary", icon = icon("trash")
           )
           
           
@@ -106,7 +106,7 @@ mod_popular_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(loc$item_names, items)
-        check_inputs(input, checks, text = "Zadejte", exclude = "popular_organizer_secondary")
+        check_inputs(input, checks, text = i18n()$t("Zadejte") , exclude = "popular_organizer_secondary")
         
         all_items <- collect_items(items, input)
         

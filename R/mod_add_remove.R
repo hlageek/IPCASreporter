@@ -11,9 +11,9 @@ mod_add_remove_ui <- function(id){
   ns <- NS(id)
   tagList(
     
-    actionButton(ns("save"), label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"),
+    actionButton(ns("save"), label = i18n$t("Zadat do výkazu") ,                  icon = icon("check"),                  class = "btn-success"),
     
-    actionButton(ns("remove"), label = "Odstranit z výkazu")
+    actionButton(ns("remove"), label = i18n$t("Odstranit z výkazu") )
     
     
   )

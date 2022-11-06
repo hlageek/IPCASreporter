@@ -13,13 +13,13 @@ mod_other_editions_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
                   textInput(ns("other_editions_name"), 
-                            label = "Název díla"),
+                            label = i18n$t("Název díla")),
                   
                   textAreaInput(ns("other_editions_description"), 
-                            label = "Doplňující informace"),
+                            label = i18n$t("Doplňující informace")),
                   
                   actionButton(ns("add"),
-                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                               label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),
@@ -30,12 +30,12 @@ mod_other_editions_ui <- function(id, i18n){
          htmlOutput(ns("section_ix_editions"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
          
@@ -81,7 +81,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
                                     tbl_id = "other_editions_id",
                                     filter_col = NULL,
                                     filter_val = NULL,
-                                    names_df = names_df)
+                                    names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
@@ -104,7 +104,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = "Zadejte", exclude = "description")
+        check_inputs(input, checks, text = i18n()$t("Zadejte"), exclude = "description")
         
         all_items <- collect_items(items, input)
         
@@ -124,7 +124,7 @@ mod_other_editions_server <- function(id, usr, i18n) {
                                      tbl_id = "other_editions_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df)
+                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         ids_other_editions <- loc$other_editions %>% 
             dplyr::pull(other_editions_id)
         

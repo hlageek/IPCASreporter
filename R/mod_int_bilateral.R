@@ -12,10 +12,10 @@ mod_int_bilateral_ui <- function(id, i18n){
   
   fluidRow(column(width = 6,
                   
-                  textInput(ns("int_bilateral_description"), label = "Bilaterální spolupráce"),
+                  textInput(ns("int_bilateral_description"), label = i18n$t("Bilaterální spolupráce")),
                   
                   actionButton(ns("add"),
-                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                               label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),
@@ -25,10 +25,10 @@ mod_int_bilateral_ui <- function(id, i18n){
          htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
          
@@ -90,7 +90,7 @@ mod_int_bilateral_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(loc$item_names, items)
-        check_inputs(input, checks, text = "Zadejte", exclude = NULL)
+        check_inputs(input, checks, text = i18n()$t("Zadejte"), exclude = NULL)
         
         all_items <- collect_items(items, input)
         

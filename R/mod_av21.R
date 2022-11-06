@@ -13,19 +13,19 @@ mod_av21_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
     
-      textInput(ns("av21_program"), label = "Program Strategie AV21"),
-      textInput(ns("av21_activity"), label = "Název aktivity (projektu)"),
-      textInput(ns("av21_person"), label = "Řešitel aktivity (projektu)"),
-      textAreaInput(ns("av21_annotation_cze"), label = "Anotace česky",
+      textInput(ns("av21_program"), label = i18n$t("Program Strategie AV21")),
+      textInput(ns("av21_activity"), label = i18n$t("Název aktivity (projektu)")),
+      textInput(ns("av21_person"), label = i18n$t("Řešitel aktivity (projektu)")),
+      textAreaInput(ns("av21_annotation_cze"), label = i18n$t("Anotace česky"),
                     placeholder = "Lze zkopírovat z návrhového listu aktivity"),
-      textAreaInput(ns("av21_annotation_eng"), label = "Anotace anglicky"),
-      textAreaInput(ns("av21_results"), label = "Výstupy (včetně příp. odkazu na ASEP)"),
+      textAreaInput(ns("av21_annotation_eng"), label = i18n$t("Anotace anglicky")),
+      textAreaInput(ns("av21_results"), label = i18n$t("Výstupy (včetně příp. odkazu na ASEP)")),
 
-      textInput(ns("av21_partner"), label = "Spolupracující instituce"),
+      textInput(ns("av21_partner"), label = i18n$t("Spolupracující instituce")),
 
 
       actionButton(ns("add"),
-                   label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                   label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
       )
     
   ),
@@ -35,10 +35,10 @@ mod_av21_ui <- function(id, i18n){
          htmlOutput(ns("section_v"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
          
@@ -90,7 +90,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                       tbl_id = "av21_id",
                                       filter_col = NULL,
                                       filter_val = NULL,
-                                      names_df = names_df)
+                                      names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
@@ -113,7 +113,7 @@ mod_av21_server <- function(id, usr, i18n) {
        
         # check and require inputs
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = "Zadejte")
+        check_inputs(input, checks, text = i18n()$t("Zadejte"))
 
         all_items <- collect_items(items, input)
         
@@ -133,7 +133,7 @@ mod_av21_server <- function(id, usr, i18n) {
                                      tbl_id = "av21_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df)
+                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         ids_av21 <- loc$av21 %>% 
             dplyr::pull(av21_id)
         

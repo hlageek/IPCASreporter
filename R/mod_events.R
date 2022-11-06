@@ -16,7 +16,7 @@ mod_events_ui <- function(id, i18n){
                   uiOutput(ns("events")),
                   
                   actionButton(ns("add"),
-                               label = "Zadat do výkazu",
+                               label = i18n$t("Zadat do výkazu"),
                                class = "btn-success",
                                icon = icon("check")
                   )
@@ -25,7 +25,7 @@ mod_events_ui <- function(id, i18n){
   
   column(width = 8,
          
-         h4("Events selected for report"),
+         h4(i18n$t("Events selected for report")),
          htmlOutput(ns("section_ii"), inline = FALSE),
          
          
@@ -58,7 +58,7 @@ mod_events_server <- function(id, identification, usr, i18n) {
       
       if (!isTruthy(identification$employee_name)) {
         
-        "Fill your identification details first."
+        i18n()$t("Fill your identification details first.")
         
       } else {
         
@@ -75,18 +75,18 @@ mod_events_server <- function(id, identification, usr, i18n) {
           tagList(
             
             checkboxGroupInput(ns("eventlist"), 
-                               label ="Most recent events found in ASEP.", 
+                               label =i18n()$t("Nedávné záznamy nalezené v ASEP."), 
                                width = "100%",
                                choiceNames = displayed_citations,
                                choiceValues = citations)
           )
         } else {
           
-          paste0("No ASEP records found for author ", 
+          paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora "), 
                  identification$employee_name, 
-                 " in year ", 
+                 i18n()$t(" in year "), 
                  format(Sys.Date(), "%Y"), 
-                 " or ", 
+                 i18n()$t(" or "), 
                  format(Sys.Date()-365, "%Y"), 
                  ".")
         }

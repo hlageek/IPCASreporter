@@ -12,12 +12,12 @@ mod_school_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
     
-    textInput(ns("school_contribution"), label = "Název přednášky či specifikace jiného druhu akce"),
-    textInput(ns("school_name"), label = "Pořadatel/škola"),
-    textAreaInput(ns("school_description"), label = "Popis činnosti" ),
+    textInput(ns("school_contribution"), label = i18n$t("Název přednášky či specifikace jiného druhu akce")),
+    textInput(ns("school_name"), label = i18n$t("Pořadatel/škola")),
+    textAreaInput(ns("school_description"), label = i18n$t("Popis činnosti") ),
     
     actionButton(ns("add"),
-                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                 label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
     )
     
     
@@ -28,10 +28,10 @@ mod_school_ui <- function(id, i18n){
          htmlOutput(ns("section_vi_school"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
     
   )

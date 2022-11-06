@@ -13,20 +13,20 @@ mod_conference_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
                   textInput(ns("conference_contribution"), 
-                            label = "Název příspěvku"),
+                            label = i18n$t("Název příspěvku")),
                   
                   textInput(ns("conference_organizer"), 
-                            label = "Pořadatel"),
+                            label = i18n$t("Pořadatel")),
                   
                   textInput(ns("conference_name"), 
-                            label = "Název konference"),
+                            label = i18n$t("Název konference")),
                   
                   dateRangeInput(ns("conference_date"), 
-                            label = "Datum konání",
+                            label = i18n$t("Datum konání"),
                             language = "cs"),
                   
                   radioButtons(ns("conference_location"), 
-                               label = "Kategorie", 
+                               label = i18n$t("Kategorie"), 
                                choices = c("Domácí" = "Domácí",
                                            "Zahraniční" = "Zahraniční")
                                ),
@@ -34,33 +34,33 @@ mod_conference_ui <- function(id, i18n){
                   
 
                   actionButton(ns("add"),
-                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                               label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
                   )
   ),
   
   column(width = 6,
          
          
-         h3("2)	Příspěvky a přednášky na konferencích:"),
-         h4("a) Zahraniční:"),
+         h3(i18n$t("2)	Příspěvky a přednášky na konferencích:")),
+         h4(i18n$t("a) Zahraniční:")),
          
          htmlOutput(ns("section_iii_conferences_foreign"), inline = FALSE),
          
          selectInput(ns("remove_list_foreign"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove_foreign"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          ),
          
-         h4("b) Domácí:"),
+         h4(i18n$t("b) Domácí:")),
          htmlOutput(ns("section_iii_conferences_domestic"), inline = FALSE),
          
          selectInput(ns("remove_list_domestic"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove_domestic"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
   )
@@ -111,7 +111,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                            tbl_id = "conference_id",
                                            filter_col = "conference_location",
                                            filter_val = "Domácí",
-                                           names_df = names_df)
+                                           names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
            
            loc$foreign <- transform_table(ipcas_db = ipcas_db,
                                           person_id = usr$person_id,
@@ -119,7 +119,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = names_df)
+                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
            
       
            ids_domestic <- loc$domestic %>% 
@@ -153,7 +153,7 @@ mod_conference_server <- function(id, usr, i18n) {
     observeEvent(input$add, {
      
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = "Zadejte")
+        check_inputs(input, checks, text = i18n()$t("Zadejte"))
         
           all_items <- collect_items(items, input)
       
@@ -178,7 +178,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Domácí",
-                                          names_df = names_df)
+                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
           
       ids_domestic <-  loc$domestic %>% 
           dplyr::pull(conference_id)
@@ -201,7 +201,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = names_df)
+                                          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         
         ids_foreign <- loc$foreign %>% 

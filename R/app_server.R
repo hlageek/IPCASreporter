@@ -123,7 +123,7 @@ i18n_r <- reactive({
                     section_xi
                     )
     
-    mod_guide_server("guide_ui_1")
+    mod_guide_server("guide_ui_1", i18n_r)
     
 }
 
