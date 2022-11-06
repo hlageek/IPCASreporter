@@ -141,7 +141,7 @@ loc$all_df <- transform_table(
     tbl = "postgrad", 
     tbl_id = "postgrad_id", 
     person_id = usr$person_id,
-    names_df = names_df)
+    names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
     
     
     section_iii_postgrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
@@ -176,7 +176,7 @@ loc$all_df <- transform_table(
         tbl = "postgrad", 
         tbl_id = "postgrad_id", 
         person_id = usr$person_id,
-        names_df = names_df)
+        names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
 
     
     section_iii_postgrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
@@ -207,7 +207,7 @@ loc$all_df <- transform_table(
           tbl = "postgrad", 
           tbl_id = "postgrad_id", 
           person_id = usr$person_id,
-          names_df = names_df)
+          names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
       
       section_iii_postgrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
       

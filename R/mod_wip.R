@@ -67,7 +67,7 @@ mod_wip_server <- function(id, usr, i18n) {
                                     tbl_id = "wip_id",
                                     filter_col = NULL,
                                     filter_val = NULL,
-                                    names_df = names_df)
+                                    names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         ids_wip <- loc$wip %>% 
             dplyr::pull(wip_id)
@@ -110,7 +110,7 @@ mod_wip_server <- function(id, usr, i18n) {
                                      tbl_id = "wip_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df)
+                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         ids_wip <- loc$wip %>% 
             dplyr::pull(wip_id)
         

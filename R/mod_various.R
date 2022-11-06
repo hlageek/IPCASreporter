@@ -69,7 +69,7 @@ mod_various_server <- function(id, usr, i18n) {
                                     tbl_id = "various_id",
                                     filter_col = NULL,
                                     filter_val = NULL,
-                                    names_df = names_df)
+                                    names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         ids_various <- loc$various %>% 
             dplyr::pull(various_id)
@@ -112,7 +112,7 @@ mod_various_server <- function(id, usr, i18n) {
                                      tbl_id = "various_id",
                                      filter_col = NULL,
                                      filter_val = NULL,
-                                     names_df = names_df)
+                                     names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         ids_various <- loc$various %>% 
             dplyr::pull(various_id)
         

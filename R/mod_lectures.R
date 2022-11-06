@@ -99,7 +99,7 @@ mod_lectures_server <- function(id, usr, i18n) {
                                         tbl_id = "lecture_id",
                                         filter_col = "lecture_location",
                                         filter_val = "Domácí",
-                                        names_df = names_df)
+                                        names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         loc$foreign <- transform_table(ipcas_db = ipcas_db,
                                        person_id = usr$person_id,
@@ -107,7 +107,7 @@ mod_lectures_server <- function(id, usr, i18n) {
                                        tbl_id = "lecture_id",
                                        filter_col = "lecture_location",
                                        filter_val = "Zahraniční",
-                                       names_df = names_df)
+                                       names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
         
         
         ids_domestic <- loc$domestic %>% 
@@ -168,7 +168,7 @@ mod_lectures_server <- function(id, usr, i18n) {
                                             tbl_id = "lecture_id",
                                             filter_col = "lecture_location",
                                             filter_val = "Domácí",
-                                            names_df = names_df)
+                                            names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
             
             ids_domestic <-  loc$domestic %>% 
                 dplyr::pull(lecture_id)
@@ -189,7 +189,7 @@ mod_lectures_server <- function(id, usr, i18n) {
                                            tbl_id = "lecture_id",
                                            filter_col = "lecture_location",
                                            filter_val = "Zahraniční",
-                                           names_df = names_df)
+                                           names_df = names_df %>% dplyr::mutate(names = i18n()$t(names)))
             
             
             ids_foreign <- loc$foreign %>% 
