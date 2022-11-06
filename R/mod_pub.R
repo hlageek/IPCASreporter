@@ -78,7 +78,7 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
        tagList(
 
         checkboxGroupInput(ns("publist"), 
-                           label = i18n()$t("Nedávné publikace nalezené v ASEPu."), 
+                           label = i18n()$t("Nedávné záznamy nalezené v ASEP."), 
                            width = "100%",
                            choiceNames = displayed_citations,
                            choiceValues = citations)

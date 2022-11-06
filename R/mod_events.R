@@ -25,7 +25,7 @@ mod_events_ui <- function(id, i18n){
   
   column(width = 8,
          
-         h4(i18n$t("Events selected for report")),
+         h4(i18n$t("Odborné akce zařazené do výkazu")),
          htmlOutput(ns("section_ii"), inline = FALSE),
          
          
@@ -58,7 +58,7 @@ mod_events_server <- function(id, identification, usr, i18n) {
       
       if (!isTruthy(identification$employee_name)) {
         
-        i18n()$t("Fill your identification details first.")
+        i18n()$t("Nejprve vyplňte své osobní údaje.")
         
       } else {
         
@@ -84,9 +84,9 @@ mod_events_server <- function(id, identification, usr, i18n) {
           
           paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora "), 
                  identification$employee_name, 
-                 i18n()$t(" in year "), 
+                 " ", i18n()$t("v roce"), " ",
                  format(Sys.Date(), "%Y"), 
-                 i18n()$t(" or "), 
+                 " ", i18n()$t("nebo"), " ",
                  format(Sys.Date()-365, "%Y"), 
                  ".")
         }

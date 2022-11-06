@@ -31,7 +31,7 @@ mod_grants_ui <- function(id, i18n){
        style="display:inline-block"),
        tags$div(
        actionButton(ns("add_bespoke"), icon = icon("plus"), label = ""),
-       style="display:inline-block", title = i18n$t("Add provider") )
+       style="display:inline-block", title = i18n$t("Přidat poskytovatele do seznamu") )
        
        ),
     
