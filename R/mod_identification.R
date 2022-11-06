@@ -108,12 +108,12 @@ mod_identification_server <- function(id, usr, i18n) {
             sliderInput(ns("fte"),
                         label = i18n()$t("Úvazek"),
                         value = ifelse(isTruthy(ipcas_db |>
-                            dplyr::tbl("persons") |>
-                            dplyr::filter(person_id == !!usr$person_id) |>
+                            dplyr::tbl("yearly") |>
+                            dplyr::filter(person_id_yearly == !!usr$person_id) |>
                             dplyr::pull(fte)),
                             ipcas_db %>%
-                                dplyr::tbl("persons") %>%
-                                dplyr::filter(person_id == !!usr$person_id) %>%
+                                dplyr::tbl("yearly") %>%
+                                dplyr::filter(person_id_yearly == !!usr$person_id) %>%
                                 dplyr::pull(fte),
                             0),
                         min = 0,
@@ -124,8 +124,8 @@ mod_identification_server <- function(id, usr, i18n) {
             textAreaInput(ns("comment"),
                           label = i18n()$t("Poznámka"),
                           value = ipcas_db |>
-                              dplyr::tbl("persons") |>
-                              dplyr::filter(person_id == !!usr$person_id) |>
+                              dplyr::tbl("yearly") |>
+                              dplyr::filter(person_id_yearly == !!usr$person_id) |>
                               dplyr::pull(comment),
                           placeholder = i18n()$t("Např. změny ve výši úvazku v průběhu roku.")
             )
@@ -139,6 +139,11 @@ mod_identification_server <- function(id, usr, i18n) {
             dplyr::tbl("persons") %>%
             dplyr::filter(person_id == !!usr$person_id) %>%
             dplyr::collect()
+        
+        yearly <- ipcas_db %>%
+            dplyr::tbl("yearly") %>%
+            dplyr::filter(person_id_yearly == !!usr$person_id) %>%
+            dplyr::collect()
 
         department <- ipcas_db %>%
             dplyr::tbl("departments") %>%
@@ -147,92 +152,102 @@ mod_identification_server <- function(id, usr, i18n) {
 
         identification$employee_name <- paste(persons$name_first, persons$name_last)
         identification$department <- department
-        identification$fte <- persons$fte
-        identification$comment <- persons$comment
+        identification$fte <- yearly$fte
+        identification$comment <- yearly$comment
         identification$email <- persons$email
 
-        output$employee_name <- renderText({paste(persons$name_first,
-                                                  persons$name_last)
+        output$employee_name <- renderText({paste(identification$employee_name)
             })
-        output$department <- renderText({department})
-        output$fte <- renderText({persons$fte})
-        output$email <- renderText({persons$email})
-        output$comment <- renderText({persons$comment})
+        output$department <- renderText({identification$department})
+        output$fte <- renderText({identification$fte})
+        output$email <- renderText({identification$email})
+        output$comment <- renderText({identification$comment})
 
     })
 
     observeEvent(input$add, {
 
-         #browser()
-
-        persons <- ipcas_db %>%
-            dplyr::tbl("pubs") %>%
-            dplyr::filter(person_id_pubs == !!usr$person_id) %>%
-            dplyr::collect()
-
+       
         pool::dbExecute(ipcas_db,
                         paste0( "INSERT INTO persons",
                                 " (",
                                 "person_id,",
                                 "name_first,",
                                 "name_last,",
-                                "email,",
-                                "fte,",
-                                "comment",
+                                "email",
                                 ")",
                                 " VALUES(",
                                 "'", usr$person_id, "',",
                                 "'", input$employee_name_first, "',",
                                 "'", input$employee_name_last, "',",
-                                "'", input$email, "',",
-                                "'", input$fte, "',",
-                                "'", input$comment, "'",
+                                "'", input$email, "'",
                                 ")",
                                 " ON DUPLICATE KEY UPDATE",
                                 " name_first = '", input$employee_name_first, "',",
                                 " name_last = '",  input$employee_name_last, "',",
-                                " email = '",  input$email, "',",
-                                " fte = '",  input$fte, "',",
-                                " comment = '", input$comment, "'"
-                                )
-                        )
-
-        pool::dbExecute(ipcas_db,
-                        paste0( "INSERT INTO departments",
-                                " (person_id_departments, department)",
-                                " VALUES(",
-                                "'", usr$person_id, "',",
-                                "'", input$department, "'",
-                                ")",
-                                " ON DUPLICATE KEY UPDATE",
-                                " person_id_departments = '", usr$person_id, "',",
-                                " department = '", input$department, "'"
+                                " email = '",  input$email, "'"
                         )
         )
-
+        
+        yearly_id <- ipcas_db %>%
+            dplyr::tbl("yearly") %>%
+            dplyr::filter(person_id_yearly == !!usr$person_id) %>%
+            dplyr::pull("yearly_id")
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM yearly WHERE yearly_id IN (?)",
+                        params = list(yearly_id))
+        department_id <- ipcas_db %>%
+            dplyr::tbl("departments") %>%
+            dplyr::filter(person_id_departments == !!usr$person_id) %>%
+            dplyr::pull("department_id")
+        pool::dbExecute(ipcas_db, 
+                        "DELETE FROM departments WHERE department_id IN (?)",
+                        params = list(department_id))
+        
+        
+        new_entry_yearly <- tibble::tibble(
+            person_id_yearly = usr$person_id,
+            yearly_id_year = as.integer( format(Sys.Date(), "%Y")),
+            fte = input$fte,
+            comment = input$comment
+        )
+        DBI::dbAppendTable(ipcas_db, "yearly", new_entry_yearly)
+        
+        new_entry_departments <- tibble::tibble(
+            person_id_departments = usr$person_id,
+            department_id_year = as.integer( format(Sys.Date(), "%Y")),
+            department = input$department
+        )
+        DBI::dbAppendTable(ipcas_db, "departments", new_entry_departments)
+        
+        
         persons <- ipcas_db %>%
             dplyr::tbl("persons") %>%
             dplyr::filter(person_id == !!usr$person_id) %>%
             dplyr::collect()
-
+        
+        yearly <- ipcas_db %>%
+            dplyr::tbl("yearly") %>%
+            dplyr::filter(person_id_yearly == !!usr$person_id) %>%
+            dplyr::collect()
+        
         department <- ipcas_db %>%
             dplyr::tbl("departments") %>%
             dplyr::filter(person_id_departments == !!usr$person_id) %>%
             dplyr::pull("department")
-
+        
         identification$employee_name <- paste(persons$name_first, persons$name_last)
         identification$department <- department
-        identification$fte <- persons$fte
-        identification$comment <- persons$comment
+        identification$fte <- yearly$fte
+        identification$comment <- yearly$comment
         identification$email <- persons$email
-
-        output$employee_name <- renderText({paste(persons$name_first,
-                                                  persons$name_last)
-            })
-        output$department <- renderText({department})
-        output$fte <- renderText({persons$fte})
-        output$email <- renderText({persons$email})
-        output$comment <- renderText({persons$comment})
+        
+        output$employee_name <- renderText({paste(identification$employee_name)
+        })
+        output$department <- renderText({identification$department})
+        output$fte <- renderText({identification$fte})
+        output$email <- renderText({identification$email})
+        output$comment <- renderText({identification$comment})
 
             })
     return(identification)

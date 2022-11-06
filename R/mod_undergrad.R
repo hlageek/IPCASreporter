@@ -126,6 +126,10 @@ mod_undergrad_server <- function(id, usr, i18n) {
             
         )
         
+        
+        names_df <- tibble::tibble(key = items,
+                                   names = item_names)
+        
         #  on startup ####
         
         observeEvent(usr$person_id, {
@@ -139,22 +143,13 @@ mod_undergrad_server <- function(id, usr, i18n) {
                               choices =  c("", sort(uni_choices))
                               )
             
-            loc$names <- tibble::tibble(key = items,
-                                        names = item_names)
+            loc$all_df <- transform_table(
+                ipcas_db = ipcas_db, 
+                tbl = "undergrad", 
+                tbl_id = "undergrad_id", 
+                person_id = usr$person_id,
+                names_df = names_df)
             
-            loc$all_df <-  ipcas_db %>% 
-                dplyr::tbl("undergrad") %>% 
-                dplyr::filter(person_id_undergrad == !!usr$person_id) %>%
-                dplyr::select(-person_id_undergrad) %>% 
-                tidyr::pivot_longer(-undergrad_id,
-                                    names_to = "key",
-                                    values_to = "value") %>%
-                dplyr::collect() %>% 
-                dplyr::left_join(loc$names, by = "key") %>% 
-                tidyr::unite("value", c(names, value), sep = " ") %>% 
-                dplyr::select(-key) %>% 
-                dplyr::group_by(undergrad_id) %>% 
-                dplyr::summarise(data = stringr::str_flatten(value,                                                    collapse = "<br>")) 
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
             
             updateSelectInput(session = session,
@@ -170,39 +165,29 @@ mod_undergrad_server <- function(id, usr, i18n) {
         
         observeEvent(input$add, {
             
-            all_items <- list()
+            checks <- stats::setNames(item_names, items)
+            check_inputs(input, checks, text = "Zadejte", exclude = "other|faculty|program")
             
-            for (i in seq_along(items)) {
-                
-                all_items <- c(all_items, input[[items[i]]])
-                
-            }
+            all_items <- collect_items(items, input)
             
-            new_df <- tibble::tibble(key = items,
-                                     values = unlist(all_items)) %>% 
-                tidyr::pivot_wider(everything(),
-                                   names_from = "key",
-                                   values_from = "values") %>% 
-                dplyr::mutate(person_id_undergrad = usr$person_id) 
+            
+            new_df <- prep_new_entry(
+                items, 
+                all_items, 
+                "undergrad", 
+                usr$person_id, 
+                as.integer( format(Sys.Date(), "%Y"))
+            )
             
             DBI::dbAppendTable(ipcas_db, "undergrad", new_df)
             
             
-            loc$all_df <- ipcas_db %>% 
-                dplyr::tbl("undergrad") %>% 
-                dplyr::filter(person_id_undergrad == !!usr$person_id) %>%
-                dplyr::select(-person_id_undergrad) %>% 
-                tidyr::pivot_longer(-undergrad_id,
-                                    names_to = "key",
-                                    values_to = "value") %>%
-                dplyr::collect() %>% 
-                dplyr::left_join(loc$names, by = "key") %>% 
-                tidyr::unite("value", c(names, value), sep = " ") %>% 
-                dplyr::select(-key) %>% 
-                dplyr::group_by(undergrad_id) %>% 
-                dplyr::summarise(data = stringr::str_flatten(value,                                                    collapse = "<br>")) 
-                
-            
+            loc$all_df <- transform_table(
+                ipcas_db = ipcas_db, 
+                tbl = "undergrad", 
+                tbl_id = "undergrad_id", 
+                person_id = usr$person_id,
+                names_df = names_df)
           
            
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
@@ -228,19 +213,12 @@ mod_undergrad_server <- function(id, usr, i18n) {
                             "DELETE FROM undergrad WHERE undergrad_id IN (?)",
                             params = list(input$remove_list))
             
-            loc$all_df <-  ipcas_db %>% 
-                dplyr::tbl("undergrad") %>% 
-                dplyr::filter(person_id_undergrad == !!usr$person_id) %>%
-                dplyr::select(-person_id_undergrad) %>% 
-                tidyr::pivot_longer(-undergrad_id,
-                                    names_to = "key",
-                                    values_to = "value") %>%
-                dplyr::collect() %>% 
-                dplyr::left_join(loc$names, by = "key") %>% 
-                tidyr::unite("value", c(names, value), sep = " ") %>% 
-                dplyr::select(-key) %>% 
-                dplyr::group_by(undergrad_id) %>% 
-                dplyr::summarise(data = stringr::str_flatten(value,                                                    collapse = "<br>")) 
+            loc$all_df <- transform_table(
+                ipcas_db = ipcas_db, 
+                tbl = "undergrad", 
+                tbl_id = "undergrad_id", 
+                person_id = usr$person_id,
+                names_df = names_df)
             
             section_iii_undergrad$data <- paste0("<br>",  as.list(loc$all_df$data), "<br>")
             
@@ -316,7 +294,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
         # preview ####
         
         output$section_iii_undergrad_preview <- renderText({
-            if (length(section_iii_undergrad$data)>0) {
+            if (nrow(loc$all_df)>0) {
                 paste(paste0("<br>", seq_along(section_iii_undergrad$data), "."),
                       section_iii_undergrad$data)
             } else {""}

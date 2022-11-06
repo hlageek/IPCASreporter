@@ -142,8 +142,11 @@ collect_items <- function(items, input) {
 
 # prepare new entry  ---------------------------------------
 
-prep_new_entry <- function(items, all_items, tbl, person_id, year) {
+prep_new_entry <- function(items, all_items, tbl, person_id, year, col_prefix = NULL) {
     
+    if (is.null(col_prefix)) {
+        col_prefix <- tbl
+    }
     entry_df <- tibble::tibble(key = items,
                    value = all_items) %>% 
         tidyr::pivot_wider(tidyselect::everything(),
@@ -151,7 +154,7 @@ prep_new_entry <- function(items, all_items, tbl, person_id, year) {
                            values_from = "value")
     
     entry_df[[paste0("person_id_", tbl)]] <- person_id
-    entry_df[[paste0(tbl, "_id_year")]] <- year
+    entry_df[[paste0(col_prefix, "_id_year")]] <- year
 
     entry_df
     
@@ -175,10 +178,19 @@ format_input <- function(x) {
 
 
 transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL, filter_val = NULL, names_df) {
-  
-  pre_filter <- ipcas_db %>%
+ 
+    id_year <- ipcas_db %>%
+        dplyr::tbl(tbl) %>% 
+        dplyr::select(tidyselect::ends_with("id_year")) %>% 
+        colnames()
+        
+    year <- as.integer( format(Sys.Date(), "%Y"))
+    
+    pre_filter <- ipcas_db %>%
       dplyr::tbl(tbl) %>%
-      dplyr::filter(.data[[paste0("person_id_", tbl)]] == person_id)
+      dplyr::filter(.data[[paste0("person_id_", tbl)]] == person_id) %>% 
+      dplyr::filter(.data[[id_year]] == year) 
+      
   
   if (!is.null(filter_col)) {
       post_filter <- pre_filter %>% 

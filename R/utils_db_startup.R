@@ -3,14 +3,25 @@ CREATE TABLE IF NOT EXISTS persons (
      person_id INT PRIMARY KEY
 ,    name_first VARCHAR(50)
 ,    name_last VARCHAR(50)
-,    fte DECIMAL (3,2)
 ,    email VARCHAR(70)
-,    comment TEXT
 );
 "
+CREATE_YEARLY_SQL <- "
+CREATE TABLE IF NOT EXISTS yearly (
+     yearly_id INT AUTO_INCREMENT PRIMARY KEY 
+,    yearly_id_year INT
+,    person_id_yearly INT
+,    fte DECIMAL (3,2)
+,    comment TEXT
+,    CONSTRAINT `person_id_yearly`
+        FOREIGN KEY (person_id_yearly) REFERENCES persons (person_id)
+);
+"
+
 CREATE_DEPARTMENTS_SQL <- "
 CREATE TABLE IF NOT EXISTS departments (
      department_id INT AUTO_INCREMENT PRIMARY KEY
+,    department_id_year INT
 ,    person_id_departments INT UNIQUE
 ,    department VARCHAR(200)
 ,    CONSTRAINT `person_id_departments`
@@ -20,6 +31,7 @@ CREATE TABLE IF NOT EXISTS departments (
 CREATE_PUBS_SQL <- "
 CREATE TABLE IF NOT EXISTS pubs (
      pub_id INT AUTO_INCREMENT PRIMARY KEY
+,    pub_id_year INT
 ,    person_id_pubs INT
 ,    pub TEXT
 ,    CONSTRAINT `person_id_pubs`
@@ -29,6 +41,7 @@ CREATE TABLE IF NOT EXISTS pubs (
 CREATE_EVENTS_SQL <- "
 CREATE TABLE IF NOT EXISTS events (
      event_id INT AUTO_INCREMENT PRIMARY KEY
+,    event_id_year INT
 ,    person_id_events INT
 ,    event TEXT
 ,    CONSTRAINT `person_id_events`
@@ -38,6 +51,7 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE_UNDERGRAD_SQL <- "
 CREATE TABLE IF NOT EXISTS undergrad (
       undergrad_id INT AUTO_INCREMENT PRIMARY KEY
+,     undergrad_id_year INT
 ,     person_id_undergrad INT
 ,     undergrad_school VARCHAR(500)
 ,     undergrad_faculty VARCHAR(500)
@@ -59,6 +73,7 @@ CREATE TABLE IF NOT EXISTS undergrad (
 CREATE_POSTGRAD_SQL <- "
 CREATE TABLE IF NOT EXISTS postgrad (
       postgrad_id INT AUTO_INCREMENT PRIMARY KEY
+,     postgrad_id_year INT
 ,     person_id_postgrad INT
 ,     postgrad_school VARCHAR(500)
 ,     postgrad_faculty VARCHAR(500)
@@ -81,6 +96,7 @@ CREATE TABLE IF NOT EXISTS postgrad (
 CREATE_CONFERENCES_SQL <- "
 CREATE TABLE IF NOT EXISTS conferences (
      conference_id INT AUTO_INCREMENT PRIMARY KEY
+,    conference_id_year INT
 ,    person_id_conferences INT
 ,    conference_contribution VARCHAR(500)
 ,    conference_organizer VARCHAR(500)
@@ -94,6 +110,7 @@ CREATE TABLE IF NOT EXISTS conferences (
 CREATE_LECTURES_SQL <- "
 CREATE TABLE IF NOT EXISTS lectures (
      lecture_id INT AUTO_INCREMENT PRIMARY KEY
+,    lecture_id_year INT
 ,    person_id_lectures INT
 ,    lecture_contribution VARCHAR(500)
 ,    lecture_organizer VARCHAR(500)
@@ -296,6 +313,7 @@ clear_db <- function(pool) {
 create_db_schema <- function(pool){
     # TODO: Full DB structure
     DBI::dbExecute(pool, CREATE_PERSONS_SQL)
+    DBI::dbExecute(pool, CREATE_YEARLY_SQL)
     DBI::dbExecute(pool, CREATE_DEPARTMENTS_SQL)
     DBI::dbExecute(pool, CREATE_PUBS_SQL)
     DBI::dbExecute(pool, CREATE_EVENTS_SQL)

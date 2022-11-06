@@ -32,7 +32,6 @@ i18n_r <- reactive({
             passphrase = golem::get_golem_options(which = "credentials_pass"))
     )  
 
-    
     identification <- mod_identification_server("identification_ui_1", usr, i18n_r)
 
     section_i <- mod_pub_server("pub_ui_1", identification, usr, i18n_r)

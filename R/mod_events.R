@@ -42,12 +42,14 @@ mod_events_server <- function(id, identification, usr, i18n) {
     
       ns <- NS(id)
       section_ii <- reactiveValues()
+      year <-  as.integer( format(Sys.Date(), "%Y"))
       
       observeEvent(usr$person_id, {
           
           section_ii$eventlist <- ipcas_db %>% 
               dplyr::tbl("events") %>% 
               dplyr::filter(person_id_events == !!usr$person_id) %>% 
+              dplyr::filter(event_id_year == year) %>% 
               dplyr::pull(event)
           
       })
@@ -100,6 +102,7 @@ mod_events_server <- function(id, identification, usr, i18n) {
         event_ids <- ipcas_db %>% 
             dplyr::tbl("events") %>% 
             dplyr::filter(person_id_events == !!usr$person_id) %>% 
+            dplyr::filter(event_id_year == year) %>% 
             dplyr::pull(event_id)
         
         if (length(event_ids)>0) {
@@ -109,20 +112,15 @@ mod_events_server <- function(id, identification, usr, i18n) {
             )
         }
         
-        purrr::walk(input$eventlist, .f = function(x) {
-            pool::dbExecute(ipcas_db, 
-                            paste0( "INSERT INTO events",
-                                    " (",
-                                    "person_id_events,", 
-                                    "event",
-                                    ")",
-                                    " VALUES(",
-                                    "'", usr$person_id, "',",
-                                    "'", x, "'",
-                                    ")"
-                            )
-            )
-        })
+        new_entry_df <- tibble::tibble(
+            person_id_events = usr$person_id,
+            event_id_year = as.integer( format(Sys.Date(), "%Y")),
+            event = input$eventlist
+        )
+        
+        if (exists("event", new_entry_df)) {
+            DBI::dbAppendTable(ipcas_db, "events", new_entry_df)
+        }
         
         section_ii$eventlist <- ipcas_db %>% 
             dplyr::tbl("events") %>% 

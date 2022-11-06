@@ -97,9 +97,8 @@ mod_conference_server <- function(id, usr, i18n) {
     )
     
     
-    loc$names <- tibble::tibble(key = items,
-                                names = item_names)
-    
+    names_df <- tibble::tibble(key = items,
+                               names = item_names)
     
     # init ####
     observeEvent(usr$person_id, {
@@ -112,7 +111,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                            tbl_id = "conference_id",
                                            filter_col = "conference_location",
                                            filter_val = "Domácí",
-                                           names_df = loc$names)
+                                           names_df = names_df)
            
            loc$foreign <- transform_table(ipcas_db = ipcas_db,
                                           person_id = usr$person_id,
@@ -120,7 +119,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = loc$names)
+                                          names_df = names_df)
            
       
            ids_domestic <- loc$domestic %>% 
@@ -153,20 +152,19 @@ mod_conference_server <- function(id, usr, i18n) {
     # add ####
     observeEvent(input$add, {
      
-          all_items <- purrr::map_chr(items, 
-                                       .f = function(items) {
-              
-              unlist(paste(input[[items]], collapse = "/"))
-          
-          }
-          )
+        checks <- stats::setNames(item_names, items)
+        check_inputs(input, checks, text = "Zadejte")
+        
+          all_items <- collect_items(items, input)
       
-          new_entry_df <- tibble::tibble(key = items,
-                                   value = all_items) %>% 
-              tidyr::pivot_wider(tidyselect::everything(),
-                                 names_from = "key",
-                                 values_from = "value") %>% 
-              dplyr::mutate(person_id_conferences = usr$person_id) 
+          new_entry_df <- prep_new_entry(
+              items, 
+              all_items, 
+              "conferences", 
+              usr$person_id, 
+              as.integer( format(Sys.Date(), "%Y")),
+              col_prefix = "conference"
+          )
           
           DBI::dbAppendTable(ipcas_db, "conferences", new_entry_df)
          
@@ -180,7 +178,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Domácí",
-                                          names_df = loc$names)
+                                          names_df = names_df)
           
       ids_domestic <-  loc$domestic %>% 
           dplyr::pull(conference_id)
@@ -203,7 +201,7 @@ mod_conference_server <- function(id, usr, i18n) {
                                           tbl_id = "conference_id",
                                           filter_col = "conference_location",
                                           filter_val = "Zahraniční",
-                                          names_df = loc$names)
+                                          names_df = names_df)
         
         
         ids_foreign <- loc$foreign %>% 

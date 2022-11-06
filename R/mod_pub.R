@@ -42,12 +42,14 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
 
       ns <- NS(id)
       section_i <- reactiveValues()
+      year <-  as.integer( format(Sys.Date(), "%Y"))
       
       observeEvent(usr$person_id, {
           
           section_i$publist <- ipcas_db %>% 
               dplyr::tbl("pubs") %>% 
               dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
+              dplyr::filter(pub_id_year == year) %>% 
               dplyr::pull(pub)
           
       })
@@ -85,7 +87,7 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
         
         paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora "), 
                identification$employee_name, 
-               i18n()$t(" v roce"), 
+               i18n()$t(" v roce "), 
                format(Sys.Date(), "%Y"), 
                i18n()$t(" nebo "), 
                format(Sys.Date()-365, "%Y"), 
@@ -100,10 +102,10 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
     
     observeEvent(input$add, {
     
-      
         pub_ids <- ipcas_db %>% 
             dplyr::tbl("pubs") %>% 
             dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
+            dplyr::filter(pub_id_year == year) %>% 
             dplyr::pull(pub_id)
         
         if (length(pub_ids)>0) {
@@ -113,20 +115,17 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
                         )
         }
         
-        purrr::walk(input$publist, .f = function(x) {
-        pool::dbExecute(ipcas_db, 
-                        paste0( "INSERT INTO pubs",
-                                " (",
-                                "person_id_pubs,", 
-                                "pub",
-                                ")",
-                                " VALUES(",
-                                "'", usr$person_id, "',",
-                                "'", x, "'",
-                                ")"
-                        )
+        new_entry_df <- tibble::tibble(
+            person_id_pubs = usr$person_id,
+            pub_id_year = as.integer( format(Sys.Date(), "%Y")),
+            pub = input$publist
         )
-        })
+        
+        if (exists("pub", new_entry_df)) {
+            
+        DBI::dbAppendTable(ipcas_db, "pubs", new_entry_df)
+        }
+  
         
         section_i$publist <- ipcas_db %>% 
             dplyr::tbl("pubs") %>% 
