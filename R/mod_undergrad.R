@@ -316,7 +316,8 @@ mod_undergrad_server <- function(id, usr, i18n) {
                           "undergrad_type_prednasky", 
                           choiceNames = c(i18n()$t("ano"), 
                                       i18n()$t("ne")),
-                          choiceValues = c("ano", "ne")
+                          choiceValues = c("ano", "ne"),
+                          inline = TRUE
                           )
                           
             
