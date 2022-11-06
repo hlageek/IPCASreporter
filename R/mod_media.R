@@ -12,12 +12,12 @@ mod_media_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
     
-    textInput(ns("media_contribution"), label = "Název pořadu nebo textu"),
-    textInput(ns("media_name"), label = "Médium"),
-    textAreaInput(ns("media_description"), label = "Doplňující informace" ),
+    textInput(ns("media_contribution"), label = i18n$t("Název pořadu nebo textu")),
+    textInput(ns("media_name"), label = i18n$t("Médium")),
+    textAreaInput(ns("media_description"), label = i18n$t("Doplňující informace") ),
     
     actionButton(ns("add"),
-                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                 label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
     )
     
     
@@ -28,10 +28,10 @@ mod_media_ui <- function(id, i18n){
          htmlOutput(ns("section_vi_media"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
     
   )
@@ -95,7 +95,7 @@ mod_media_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(loc$item_names, items)
-        check_inputs(input, checks, text = "Zadejte", exclude = "description")
+        check_inputs(input, checks, text = i18n()$t("Zadejte"), exclude = "description")
         
         all_items <- collect_items(items, input)
         

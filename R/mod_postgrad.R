@@ -12,47 +12,47 @@ mod_postgrad_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
                   selectInput(ns("postgrad_school"),
-                              label = "Název VŠ:",
+                              label = i18n$t("Název VŠ:"),
                               choices = NULL,
                               selected = ""),
                   
                   selectInput(ns("postgrad_faculty"), 
-                              label = "Název fakulty:",
+                              label = i18n$t("Název fakulty:"),
                               choices = NULL,
                               selected = ""),
                   selectInput(ns("postgrad_program"), 
-                              label = "Název studijního programu/studijního oboru:",
+                              label = i18n$t("Název studijního programu/studijního oboru:"),
                               choices = NULL,
                               selected = ""),
                   
                   selectInput(ns("postgrad_year"), 
-                              label = "Akademický rok, semestr:",
+                              label = i18n$t("Akademický rok, semestr:"),
                               choices = c(paste0(format(Sys.Date(), "%Y"), ", LS"),
                                           paste0(format(Sys.Date(), "%Y"), ", ZS"))),
                   
                   radioButtons(ns("postgrad_level"), 
                                label = "", 
-                               choices = c("Doktorský studijní program"), 
+                               choices = c(i18n$t("Doktorský studijní program")), 
                                inline = TRUE),
                   
                   textInput(ns("postgrad_course"), 
-                            label = "Název předmětu:"),
+                            label = i18n$t("Název předmětu:")),
                   
                   
                   postgrad_types(id), tags$br(),
                   
                   
                   numericInput(ns("postgrad_hours"), 
-                               label = "Počet odučených hodin:", 
+                               label = i18n$t("Počet odučených hodin:"), 
                                value = 0,
                                min = 0,
                                step = 1),
                   
                   textAreaInput(ns("postgrad_other"), 
-                                label = "Jiné"),
+                                label = i18n$t("Jiné")),
                   
                   actionButton(ns("add"),
-                               label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                               label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
                   )
                   
   ),
@@ -60,16 +60,16 @@ mod_postgrad_ui <- function(id, i18n){
   column(width = 6,
          
          
-         h3("1)	Výuka na vysokých školách a vedení prací:"),
-         h4("b) Doktorský studijní program"),
+         h3(i18n$t("1)	Výuka na vysokých školách a vedení prací:")),
+         h4(i18n$t("b) Doktorský studijní program")),
          
          htmlOutput(ns("section_iii_postgrad_preview"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
   )
   )
@@ -155,7 +155,7 @@ loc$all_df <- transform_table(
   # add ####
   observeEvent(input$add, {
       checks <- stats::setNames(item_names, items)
-      check_inputs(input, checks, text = "Zadejte", exclude = "other|faculty|program")
+      check_inputs(input, checks, text = i18n()$t("Zadejte"), exclude = "other|faculty|program")
 
     all_items <- collect_items(items, input)
 

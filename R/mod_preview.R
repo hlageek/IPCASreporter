@@ -17,22 +17,22 @@ mod_preview_ui <- function(id, i18n){
         type = "hidden",
         tabPanelBody("panel_welcome", 
                      
-                     h2("Welcome to IPCASreporter"),
+                     h2(i18n$t("Welcome to IPCASreporter")),
                      
-                     p("Please read the following basic instructions before using the application."),
+                     p(i18n$t("Please read the following basic instructions before using the application.")),
                      
                      br(),
-                    tags$li("After you have filled your name in the", tags$b( "researcher's details"), "section a preview of your report will appear here."),
+                    tags$li(i18n$t("After you have filled your name in the"), tags$b( i18n$t("researcher's details")), i18n$t("section a preview of your report will appear here.")),
                     
-                    tags$li("Use the menu on the left to navigate in the application and continue to fill all relevant", tags$b("report sections.")),
+                    tags$li(i18n$t("Use the menu on the left to navigate in the application and continue to fill all relevant"), tags$b(i18n$t("report sections."))),
                     
-                    tags$li("Use the", tags$b("Save"), "button to generate a link that will restore your work on the report if you need to come back to it later."),
+                    tags$li(i18n$t("Use the"), tags$b(i18n$t("Save")), i18n$t("button to generate a link that will restore your work on the report if you need to come back to it later.")),
                     
-                    tags$li("Use the", tags$b("Download"), "button to generate a MS Word version of the report."),
+                    tags$li(i18n$t("Use the"), tags$b(i18n$t("Download")), i18n$t("button to generate a MS Word version of the report.")),
                     
-                    tags$li("Use the", tags$b("Submit"), "button to submit the report. You will receive a confirmation email after the submission."),
+                    tags$li(i18n$t("Use the"), tags$b(i18n$t("Submit")), i18n$t("button to submit the report. You will receive a confirmation email after the submission.")),
                     
-                    tags$li(HTML("<i class='fa fa-warning'></i>"), "To avoid data loss, do not refresh the browser while using the app!", style = "color:red"),
+                    tags$li(HTML("<i class='fa fa-warning'></i>"), i18n$t("To avoid data loss, do not refresh the browser while using the app!"), style = "color:red"),
                      
                      
                      ),
@@ -64,7 +64,7 @@ mod_preview_ui <- function(id, i18n){
     textOutput(ns("email"), inline = TRUE),
     
     br(),
-    i18n$t("Komentář:"),
+    i18n$t("Poznámka:"),
     textOutput(ns("comment"), inline = TRUE),
     
     
@@ -78,7 +78,7 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
-    h5("1) Výuka na vysokých školách a vedení prací"),
+    h5(i18n$t("1) Výuka na vysokých školách a vedení prací")),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
     htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
     
@@ -95,22 +95,22 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
-    h5("Řešené či spoluřešené granty"),
+    h5(i18n$t("Řešené či spoluřešené granty")),
     htmlOutput(ns("section_iv_funded"), inline = FALSE),
-    h5("Projekty podané a nepřijaté k financování"),
+    h5(i18n$t("Projekty podané a nepřijaté k financování")),
     htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
     
     br(),
-    h4(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21")),
+    h4(i18n$t(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"))),
     htmlOutput(ns("section_v"), inline = FALSE),
     
     br(),
     h4(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
-    h5("Akce"),
+    h5(i18n$t("Akce")),
     htmlOutput(ns("section_vi_popular_events"), inline = FALSE),
-    h5("Přednášky na středních, případně základních školách"),
+    h5(i18n$t("Přednášky na středních, případně základních školách")),
     htmlOutput(ns("section_vi_school_events"), inline = FALSE),
-    h5("Vystoupení a popularizační texty v médiích"),
+    h5(i18n$t("Vystoupení a popularizační texty v médiích")),
     htmlOutput(ns("section_vi_media"), inline = FALSE),
     
     
@@ -120,23 +120,23 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE")),
-    h5("Zapojení do mezinárodních projektů"),
+    h5(i18n$t("Zapojení do mezinárodních projektů")),
     htmlOutput(ns("section_viii_int_projects"), inline = FALSE),
-    h5("Mezinárodní dvoustranné dohody"),
+    h5(i18n$t("Mezinárodní dvoustranné dohody")),
     htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE),
     
     br(),
     h4(i18n$t("IX. OSTATNÍ")),
-    h5("Ocenění odbornou komunitou"),
+    h5(i18n$t("Ocenění odbornou komunitou")),
     htmlOutput(ns("section_ix_award"), inline = FALSE),
-    h5("Posudky"),
+    h5(i18n$t("Posudky")),
     htmlOutput(ns("section_ix_review"), inline = FALSE),
-    h5("Odborná grémia, redakční a oborové rady apod."),
-    h6("Domácí"),
+    h5(i18n$t("Odborná grémia, redakční a oborové rady apod.")),
+    h6(i18n$t("Domácí")),
     htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
-    h6("Zahraniční"),
+    h6(i18n$t("Zahraniční")),
     htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
-    h5("Redakční práce"),
+    h5(i18n$t("Redakční práce")),
     htmlOutput(ns("section_ix_editions"), inline = FALSE),
     
     br(),

@@ -57,7 +57,7 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
 
                                      h2(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ")),
-                                     p( "Including ASEP reference."),
+                                     p( i18n$t("Including ASEP reference.")),
 
                                      mod_events_ui("events_ui_1", i18n)
 
@@ -67,25 +67,25 @@ app_ui <- function(request) {
 
                                      h2(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
 
-                                     p("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ."),
+                                     p(i18n$t("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ.")),
 
-                                     tabsetPanel(tabPanel("Bc. & Mgr.",
+                                     tabsetPanel(tabPanel(i18n$t("Bc. & Mgr."),
 
                                      mod_undergrad_ui("undergrad_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
-                                     tabPanel("PhD.",
+                                     tabPanel(i18n$t("PhD."),
 
                                      mod_postgrad_ui("postgrad_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
 
-                                     tabPanel("Konference",
+                                     tabPanel(i18n$t("Konference"),
 
                                      mod_conference_ui("conference_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
-                                     tabPanel("Přednášky",
+                                     tabPanel(i18n$t("Přednášky"),
 
                                      mod_lectures_ui("lectures_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
@@ -96,7 +96,7 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY"),
 
                                      h2(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
-                                     p("Uveďte i projekty podané a nepřijaté k financování."),
+                                     p(i18n$t("Uveďte i projekty podané a nepřijaté k financování.")),
 
                                      mod_grants_ui("grants_ui_1", i18n)
 
@@ -107,7 +107,7 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21"),
 
                                      h2(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21")),
-                                     p("Včetně anotace (min. 300 znaků) a výstupů (publikace, konference, přednáška atd.)."),
+                                     p(i18n$t("Včetně anotace (min. 300 znaků) a výstupů (publikace, konference, přednáška atd.).")),
 
                                      mod_av21_ui("av21_ui_1", i18n)
 
@@ -115,21 +115,21 @@ app_ui <- function(request) {
                                      ),
                             tabPanel(i18n$t("VI. POPULARIZAČNÍ ČINNOST"),
                                      h2(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
-                                     p("(Příklad: název akce: Týden vědy a techniky, popis aktivity: odborná přednáška; popularizační přednáška; čtení atd.)"),
+                                     p(i18n$t("(Příklad: název akce: Týden vědy a techniky, popis aktivity: odborná přednáška; popularizační přednáška; čtení atd.)")),
 
                                      tabsetPanel(
 
-                                       tabPanel("Akce",
+                                       tabPanel(i18n$t("Akce"),
 
                                                 mod_popular_ui("popular_ui_1", i18n)
                                                 ),
 
-                                       tabPanel("Přednášky na středních, případně základních školách",
+                                       tabPanel(i18n$t("Přednášky na středních, případně základních školách"),
 
                                                 mod_school_ui("school_ui_1", i18n)
                                        ),
 
-                                       tabPanel("Vystoupení a popularizační texty v médiích",
+                                       tabPanel(i18n$t("Vystoupení a popularizační texty v médiích"),
 
                                                 mod_media_ui("media_ui_1", i18n)
 
@@ -139,7 +139,7 @@ app_ui <- function(request) {
                             ),
                             tabPanel(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU"),
                                      h2(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU")),
-                                     p("(Např. členství v panelu GAČR; hodnocení pro RIV; hodnocení pro RVVI; odborné expertizy a vědecké poradenství – s uvedením zadavatele apod.)."),
+                                     p(i18n$t("(Např. členství v panelu GAČR; hodnocení pro RIV; hodnocení pro RVVI; odborné expertizy a vědecké poradenství – s uvedením zadavatele apod.).")),
 
                                      mod_public_ui("public_ui_1", i18n)
 
@@ -149,12 +149,12 @@ app_ui <- function(request) {
 
                                      tabsetPanel(
 
-                                       tabPanel("Zapojení do mezinárodních projektů",
+                                       tabPanel(i18n$t("Zapojení do mezinárodních projektů"),
 
                                                 mod_int_projects_ui("int_projects_ui_1", i18n)
                                        ),
 
-                                       tabPanel("Mezinárodní dvoustranné dohody",
+                                       tabPanel(i18n$t("Mezinárodní dvoustranné dohody"),
 
                                                 mod_int_bilateral_ui("int_bilateral_ui_1", i18n)
                                        )
@@ -168,24 +168,24 @@ app_ui <- function(request) {
 
                                      tabsetPanel(
 
-                                       tabPanel("Ocenění odbornou komunitou",
+                                       tabPanel(i18n$t("Ocenění odbornou komunitou"),
 
                                                 mod_other_award_ui("other_award_ui_1", i18n)
                                        ),
 
-                                       tabPanel("Posudky",
-                                                p("Posudky článků pro časopisy, knih pro nakladatelství (počet posuzovaných stran), diplomových a doktorských prací (počet posuzovaných stran), grantů a projektů"),
+                                       tabPanel(i18n$t("Posudky"),
+                                                p(i18n$t("Posudky článků pro časopisy, knih pro nakladatelství (počet posuzovaných stran), diplomových a doktorských prací (počet posuzovaných stran), grantů a projektů")),
 
                                                 mod_other_review_ui("other_review_ui_1", i18n)
                                        ),
 
-                                       tabPanel("Odborná grémia, redakční a oborové rady apod.",
+                                       tabPanel(i18n$t("Odborná grémia, redakční a oborové rady apod."),
 
                                                 mod_other_member_ui("other_member_ui_1", i18n)
 
                                        ),
 
-                                       tabPanel("Redakční práce",
+                                       tabPanel(i18n$t("Redakční práce"),
 
                                                 mod_other_editions_ui("other_editions_ui_1", i18n)
 
@@ -196,7 +196,7 @@ app_ui <- function(request) {
                                      ),
                             tabPanel(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY"),
                                      h2(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY")),
-                                     p("Uveďte prosím analogicky podle části I, udejte množství v normostranách [1 normostrana - 1800 znaků vč. mezer], které bylo vypracováno v tomto období; uveďte a specifikujte rovněž případnou práci na databázích"),
+                                     p(i18n$t("Uveďte prosím analogicky podle části I, udejte množství v normostranách [1 normostrana - 1800 znaků vč. mezer], které bylo vypracováno v tomto období; uveďte a specifikujte rovněž případnou práci na databázích")),
 
                                      mod_wip_ui("wip_ui_1", i18n)
 
@@ -205,7 +205,7 @@ app_ui <- function(request) {
                                      ),
                             tabPanel(i18n$t("XI. RŮZNÉ"),
                                      h2(i18n$t("XI. RŮZNÉ")),
-                                     p("Uveďte vše další, co pokládáte za důležité a relevantní pro Vaši práci v daném období."),
+                                     p(i18n$t("Uveďte vše další, co pokládáte za důležité a relevantní pro Vaši práci v daném období.")),
                                      mod_various_ui("various_ui_1", i18n)
                                      )
 

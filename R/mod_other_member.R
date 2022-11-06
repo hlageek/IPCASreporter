@@ -13,13 +13,13 @@ mod_other_member_ui <- function(id, i18n){
   fluidRow(column(width = 6,
                   
                   textInput(ns("other_member_name"), 
-                            label = "Druh grémia"),
+                            label = i18n$t("Druh grémia")),
                   
                   textInput(ns("other_member_institute"), 
-                            label = "Organizace (instituce/periodikum/nakladatelství)"),
+                            label = i18n$t("Organizace (instituce/periodikum/nakladatelství)")),
                   
                   textInput(ns("other_member_position"), 
-                            label = "Funkce a funkční období"),
+                            label = i18n$t("Funkce a funkční období")),
                   
                   radioButtons(ns("other_member_location"), 
                                label = NULL,
@@ -36,30 +36,30 @@ mod_other_member_ui <- function(id, i18n){
   
   column(width = 6, 
          
-         h3("Domácí"),
+         h3(i18n$t("Domácí")),
          
          htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
          
          selectInput(ns("remove_list_domestic"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove_domestic"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          ),
          
-         h3("Zahraniční"),
+         h3(i18n$t("Zahraniční")),
          
          htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
          
          selectInput(ns("remove_list_foreign"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          
          br(), br(),
          actionButton(ns("remove_foreign"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
          
@@ -150,7 +150,7 @@ mod_other_member_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = "Zadejte")
+        check_inputs(input, checks, text = i+án()$t("Zadejte"))
         
         all_items <- collect_items(items, input)
         

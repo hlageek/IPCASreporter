@@ -11,11 +11,11 @@ mod_public_ui <- function(id, i18n){
   ns <- NS(id)
   fluidRow(column(width = 6,
                   
-    textInput(ns("gov_body"), label = "Instituce státní nebo veřejné správy"),
-    textAreaInput(ns("gov_description"), label = "Popis spolupráce"),
+    textInput(ns("gov_body"), label = i18n$t("Instituce státní nebo veřejné správy")),
+    textAreaInput(ns("gov_description"), label = i18n$t("Popis spolupráce")),
     
     actionButton(ns("add"),
-                 label = "Zadat do výkazu",                  icon = icon("check"),                  class = "btn-success"
+                 label = i18n$t("Zadat do výkazu"),                  icon = icon("check"),                  class = "btn-success"
     )
     
     
@@ -27,10 +27,10 @@ mod_public_ui <- function(id, i18n){
          htmlOutput(ns("section_vii"), inline = FALSE),
          
          selectInput(ns("remove_list"), 
-                     label = "Položka",
+                     label = i18n$t("Položka"),
                      choices = ""),
          actionButton(ns("remove"),
-                      label = "Odstranit z výkazu", class = "btn-primary", icon = icon("trash")
+                      label = i18n$t("Odstranit z výkazu"), class = "btn-primary", icon = icon("trash")
          )
          
   )

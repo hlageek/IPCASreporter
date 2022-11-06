@@ -19,7 +19,7 @@ mod_docx_ui <- function(id, i18n){
     #                class = "btn-warning"),
     ##################################################
     
-    mod_guide_ui("guide_ui_1")
+    mod_guide_ui("guide_ui_1", i18n)
     
   )
 }
