@@ -371,6 +371,8 @@ create_credentials_db <- function(admin_pass, path, df = NULL) {
     admin_df <- data.frame(
         user = "admin", # mandatory
         password = admin_pass, # mandatory
+        name_last = "admin",
+        name_first = "admin",
         admin = TRUE,
         person_id = 123,
         level = 5,
