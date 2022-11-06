@@ -12,10 +12,12 @@ mod_docx_ui <- function(id, i18n){
   tagList(
     downloadButton(ns("download_docx"), i18n$t("Stáhnout")),
     
-    actionButton(ns("submit_docx"), 
-                   icon = icon("paper-plane"), 
-                   i18n$t("Odeslat"),
-                   class = "btn-warning"),
+    # Disabled for now ###############################
+    # actionButton(ns("submit_docx"), 
+    #                icon = icon("paper-plane"), 
+    #                i18n$t("Odeslat"),
+    #                class = "btn-warning"),
+    ##################################################
     
     mod_guide_ui("guide_ui_1")
     

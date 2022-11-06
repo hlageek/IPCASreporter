@@ -24,7 +24,7 @@ app_ui <- function(request) {
                   label = NULL,
                   choices = i18n$get_languages()
                   ),
-      style = "float: right; max-width: 70px"),
+      style = "float: right; max-width: 60px"),
 
                      navlistPanel(widths = c(2,10), well = F, #####
 

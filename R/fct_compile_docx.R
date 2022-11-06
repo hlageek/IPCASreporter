@@ -105,7 +105,7 @@ compile_docx <- function(identification,
         add_doc_section("section_x",
                         section_x$wip) %>% 
         add_doc_section("section_xi",
-                        section_xi$data)
+                        section_xi$various)
         
         
         
