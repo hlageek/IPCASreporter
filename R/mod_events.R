@@ -46,11 +46,11 @@ mod_events_server <- function(id, identification, usr, i18n) {
       
       observeEvent(usr$person_id, {
           
-          section_ii$eventlist <- ipcas_db %>% 
-              dplyr::tbl("events") %>% 
-              dplyr::filter(person_id_events == !!usr$person_id) %>% 
-              dplyr::filter(event_id_year == year) %>% 
-              dplyr::pull(event)
+          section_ii$eventlist <- get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                                        tbl = "events", 
+                                                        person_id = usr$person_id, 
+                                                        year = year, 
+                                                        col_target = "event") 
           
       })
       
@@ -99,11 +99,12 @@ mod_events_server <- function(id, identification, usr, i18n) {
     observeEvent(input$add, {
         
         
-        event_ids <- ipcas_db %>% 
-            dplyr::tbl("events") %>% 
-            dplyr::filter(person_id_events == !!usr$person_id) %>% 
-            dplyr::filter(event_id_year == year) %>% 
-            dplyr::pull(event_id)
+        event_ids <-  get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                            tbl = "events", 
+                                            person_id = usr$person_id, 
+                                            year = year, 
+                                            col_target = "event_id") 
+   
         
         if (length(event_ids)>0) {
             pool::dbExecute(ipcas_db, 
@@ -122,10 +123,11 @@ mod_events_server <- function(id, identification, usr, i18n) {
             DBI::dbAppendTable(ipcas_db, "events", new_entry_df)
         }
         
-        section_ii$eventlist <- ipcas_db %>% 
-            dplyr::tbl("events") %>% 
-            dplyr::filter(person_id_events == !!usr$person_id) %>% 
-            dplyr::pull(event)
+        section_ii$eventlist <- get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                                      tbl = "events", 
+                                                      person_id = usr$person_id, 
+                                                      year = year, 
+                                                      col_target = "event") 
         
     })
     

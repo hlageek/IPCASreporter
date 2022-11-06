@@ -46,11 +46,12 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
       
       observeEvent(usr$person_id, {
           
-          section_i$publist <- ipcas_db %>% 
-              dplyr::tbl("pubs") %>% 
-              dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
-              dplyr::filter(pub_id_year == year) %>% 
-              dplyr::pull(pub)
+          section_i$publist <- get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                                     tbl = "pubs", 
+                                                     person_id = usr$person_id, 
+                                                     year = year, 
+                                                     col_target = "pub") 
+
           
       })
       
@@ -102,11 +103,11 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
     
     observeEvent(input$add, {
     
-        pub_ids <- ipcas_db %>% 
-            dplyr::tbl("pubs") %>% 
-            dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
-            dplyr::filter(pub_id_year == year) %>% 
-            dplyr::pull(pub_id)
+        pub_ids <- get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                         tbl = "pubs", 
+                                         person_id = usr$person_id, 
+                                         year = year, 
+                                         col_target = "pub_id") 
         
         if (length(pub_ids)>0) {
         pool::dbExecute(ipcas_db, 
@@ -127,10 +128,11 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
         }
   
         
-        section_i$publist <- ipcas_db %>% 
-            dplyr::tbl("pubs") %>% 
-            dplyr::filter(person_id_pubs == !!usr$person_id) %>% 
-            dplyr::pull(pub)
+        section_i$publist <-  get_asep_sourced_data(ipcas_db = ipcas_db, 
+                                                    tbl = "pubs", 
+                                                    person_id = usr$person_id, 
+                                                    year = year, 
+                                                    col_target = "pub") 
     
       })
    

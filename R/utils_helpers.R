@@ -232,3 +232,20 @@ check_inputs <- function(input, list, text = "Zadejte", exclude = NULL) {
     
     
 }
+
+# query for data extracted from API ####
+get_asep_sourced_data <- function(ipcas_db, tbl, person_id, year, col_target) {
+    
+    
+    id_year <- ipcas_db %>%
+        dplyr::tbl(tbl) %>% 
+        dplyr::select(tidyselect::ends_with("id_year")) %>% 
+        colnames()
+    
+    ipcas_db %>% 
+        dplyr::tbl(tbl) %>% 
+        dplyr::filter(.data[[paste0("person_id_", tbl)]] == person_id) %>% 
+        dplyr::filter(.data[[id_year]] == year) %>% 
+        dplyr::pull(col_target)
+    
+}
