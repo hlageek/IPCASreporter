@@ -15,7 +15,7 @@ radioButtons_helper <- function(ns, label, id) {
     
     radioButtons(inputId = ns(paste0("undergrad_type_", id)), 
                  label = paste0(label, ":", stringi::stri_dup(intToUtf8(160), 1)), 
-                 choices = c("ano", "ne"), 
+                 choices = c("ano" = "ano", "ne" = "ne"), 
                  selected = "ne",
                  inline = TRUE)
     

@@ -64,8 +64,8 @@ mod_undergrad_ui <- function(id, i18n){
     column(width = 6,
            
            
-           h3(i18n$t("1)	Výuka na vysokých školách a vedení prací:")),
-           h4(i18n$t("a) Bakalářské a magisterské studijní programy ")),
+           h3(i18n$t("1) Výuka na vysokých školách a vedení prací:")),
+           h4(i18n$t("a) Bakalářské a magisterské studijní programy")),
            
            htmlOutput(ns("section_iii_undergrad_preview"), inline = FALSE),
            
@@ -298,6 +298,28 @@ mod_undergrad_server <- function(id, usr, i18n) {
                 paste(paste0("<br>", seq_along(section_iii_undergrad$data), "."),
                       section_iii_undergrad$data)
             } else {""}
+        })
+        
+        # translations ####
+        
+        observe({
+        updateRadioButtons(session, 
+                           "undergrad_level", 
+                           choiceNames = c(i18n()$t("Bakalářský studijní program"), 
+                                       i18n()$t("Magisterský studijní program")),
+                           choiceValues = c(
+                                "Bakalářský studijní program",
+                                "Magisterský studijní program"
+                                            )
+                           )
+       updateRadioButtons(session, 
+                          "undergrad_type_prednasky", 
+                          choiceNames = c(i18n()$t("ano"), 
+                                      i18n()$t("ne")),
+                          choiceValues = c("ano", "ne")
+                          )
+                          
+            
         })
         
         

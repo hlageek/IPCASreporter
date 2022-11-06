@@ -30,7 +30,7 @@ mod_guide_server <- function(id, i18n) {
     showModal(modalDialog(
       size = "l",
       footer = tagList(
-        modalButton(i18n()$t("Close"),
+        modalButton(i18n()$t("Zavřít"))),
       easyClose = TRUE,
       
       tagList(
@@ -50,9 +50,9 @@ mod_guide_server <- function(id, i18n) {
         
         tags$li(i18n()$t("Pomocí nabídky vlevo se můžete pohybovat v aplikaci a pokračovat ve vyplňování všech"), tags$b(i18n()$t("sekcí výkazu."))),
         
-        tags$li(i18n()$t("Použijte tlačítko"), tags$b(i18n()$t("Uložit")), i18n()$t("pro vygenerování odkazu, který obnoví Vaši práci na zprávě, pokud se k ní budete chtít později vrátit.")),
+        # tags$li(i18n()$t("Použijte tlačítko"), tags$b(i18n()$t("Uložit")), i18n()$t("pro vygenerování odkazu, který obnoví Vaši práci na zprávě, pokud se k ní budete chtít později vrátit.")),
         
-        tags$li(i18n()$t("Použijte tlačítko"), tags$b(i18n()$t("Download"),i18n()$t( "pro vygenerování verze zprávy ve formátu MS Word."))),
+        tags$li(i18n()$t("Použijte tlačítko"), tags$b(i18n()$t("Stáhnout")),i18n()$t("pro vygenerování verze zprávy ve formátu MS Word.")),
         
         #tags$li(i18n()$t("Použijte tlačítko"), tags$b(i18n()$t("Odeslat")), i18n()$t("pro odeslání zprávy. Po odeslání obdržíte potvrzovací e-mail.")),
         
@@ -85,7 +85,7 @@ mod_guide_server <- function(id, i18n) {
           
         )
         
-))))
+))
     
     })
     

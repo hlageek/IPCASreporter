@@ -17,11 +17,11 @@ mod_preview_ui <- function(id, i18n){
         type = "hidden",
         tabPanelBody("panel_welcome", 
                      
-                h2("Vítejte v aplikaci IPCASreporter"),
+                h2(i18n$t("Vítejte v aplikaci IPCASreporter")),
                      br(),
-                    p("Aplikace nyní nahrává Vaše data. Počkejte prosím."),
+                    p(i18n$t("Aplikace nyní nahrává Vaše data. Počkejte prosím.")),
                       br(),
-                    p("Před prvním použitím aplikace si přečtěte základní instrukce.")
+                    p(i18n$t("Před prvním použitím aplikace si přečtěte základní instrukce."))
                     
                     # tags$li("After you have filled your name in the", tags$b( "researcher's details"), "section a preview of your report will appear here."),
                     # 
@@ -79,7 +79,7 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
-    h5("1) Výuka na vysokých školách a vedení prací"),
+    h5(i18n$t("1) Výuka na vysokých školách a vedení prací")),
     htmlOutput(ns("section_iii_undergrad"), inline = FALSE),
     htmlOutput(ns("section_iii_postgrad"), inline = FALSE),
     
@@ -96,9 +96,9 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
-    h5("Řešené či spoluřešené granty"),
+    h5(i18n$t("Řešené či spoluřešené granty")),
     htmlOutput(ns("section_iv_funded"), inline = FALSE),
-    h5("Projekty podané a nepřijaté k financování"),
+    h5(i18n$t("Projekty podané a nepřijaté k financování")),
     htmlOutput(ns("section_iv_unfunded"), inline = FALSE),
     
     br(),
@@ -107,11 +107,11 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
-    h5("Akce"),
+    h5(i18n$t("Akce")),
     htmlOutput(ns("section_vi_popular_events"), inline = FALSE),
-    h5("Přednášky na středních, případně základních školách"),
+    h5(i18n$t("Přednášky na středních, případně základních školách")),
     htmlOutput(ns("section_vi_school_events"), inline = FALSE),
-    h5("Vystoupení a popularizační texty v médiích"),
+    h5(i18n$t("Vystoupení a popularizační texty v médiích")),
     htmlOutput(ns("section_vi_media"), inline = FALSE),
     
     
@@ -121,23 +121,23 @@ mod_preview_ui <- function(id, i18n){
     
     br(),
     h4(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE")),
-    h5("Zapojení do mezinárodních projektů"),
+    h5(i18n$t("Zapojení do mezinárodních projektů")),
     htmlOutput(ns("section_viii_int_projects"), inline = FALSE),
-    h5("Mezinárodní dvoustranné dohody"),
+    h5(i18n$t("Mezinárodní dvoustranné dohody")),
     htmlOutput(ns("section_viii_int_bilateral"), inline = FALSE),
     
     br(),
     h4(i18n$t("IX. OSTATNÍ")),
-    h5("Ocenění odbornou komunitou"),
+    h5(i18n$t("Ocenění odbornou komunitou")),
     htmlOutput(ns("section_ix_award"), inline = FALSE),
-    h5("Posudky"),
+    h5(i18n$t("Posudky")),
     htmlOutput(ns("section_ix_review"), inline = FALSE),
-    h5("Odborná grémia, redakční a oborové rady apod."),
-    h6("Domácí"),
+    h5(i18n$t("Odborná grémia, redakční a oborové rady apod.")),
+    h6(i18n$t("Domácí")),
     htmlOutput(ns("section_ix_member_domestic"), inline = FALSE),
-    h6("Zahraniční"),
+    h6(i18n$t("Zahraniční")),
     htmlOutput(ns("section_ix_member_foreign"), inline = FALSE),
-    h5("Redakční práce"),
+    h5(i18n$t("Redakční práce")),
     htmlOutput(ns("section_ix_editions"), inline = FALSE),
     
     br(),

@@ -86,11 +86,11 @@ mod_pub_server <-  function(id, identification, usr, i18n) {
        )
       } else {
         
-        paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora "), 
+        paste0(i18n()$t("V ASEP nebyly nalezeny žádné záznamy pro autora"), " ", 
                identification$employee_name, 
-               i18n()$t(" v roce "), 
+               " ", i18n()$t("v roce"), " ",
                format(Sys.Date(), "%Y"), 
-               i18n()$t(" nebo "), 
+               " ", i18n()$t("nebo"), " ", 
                format(Sys.Date()-365, "%Y"), 
                ".")
       }

@@ -27,7 +27,7 @@ mod_lectures_ui <- function(id, i18n){
   
     column(width = 6,
            
-           h3( i18n$t("3)	 Samostatné přednášky:")),
+           h3( i18n$t("3) Samostatné přednášky:")),
            
            h4( i18n$t("a) Zahraniční:")),
            
