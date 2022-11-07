@@ -285,7 +285,7 @@ loc$all_df <- transform_table(
       updateRadioButtons(session, 
                          "postgrad_level", 
                          label = i18n()$t("Typ studijního programu/oboru:"),
-                         choiceNames = i18n$t("Doktorský studijní program"),
+                         choiceNames = i18n()$t("Doktorský studijní program"),
                          choiceValues = "Doktorský studijní program"
       )
       updateRadioButtons(session, 
