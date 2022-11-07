@@ -139,7 +139,7 @@ collect_items <- function(items, input) {
                            processed_item <- ifelse(
                                processed_item[1] == processed_item[2], 
                                as.character(processed_item[1]), 
-                               processed_item)
+                               as.character(processed_item))
                        }
                        
                        unlist(paste(processed_item, collapse = "/"))
