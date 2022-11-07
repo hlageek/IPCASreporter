@@ -16,8 +16,8 @@ mod_av21_ui <- function(id, i18n){
       textInput(ns("av21_program"), label = i18n$t("Program Strategie AV21")),
       textInput(ns("av21_activity"), label = i18n$t("Název aktivity (projektu)")),
       textInput(ns("av21_person"), label = i18n$t("Řešitel aktivity (projektu)")),
-      textAreaInput(ns("av21_annotation_cze"), label = i18n$t("Anotace česky"),
-                    placeholder = "Lze zkopírovat z návrhového listu aktivity"),
+      textAreaInput(ns("av21_annotation_cze"), label = i18n$t("Anotace česky")),
+      i18n$t("Lze zkopírovat z návrhového listu aktivity"), tags$br(),tags$br(),
       textAreaInput(ns("av21_annotation_eng"), label = i18n$t("Anotace anglicky")),
       textAreaInput(ns("av21_results"), label = i18n$t("Výstupy (včetně příp. odkazu na ASEP)")),
 
@@ -176,6 +176,7 @@ mod_av21_server <- function(id, usr, i18n) {
         
     })
     
+
     # output av21 ####
     
     output$section_v <- renderText({

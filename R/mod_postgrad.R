@@ -60,7 +60,7 @@ mod_postgrad_ui <- function(id, i18n){
   column(width = 6,
          
          
-         h3(i18n$t("1)	Výuka na vysokých školách a vedení prací:")),
+         h3(i18n$t("1) Výuka na vysokých školách a vedení prací:")),
          h4(i18n$t("b) Doktorský studijní program")),
          
          htmlOutput(ns("section_iii_postgrad_preview"), inline = FALSE),
@@ -294,10 +294,46 @@ loc$all_df <- transform_table(
                          choiceNames = c(i18n()$t("ano"), 
                                          i18n()$t("ne")),
                          choiceValues = c("ano", "ne"),
+                         selected = "ne",
                          inline = TRUE
       )
-      
-      
+      updateRadioButtons(session, 
+                         "postgrad_type_seminare", 
+                         label = i18n()$t("Semináře:"),
+                         choiceNames = c(i18n()$t("ano"), 
+                                         i18n()$t("ne")),
+                         choiceValues = c("ano", "ne"),
+                         selected = "ne",
+                         inline = TRUE
+      )
+      updateRadioButtons(session, 
+                         "postgrad_type_cviceni", 
+                         label = i18n()$t("Cvičení:"),
+                         choiceNames = c(i18n()$t("ano"), 
+                                         i18n()$t("ne")),
+                         choiceValues = c("ano", "ne"),
+                         selected = "ne",
+                         inline = TRUE
+      )
+      updateRadioButtons(session, 
+                         "postgrad_type_vedeni", 
+                         label = i18n()$t("Vedení dizertačních prací:"),
+                         choiceNames = c(i18n()$t("ano"), 
+                                         i18n()$t("ne")),
+                         choiceValues = c("ano", "ne"),
+                         selected = "ne",
+                         inline = TRUE
+      )
+      updateRadioButtons(session, 
+                         "postgrad_type_texty", 
+                         label = i18n()$t("Učební texty:"),
+                         choiceNames = c(i18n()$t("ano"), 
+                                         i18n()$t("ne")),
+                         choiceValues = c("ano", "ne"),
+                         selected = "ne",
+                         inline = TRUE
+      )
+
   })
   
   # preview ####

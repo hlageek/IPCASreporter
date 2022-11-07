@@ -269,6 +269,19 @@ mod_other_member_server <- function(id, usr, i18n) {
         
     })
     
+    # translation ####
+    
+    observe({
+        updateRadioButtons(session, 
+                           "other_member_location", 
+                           label = NULL,
+                           choiceNames =  c(i18n()$t("Domácí"),
+                                            i18n()$t("Zahraniční")),
+                           choiceValues = c("Domácí", "Zahraniční"),
+                           selected = "Domácí"
+        )
+    })
+    
     # output domestic ####
     
     output$section_ix_member_domestic <- renderText({

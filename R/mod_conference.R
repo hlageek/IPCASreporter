@@ -26,7 +26,7 @@ mod_conference_ui <- function(id, i18n){
                             language = "cs"),
                   
                   radioButtons(ns("conference_location"), 
-                               label = i18n$t("Kategorie"), 
+                               label = i18n$t("Místo konání"), 
                                choices = c("Domácí" = "Domácí",
                                            "Zahraniční" = "Zahraniční")
                                ),
@@ -41,7 +41,7 @@ mod_conference_ui <- function(id, i18n){
   column(width = 6,
          
          
-         h3(i18n$t("2)	Příspěvky a přednášky na konferencích:")),
+         h3(i18n$t("2) Příspěvky a přednášky na konferencích:")),
          h4(i18n$t("a) Zahraniční:")),
          
          htmlOutput(ns("section_iii_conferences_foreign"), inline = FALSE),
@@ -319,6 +319,18 @@ mod_conference_server <- function(id, usr, i18n) {
  
     })
     
+    # translation #####
+    
+    observe({
+    updateRadioButtons(session, 
+                       "conference_location", 
+                       label = i18n()$t("Místo konání"),
+                       choiceNames =  c(i18n()$t("Domácí"),
+                                        i18n()$t("Zahraniční")),
+                       choiceValues = c("Domácí", "Zahraniční"),
+                       selected = "Domácí"
+    )
+    })
     # return value ####
     return(section_iii_conference)
     

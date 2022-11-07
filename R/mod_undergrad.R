@@ -319,8 +319,45 @@ mod_undergrad_server <- function(id, usr, i18n) {
                           choiceNames = c(i18n()$t("ano"), 
                                       i18n()$t("ne")),
                           choiceValues = c("ano", "ne"),
+                          selected = "ne",
                           inline = TRUE
                           )
+       updateRadioButtons(session, 
+                          "undergrad_type_seminare", 
+                          label = i18n()$t("Semináře:"),
+                          choiceNames = c(i18n()$t("ano"), 
+                                          i18n()$t("ne")),
+                          choiceValues = c("ano", "ne"),
+                          selected = "ne",
+                          inline = TRUE
+       )
+       updateRadioButtons(session, 
+                          "undergrad_type_cviceni", 
+                          label = i18n()$t("Cvičení:"),
+                          choiceNames = c(i18n()$t("ano"), 
+                                          i18n()$t("ne")),
+                          choiceValues = c("ano", "ne"),
+                          selected = "ne",
+                          inline = TRUE
+       )
+       updateRadioButtons(session, 
+                          "undergrad_type_vedeni", 
+                          label = i18n()$t("Vedení bakalářských a diplomových prací:"),
+                          choiceNames = c(i18n()$t("ano"), 
+                                          i18n()$t("ne")),
+                          choiceValues = c("ano", "ne"),
+                          selected = "ne",
+                          inline = TRUE
+       )
+       updateRadioButtons(session, 
+                          "undergrad_type_texty", 
+                          label = i18n()$t("Učební texty:"),
+                          choiceNames = c(i18n()$t("ano"), 
+                                          i18n()$t("ne")),
+                          choiceValues = c("ano", "ne"),
+                          selected = "ne",
+                          inline = TRUE
+       )
                           
             
         })

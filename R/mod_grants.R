@@ -336,6 +336,21 @@ mod_grants_server <- function(id, usr, i18n) {
    
  })
  
+ # translation ####
+ 
+ observe({
+
+     updateRadioButtons(session, 
+                        "grant_funding_status", 
+                        label = paste0(i18n()$t("Kategorie:"), " "),
+                        choiceNames =  c(i18n()$t("Řešený, nebo přijatý k financování"),
+                                         i18n()$t("Posuzovaný, nebo nepřijatý k financování")),
+                        choiceValues = c("funded", "unfunded")
+     )
+     
+ })
+ 
+ 
  # output funded ####
  
  output$section_iv_funded <- renderText({
