@@ -132,8 +132,17 @@ collect_items <- function(items, input) {
 
     purrr::map_chr(items, 
                    .f = function(items) {
+
+                       processed_item <- input[[items]]
                        
-                       unlist(paste(input[[items]], collapse = "/"))
+                       if ( length(processed_item) > 1 ) {
+                           processed_item <- ifelse(
+                               processed_item[1] == processed_item[2], 
+                               as.character(processed_item[1]), 
+                               processed_item)
+                       }
+                       
+                       unlist(paste(processed_item, collapse = "/"))
                        
                    }
     )

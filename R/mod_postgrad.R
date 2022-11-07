@@ -157,7 +157,7 @@ loc$all_df <- transform_table(
       checks <- stats::setNames(item_names, items)
       check_inputs(input, checks, text = i18n()$t("Zadejte"), exclude = "other|faculty|program")
 
-    all_items <- collect_items(items, input)
+     all_items <- collect_items(items, input)
 
     
     new_df <- prep_new_entry(
