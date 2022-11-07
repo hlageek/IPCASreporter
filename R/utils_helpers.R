@@ -136,10 +136,11 @@ collect_items <- function(items, input) {
                        processed_item <- input[[items]]
                        
                        if ( length(processed_item) > 1 ) {
-                           processed_item <- ifelse(
-                               processed_item[1] == processed_item[2], 
-                               as.character(processed_item[1]), 
-                               as.character(processed_item))
+                           processed_item <- as.character(processed_item)
+                           
+                           if (processed_item[1] == processed_item[2]) {
+                               processed_item <- processed_item[1]
+                           }
                        }
                        
                        unlist(paste(processed_item, collapse = "/"))
