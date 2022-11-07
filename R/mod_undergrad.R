@@ -305,6 +305,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
         observe({
         updateRadioButtons(session, 
                            "undergrad_level", 
+                           label = i18n()$t("Typ studijního programu/oboru:"),
                            choiceNames = c(i18n()$t("Bakalářský studijní program"), 
                                        i18n()$t("Magisterský studijní program")),
                            choiceValues = c(
@@ -314,6 +315,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
                            )
        updateRadioButtons(session, 
                           "undergrad_type_prednasky", 
+                          label = i18n()$t("Přednášky:"),
                           choiceNames = c(i18n()$t("ano"), 
                                       i18n()$t("ne")),
                           choiceValues = c("ano", "ne"),

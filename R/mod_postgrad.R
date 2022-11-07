@@ -32,7 +32,7 @@ mod_postgrad_ui <- function(id, i18n){
                   
                   radioButtons(ns("postgrad_level"), 
                                label = "", 
-                               choices = c(i18n$t("Doktorský studijní program")), 
+                               choices = c("Doktorský studijní program"), 
                                inline = TRUE),
                   
                   textInput(ns("postgrad_course"), 
@@ -279,6 +279,26 @@ loc$all_df <- transform_table(
       
   })
   
+  # translations ####
+  
+  observe({
+      updateRadioButtons(session, 
+                         "postgrad_level", 
+                         label = i18n()$t("Typ studijního programu/oboru:"),
+                         choiceNames = i18n$t("Doktorský studijní program"),
+                         choiceValues = "Doktorský studijní program"
+      )
+      updateRadioButtons(session, 
+                         "postgrad_type_prednasky", 
+                         label = i18n()$t("Přednášky:"),
+                         choiceNames = c(i18n()$t("ano"), 
+                                         i18n()$t("ne")),
+                         choiceValues = c("ano", "ne"),
+                         inline = TRUE
+      )
+      
+      
+  })
   
   # preview ####
   
