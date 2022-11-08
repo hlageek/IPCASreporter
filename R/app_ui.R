@@ -48,7 +48,11 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("I. VYDANÉ PUBLIKACE"),
 
                                      h2(i18n$t("I. VYDANÉ PUBLIKACE")),
-                                     p(i18n$t("Včetně odkazu do ASEP.")),
+                                     p(i18n$t("Všechny uvedené publikace a výstupy musí být zaneseny do databáze"),
+                                       " ",
+                                       tags$a(href="https://asep.lib.cas.cz/arl-cav/cs/index/", "ASEP", target="_blank"),
+                                       " ",
+                                       i18n$t("a obsahovat odkaz na záznam. Uveďte rovněž ty publikace a výstupy, které vyšly koncem loňského roku a které jste v loňském výkazu neuváděli.")),
 
                                      mod_pub_ui("pub_ui_1", i18n)
 
@@ -57,7 +61,11 @@ app_ui <- function(request) {
                             tabPanel(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ"),
 
                                      h2(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ")),
-                                     p( i18n$t("Včetně odkazu do ASEP.")),
+                                     p(i18n$t("Všechny uvedené odborné akce musí být zaneseny do databáze"),
+                                       " ",
+                                       tags$a(href="https://asep.lib.cas.cz/arl-cav/cs/index/", "ASEP", target="_blank"),
+                                       " ",
+                                       i18n$t("a obsahovat odkaz na záznam. Uveďte rovněž akce organizované koncem loňského roku, které jste v loňském výkazu neuváděli.")),
 
                                      mod_events_ui("events_ui_1", i18n)
 
