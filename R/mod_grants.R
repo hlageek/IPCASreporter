@@ -30,8 +30,12 @@ mod_grants_ui <- function(id, i18n){
        textInput(ns("bespoke_provider"), label = i18n$t("Jiný poskytovatel") ),
        style="display:inline-block"),
        tags$div(
-       actionButton(ns("add_bespoke"), icon = icon("plus"), label = ""),
-       style="display:inline-block", title = i18n$t("Přidat poskytovatele do seznamu") )
+       actionButton(ns("add_bespoke"), 
+                    icon = icon("plus"), 
+                    label = "",
+                    title = "Add to menu"
+                    ),
+       style="display:inline-block")
        
        ),
     
@@ -48,15 +52,15 @@ mod_grants_ui <- function(id, i18n){
       condition = "input.grant_date_from == output.current_year",
       ns = ns,
       
-      textAreaInput(ns("grant_annotation_cze"), label = i18n$t("Anotace česky") ,
-                    placeholder = i18n$t("Pro nově zahájené projekty.") ),
-      textAreaInput(ns("grant_annotation_eng"), label = i18n$t("Anotace anglicky") ,
-                    placeholder = i18n$t("Pro nově zahájené projekty.") ),
+      textAreaInput(ns("grant_annotation_cze"), label = i18n$t("Anotace česky")),
+      i18n$t("Pro nově zahájené projekty."), tags$br(), tags$br(),
+      textAreaInput(ns("grant_annotation_eng"), label = i18n$t("Anotace anglicky")),
+      i18n$t("Pro nově zahájené projekty."), tags$br(), tags$br(),
 
     ),
     
     radioButtons(ns("grant_funding_status"), 
-                 label = i18n$t("Kategorie: ") , 
+                 label = "Kategorie:", 
                  choices = c("Řešený, nebo přijatý k financování"  = "funded",
                              "Posuzovaný, nebo nepřijatý k financování"  = "unfunded")
                  ),
@@ -64,7 +68,9 @@ mod_grants_ui <- function(id, i18n){
    br(), br(), br(),
    
     actionButton(ns("add"),
-                 label = i18n$t("Zadat do výkazu") ,                  icon = icon("check"),                  class = "btn-success"
+                 label = i18n$t("Zadat do výkazu") ,
+                 icon = icon("check"),   
+                 class = "btn-success"
                  )
     
     ),
