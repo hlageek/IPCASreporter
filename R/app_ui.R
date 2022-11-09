@@ -77,11 +77,14 @@ app_ui <- function(request) {
 
                                      p(i18n$t("Neuvádějte pedagogické aktivity nesouvisející s Vaším odborným působením ve FLU a vycházející např. z vedlejšího prac. poměru na VŠ.")),
 
-                                     tabsetPanel(tabPanel(i18n$t("Bc. & Mgr."),
+                                     tabsetPanel(
+                                    
+                                    tabPanel(i18n$t("Bc. & Mgr."),
 
                                      mod_undergrad_ui("undergrad_ui_1", i18n),
                                      br(),br(),br(),br(),br(),
                                      ),
+                                    
                                      tabPanel(i18n$t("PhD."),
 
                                      mod_postgrad_ui("postgrad_ui_1", i18n),

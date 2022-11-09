@@ -344,9 +344,7 @@ make_globals <- quote({
     
     shinymanager::set_labels(
         language = "en",
-        "Please authenticate" = "Výroční výkaz (Annual report)",
-        "Username:" = "User:",
-        "Password:" = "Password:"
+        "Please authenticate" = "Výroční výkaz (Annual report)"
     )
     
     ipcas_db <- pool::dbPool(
