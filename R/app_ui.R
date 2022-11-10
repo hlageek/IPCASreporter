@@ -29,11 +29,18 @@ app_ui <- function(request) {
                      navlistPanel(widths = c(2,10), well = F, #####
 
                             tabPanel(i18n$t("NÁHLED"),
+                                     
+                                     fluidRow(
+                                     tags$div(
+                                         mod_docx_ui("docx_ui_1",  i18n),
+                                         style = "float: right;")
+                                     ),
 
-                                     mod_docx_ui("docx_ui_1",  i18n),
+                                     fluidRow(
+                                         mod_preview_ui("preview_ui_1", i18n)
+                                         )
 
-
-                                     mod_preview_ui("preview_ui_1", i18n)
+                                    
 
                             ),
 

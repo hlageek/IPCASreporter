@@ -73,6 +73,8 @@ golem::add_module( name = "other_editions" ) # Name of the module
 golem::add_module( name = "wip" ) # Name of the module
 golem::add_module( name = "various" ) # Name of the module
 golem::add_module( name = "guide" ) # Name of the module
+golem::add_module( name = "manager" ) # Name of the module
+
 
 
 

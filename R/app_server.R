@@ -25,7 +25,7 @@ i18n_r <- reactive({
     })
     
     usr <- reactiveValues()
-    
+   
     usr <- shinymanager::secure_server(
         check_credentials = shinymanager::check_credentials(
             db = golem::get_golem_options(which = "credentials_path"),
@@ -74,8 +74,8 @@ i18n_r <- reactive({
     
     section_xi <- mod_various_server("various_ui_1", usr, i18n_r)
     
-    
-    mod_preview_server("preview_ui_1", 
+
+    mod_preview_server("preview_ui_1",
                        identification,
                        section_i,
                        section_ii,
@@ -83,7 +83,7 @@ i18n_r <- reactive({
                        section_iii_postgrad,
                        section_iii_conference,
                        section_iii_lecture,
-                       section_iv, 
+                       section_iv,
                        section_v,
                        section_vi_popular,
                        section_vi_school,
@@ -96,7 +96,8 @@ i18n_r <- reactive({
                        section_ix_member,
                        section_ix_editions,
                        section_x,
-                       section_xi
+                       section_xi,
+                       usr
                        )
     
     mod_docx_server("docx_ui_1", 
