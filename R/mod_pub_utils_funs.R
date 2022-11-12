@@ -8,6 +8,8 @@ get_asep <- function(author_name, type = c("pubs", "events")) {
                              query = list(method = "search",
                                           db = "CavUnEpca",
                                           query = query,
+                                          from = 1,
+                                          to = 200,
                                           sort = "1=31 i>",
                                           fmt = "xml")) %>%
         httr::content(as = "parsed", "text/html", "utf-8")
