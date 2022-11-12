@@ -11,25 +11,17 @@ mod_preview_ui <- function(id, i18n){
   ns <- NS(id)
  
     
-    mainPanel(
-      tabsetPanel(
-        id = ns("switcher"),
-        type = "hidden",
-        tabPanelBody("panel_welcome", 
-                 preview_welcome(i18n)
-                     ),
-        tabPanelBody("standard_preview", 
-                       
-                 preview_standard(ns, i18n)
-    ),
-    tabPanelBody("manager_preview",
-                 
-                 mod_manager_ui("manager_1", i18n)
-                 
-                 )
-                  
-)
-  )
+  mainPanel(tabsetPanel(
+      id = ns("switcher"),
+      type = "hidden",
+      tabPanelBody("panel_welcome",
+                   preview_welcome(i18n)),
+      tabPanelBody("standard_preview",
+                   preview_standard(ns, i18n)),
+      tabPanelBody("manager_preview",
+                   mod_manager_ui("manager_1", i18n)
+      )
+  ))
 }
     
 #' preview Server Function

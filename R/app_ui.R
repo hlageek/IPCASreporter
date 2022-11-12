@@ -33,7 +33,7 @@ app_ui <- function(request) {
                                      fluidRow(
                                      tags$div(
                                          mod_docx_ui("docx_ui_1",  i18n),
-                                         style = "float: right;")
+                                         style = "float: right; margin-right: 15px")
                                      ),
 
                                      fluidRow(

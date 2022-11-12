@@ -100,6 +100,31 @@ i18n_r <- reactive({
                        usr
                        )
     
+    mod_manager_server("manager_1",
+                       identification,
+                       section_i,
+                       section_ii,
+                       section_iii_undergrad,
+                       section_iii_postgrad,
+                       section_iii_conference,
+                       section_iii_lecture,
+                       section_iv,
+                       section_v,
+                       section_vi_popular,
+                       section_vi_school,
+                       section_vi_media,
+                       section_vii,
+                       section_viii_int_projects,
+                       section_viii_int_bilateral,
+                       section_ix_award,
+                       section_ix_review,
+                       section_ix_member,
+                       section_ix_editions,
+                       section_x,
+                       section_xi,
+                       usr
+    )
+    
     mod_docx_server("docx_ui_1", 
                     identification,
                     section_i,
