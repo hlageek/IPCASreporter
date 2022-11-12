@@ -169,16 +169,18 @@ mod_identification_server <- function(id, usr, i18n) {
 
     observeEvent(input$add, {
 
-        checks <- c("employee_name_first", 
+        checks <- c("employee_name_first",
                     "employee_name_last",
                     "email",
                     "department")
-        checks <- stats::setNames(i18n()$t(c("Jméno:",
-                                                  "Příjmení",
-                                                  "Oddělení:",
-                                                  "E-mail:")),
-                                  checks)
-        check_inputs(input = input, 
+        checks <- stats::setNames(i18n()$t(c(
+            "Jméno:",
+            "Příjmení",
+            "E-mail:",
+            "Oddělení:"
+        )),
+        checks)
+        check_inputs(input = input,
                      list = checks,
                      text = i18n()$t("Zadejte"))
 

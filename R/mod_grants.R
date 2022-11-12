@@ -254,6 +254,14 @@ mod_grants_server <- function(id, usr, i18n) {
                            choices = stats::setNames(
                                ids_funded,
                                seq_along(ids_funded)))
+         if (input$grant_date_from == format(Sys.time(), "%Y")) {
+             updateTextAreaInput(session = session, 
+                                 "grant_annotation_cze", 
+                                 value = "")
+             updateTextAreaInput(session = session, 
+                                 "grant_annotation_eng", 
+                                 value = "")
+         }
              
      } else {
          
@@ -280,6 +288,15 @@ mod_grants_server <- function(id, usr, i18n) {
                            choices = stats::setNames(
                                ids_unfunded,
                                seq_along(ids_unfunded)))
+        
+         if (input$grant_date_from == format(Sys.time(), "%Y")) {
+             updateTextAreaInput(session = session, 
+                                 "grant_annotation_cze", 
+                                 value = "")
+             updateTextAreaInput(session = session, 
+                                 "grant_annotation_eng", 
+                                 value = "")
+         }
          
      }
    
