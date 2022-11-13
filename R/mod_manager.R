@@ -14,7 +14,19 @@ mod_manager_ui <- function(id, i18n){
           tabPanel("Osobní náhled",
                    preview_standard(ns, i18n)
                    ),
-          tabPanel("Náhled oddělení")
+          tabPanel("Náhled oddělení",
+                   
+                   selectInput(ns("department"),
+                               label = i18n$t("Oddělení"),
+                               selected = "",
+                               choices = c("", IPCASreporter::departments$department_name),
+                               multiple = FALSE
+                   ),
+                   
+                   actionButton(ns("test"), "test"),
+                   
+                   dataTableOutput(ns("res"))
+                   )
       )
   
 }
@@ -49,149 +61,92 @@ mod_manager_server <- function(id,
     ns <- session$ns
  
     
+    render_preview(output,
+                   identification,
+                   section_i,
+                   section_ii,
+                   section_iii_undergrad,
+                   section_iii_postgrad,
+                   section_iii_conference,
+                   section_iii_lecture,
+                   section_iv,
+                   section_v,
+                   section_vi_popular,
+                   section_vi_school,
+                   section_vi_media,
+                   section_vii,
+                   section_viii_int_projects,
+                   section_viii_int_bilateral,
+                   section_ix_award,
+                   section_ix_review,
+                   section_ix_member,
+                   section_ix_editions,
+                   section_x,
+                   section_xi)
     
-    
-    # Identification  ####
-    output$employee_name <- renderText({identification$employee_name})
-    output$department <- renderText({identification$department})
-    output$fte <- renderText({identification$fte})
-    output$email <- renderText({identification$email})
-    output$comment <- renderText({identification$comment})
-    
-    
-    # Section I  ####
-    
-    
-    output$section_i <- renderText({
-        paste(section_i$publist, collapse = "<br>")
+    observeEvent(input$test, {
+        
+        dpt_people <- dplyr::tbl(ipcas_db, "departments") %>% 
+            dplyr::filter(department == !!input$department) %>% 
+            dplyr::pull(person_id_departments)
+        
+        people <- dplyr::tbl(ipcas_db, "persons") %>% 
+            dplyr::filter(person_id %in% dpt_people) %>% 
+            dplyr::collect()
+        
+        domestic_people <- dplyr::tbl(ipcas_db, "conferences") %>% 
+            dplyr::filter(person_id_conferences %in% dpt_people) %>% 
+            dplyr::select("person_id_conferences", "conference_id") %>% 
+            dplyr::collect()
+        
+        domestic <- transform_table(ipcas_db = ipcas_db,
+                                        person_id = dpt_people,
+                                        tbl = "conferences",
+                                        tbl_id = "conference_id",
+                                        filter_col = "conference_location",
+                                        filter_val = "Domácí",
+                                        names_df = tibble::tibble(        
+                                            key = c(
+                                            "conference_contribution",
+                                            "conference_organizer",
+                                            "conference_name",
+                                            "conference_date",
+                                            "conference_location"
+                                        ),
+                                            names = c(
+                                            "Název příspěvku:",
+                                            "Pořadatel:",
+                                            "Název konference:",
+                                            "Datum konání:",
+                                            "Místo konání:"
+                                        )))
+        
+        domestic_people %>% 
+            dplyr::inner_join(domestic) %>% 
+            dplyr::left_join(people, by = c("person_id_conferences" = "person_id")) %>% 
+            tidyr::unite("name", c(name_first, name_last)) %>% 
+            dplyr::mutate(name = paste0("<h5>", name, "</h5>"))
+
+            
+        tbl_names <- DBI::dbListTables(ipcas_db)
+        tbl_names <- tbl_names[!grepl("persons", tbl_names)]
+
+        df_collection <- purrr::map2(tbl_names, dpt_people, 
+                                     .f = function(x,y) {
+           dplyr::tbl(ipcas_db, x) %>% 
+                dplyr::filter(.data[[paste0("person_id_", x)]] %in% y) %>% 
+                dplyr::collect() %>% 
+                dplyr::mutate(person_id = y)
+        })
+        
+        browser()
+        list_of_df <- df_collection %>% 
+            purrr::map(~dplyr::left_join(.x, people,
+                                         by = "person_id"))
+             
+        output$res <- renderDataTable(list_of_df[[1]])
+
     })
-    
-    # Section II  ####
-    
-    output$section_ii <- renderText({
-        paste(section_ii$eventlist, collapse = "<br>")
-    })
-    
-    
-    # Section III  ####
-    
-    ## Undergrad  ####
-    
-    
-    output$section_iii_undergrad <- renderText({
-        paste(section_iii_undergrad$data)
-    })
-    
-    ## Postgrad  ####
-    
-    output$section_iii_postgrad <- renderText({
-        paste(section_iii_postgrad$data)
-    })
-    
-    ## Conference  ####
-    
-    output$section_iii_conference_foreign <-  renderText({
-        paste(section_iii_conference$foreign)
-    })
-    output$section_iii_conference_domestic <-  renderText({
-        paste(section_iii_conference$domestic)
-    })
-    
-    ## Lecture  ####
-    
-    output$section_iii_lecture_foreign <-  renderText({
-        paste(section_iii_lecture$foreign)
-    })
-    output$section_iii_lecture_domestic <-  renderText({
-        paste(section_iii_lecture$domestic)
-    })
-    
-    
-    # Section IV  ####
-    
-    output$section_iv_funded <-  renderText({
-        paste(section_iv$funded)
-    })
-    output$section_iv_unfunded <-  renderText({
-        paste(section_iv$unfunded)
-    })
-    
-    # Section V ####
-    
-    output$section_v <-  renderText({
-        paste(section_v$av21)
-    })
-    
-    # Section VI  ####
-    
-    ## Events  ####
-    
-    output$section_vi_popular_events <-  renderText({
-        paste(section_vi_popular$events)
-    })
-    
-    ## School events  ####
-    
-    output$section_vi_school_events <-  renderText({
-        paste(section_vi_school$events)
-    })
-    
-    ## Media  ####
-    
-    output$section_vi_media <-  renderText({
-        paste(section_vi_media$media)
-    })
-    
-    # Section VII  ####
-    
-    output$section_vii <-  renderText({
-        paste(section_vii$public)
-    })
-    
-    # Section VIII  ####
-    
-    output$section_viii_int_projects <-  renderText({
-        paste(section_viii_int_projects$projects)
-    })
-    
-    output$section_viii_int_bilateral <-  renderText({
-        paste(section_viii_int_bilateral$bilateral)
-    })
-    
-    # Section IX  ####
-    
-    output$section_ix_award <-  renderText({
-        paste(section_ix_award$award)
-    })
-    
-    output$section_ix_review <-  renderText({
-        paste(section_ix_review$review)
-    })    
-    
-    output$section_ix_member_domestic <-  renderText({
-        paste(section_ix_member$domestic)
-    })    
-    
-    output$section_ix_member_foreign <-  renderText({
-        paste(section_ix_member$foreign)
-    })        
-    
-    output$section_ix_editions <-  renderText({
-        paste(section_ix_editions$editions)
-    })       
-    
-    # Section X  ####
-    
-    output$section_x <-  renderText({
-        paste(section_x$wip)
-    })
-    
-    # Section XI  ####
-    
-    output$section_xi <-  renderText({
-        paste(section_xi$various)
-    })
-    
     
   })
 }
