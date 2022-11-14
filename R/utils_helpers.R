@@ -142,7 +142,10 @@ collect_items <- function(items, input) {
                                processed_item <- processed_item[1]
                            }
                        }
+                       
+                       if (is.character(processed_item)) {
                        processed_item <- utf8::utf8_encode(processed_item)
+                       }
                        unlist(paste(
                            processed_item, 
                            collapse = "/"))
