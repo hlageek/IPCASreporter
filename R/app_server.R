@@ -26,11 +26,11 @@ i18n_r <- reactive({
     
     usr <- reactiveValues()
    
-    usr <- shinymanager::secure_server( 
+    usr <- shinymanager::secure_server(
         check_credentials = shinymanager::check_credentials(
             db = golem::get_golem_options(which = "credentials_path"),
-            passphrase = golem::get_golem_options(which = "credentials_pass"),
-            timeout = 60)
+            passphrase = golem::get_golem_options(which = "credentials_pass")),
+        timeout = 60
     )  
 
     identification <- mod_identification_server("identification_ui_1", usr, i18n_r)
