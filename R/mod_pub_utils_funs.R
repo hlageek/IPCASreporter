@@ -2,7 +2,7 @@
 # call asep api based on name
 get_asep <- function(author_name, type = c("pubs", "events")) {
 
-    query <- paste0("@attr 98=2 @and @and @attr 1=1 '", author_name, "' @attr 1=2462 'FLU-F' @attr 1=31 @or @or '", format(Sys.Date()+365, "%Y"), "' '", format(Sys.Date(), "%Y"), "' '", format(Sys.Date()-365, "%Y"), "'")
+    query <- paste0("@attr 98=2 @and @and @attr 1=1 '", author_name, "' @attr 1=2462 'FLU-F' @attr 1=2456 @or '", format(Sys.Date()+365, "%Y"), "' '", format(Sys.Date(), "%Y"), "'")
 
     asep_result <- httr::GET(url = "https://asep.lib.cas.cz/i2/i2.ws.cls",
                              query = list(method = "search",
