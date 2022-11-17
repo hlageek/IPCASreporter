@@ -150,7 +150,7 @@ mod_other_member_server <- function(id, usr, i18n) {
         
         # check and require inputs
         checks <- stats::setNames(item_names, items)
-        check_inputs(input, checks, text = i+án()$t("Zadejte"))
+        check_inputs(input, checks, text = i18n()$t("Zadejte"))
         
         all_items <- collect_items(items, input)
         
