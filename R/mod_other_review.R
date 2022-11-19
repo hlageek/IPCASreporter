@@ -82,7 +82,9 @@ mod_other_review_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_review$review <- paste0("<br>", 
-                                         loc$review$data,
+                                           sanitize_output(
+                                               loc$review$data
+                                               ),
                                          "<br>")
         ids_review <- loc$review %>% 
             dplyr::pull(other_reviews_id)
@@ -124,7 +126,9 @@ mod_other_review_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_review$review <- paste0("<br>", 
-                                         loc$review$data,
+                                           sanitize_output(
+                                               loc$review$data
+                                               ),
                                          "<br>")
         ids_review <- loc$review %>% 
             dplyr::pull(other_reviews_id)
@@ -150,7 +154,9 @@ mod_other_review_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_review$review <- paste0("<br>", 
-                                         loc$review$data,
+                                           sanitize_output(
+                                               loc$review$data
+                                               ),
                                          "<br>")
         ids_review <- loc$review %>% 
             dplyr::pull(other_reviews_id)
@@ -167,8 +173,10 @@ mod_other_review_server <- function(id, usr, i18n) {
     output$section_ix_review <- renderText({
         if (nrow(loc$review)>0) {
             
-            text_to_display <- loc$review %>% 
+            text_to_display <- sanitize_output(
+                loc$review %>% 
                 dplyr::pull(data)
+            )
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

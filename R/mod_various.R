@@ -75,7 +75,9 @@ mod_various_server <- function(id, usr, i18n) {
             dplyr::pull(various_id)
         
         section_xi$various <- paste0("<br>", 
-                                 loc$various$data,
+                                     sanitize_output(
+                                 loc$various$data
+                                 ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -117,7 +119,9 @@ mod_various_server <- function(id, usr, i18n) {
             dplyr::pull(various_id)
         
         section_xi$various <- paste0("<br>", 
-                                 loc$various$data,
+                                     sanitize_output(
+                                         loc$various$data
+                                         ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -144,7 +148,9 @@ mod_various_server <- function(id, usr, i18n) {
             dplyr::pull(various_id)
         
         section_xi$various <- paste0("<br>", 
-                                 loc$various$data,
+                                     sanitize_output(
+                                 loc$various$data
+                                 ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -160,8 +166,8 @@ mod_various_server <- function(id, usr, i18n) {
     output$section_xi <- renderText({
         if (nrow(loc$various)>0) {
             
-            text_to_display <- loc$various %>% 
-                dplyr::pull(data)
+            text_to_display <- sanitize_output(loc$various %>% 
+                dplyr::pull(data))
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

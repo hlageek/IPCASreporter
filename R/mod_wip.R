@@ -59,8 +59,7 @@ mod_wip_server <- function(id, usr, i18n) {
     # init ####
     observeEvent(usr$person_id, {
         
-        
-        
+
         loc$wip <- transform_table(ipcas_db = ipcas_db,
                                     person_id = usr$person_id,
                                     tbl = "wip",
@@ -73,7 +72,9 @@ mod_wip_server <- function(id, usr, i18n) {
             dplyr::pull(wip_id)
         
         section_x$wip <- paste0("<br>", 
-                                 loc$wip$data,
+                                sanitize_output(
+                                loc$wip$data
+                                ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -115,7 +116,9 @@ mod_wip_server <- function(id, usr, i18n) {
             dplyr::pull(wip_id)
         
         section_x$wip <- paste0("<br>", 
-                                 loc$wip$data,
+                                sanitize_output(
+                                 loc$wip$data
+                                ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -142,7 +145,9 @@ mod_wip_server <- function(id, usr, i18n) {
             dplyr::pull(wip_id)
         
         section_x$wip <- paste0("<br>", 
-                                 loc$wip$data,
+                                sanitize_output(
+                                    loc$wip$data
+                                    ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -155,11 +160,13 @@ mod_wip_server <- function(id, usr, i18n) {
     
     # output wip ####
     
+
+    
     output$section_x <- renderText({
         if (nrow(loc$wip)>0) {
             
-            text_to_display <- loc$wip %>% 
-                dplyr::pull(data)
+            text_to_display <- sanitize_output(loc$wip %>% 
+                dplyr::pull(data))
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

@@ -231,6 +231,14 @@ transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL,
 
 }
 
+# sanitize output
+sanitize_output <- function(x) {
+    
+    purrr::map_chr(x, .f = function(x) {
+        stringr::str_replace_all(x, "\\\\n|\\\\t", "<br>")
+    })
+}
+
 # check inputs --------------------------------------
 
 check_inputs <- function(input, list, text = "Zadejte", exclude = NULL) {

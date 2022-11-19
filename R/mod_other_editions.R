@@ -87,7 +87,9 @@ mod_other_editions_server <- function(id, usr, i18n) {
             dplyr::pull(other_editions_id)
         
         section_ix_editions$editions  <- paste0("<br>", 
-                                 loc$other_editions$data,
+                                                sanitize_output(
+                                                    loc$other_editions$data
+                                                    ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -129,7 +131,9 @@ mod_other_editions_server <- function(id, usr, i18n) {
             dplyr::pull(other_editions_id)
         
         section_ix_editions$editions  <- paste0("<br>", 
-                                 loc$other_editions$data,
+                                                sanitize_output(
+                                                    loc$other_editions$data
+                                                    ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -156,7 +160,9 @@ mod_other_editions_server <- function(id, usr, i18n) {
             dplyr::pull(other_editions_id)
         
         section_ix_editions$editions  <- paste0("<br>", 
-                                 loc$other_editions$data,
+                                                sanitize_output(
+                                                    loc$other_editions$data
+                                                    ),
                                  "<br>")
         
         updateSelectInput(session = session,
@@ -172,8 +178,10 @@ mod_other_editions_server <- function(id, usr, i18n) {
     output$section_ix_editions <- renderText({
         if (nrow(loc$other_editions)>0) {
             
-            text_to_display <- loc$other_editions %>% 
+            text_to_display <- sanitize_output(
+                loc$other_editions %>% 
                 dplyr::pull(data)
+            )
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

@@ -74,7 +74,9 @@ mod_other_award_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_award$award <- paste0("<br>", 
-                                            loc$award$data,
+                                         sanitize_output(
+                                             loc$award$data
+                                             ),
                                             "<br>")
         ids_award <- loc$award %>% 
             dplyr::pull(other_awards_id)
@@ -116,7 +118,9 @@ mod_other_award_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_award$award <- paste0("<br>", 
-                                            loc$award$data,
+                                         sanitize_output(
+                                             loc$award$data
+                                             ),
                                             "<br>")
         ids_award <- loc$award %>% 
             dplyr::pull(other_awards_id)
@@ -142,7 +146,9 @@ mod_other_award_server <- function(id, usr, i18n) {
         
         # updates after action
         section_ix_award$award <- paste0("<br>", 
-                                            loc$award$data,
+                                         sanitize_output(
+                                             loc$award$data
+                                             ),
                                             "<br>")
         ids_award <- loc$award %>% 
             dplyr::pull(other_awards_id)
@@ -159,8 +165,10 @@ mod_other_award_server <- function(id, usr, i18n) {
     output$section_ix_award <- renderText({
         if (nrow(loc$award)>0) {
             
-            text_to_display <- loc$award %>% 
+            text_to_display <- sanitize_output(
+                loc$award %>% 
                 dplyr::pull(data)
+            )
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

@@ -130,8 +130,10 @@ mod_other_member_server <- function(id, usr, i18n) {
                               seq_along(ids_domestic)))
         
         
-        section_ix_member$foreign <- paste0("<br>", 
-                                            loc$foreign$data,
+        section_ix_member$foreign <- paste0("<br>",
+                                            sanitize_output(
+                                            loc$foreign$data
+                                            ),
                                             "<br>")
         ids_foreign <-  loc$foreign %>% 
             dplyr::pull(other_member_id)
@@ -178,8 +180,10 @@ mod_other_member_server <- function(id, usr, i18n) {
                                           names_df = names_df)
             
             
-            section_ix_member$domestic <- paste0("<br>", 
-                                                 loc$domestic$data,
+            section_ix_member$domestic <- paste0("<br>",
+                                                 sanitize_output(
+                                                 loc$domestic$data
+                                                 ),
                                                  "<br>")
             ids_domestic <-  loc$domestic %>% 
                 dplyr::pull(other_member_id)
@@ -202,7 +206,9 @@ mod_other_member_server <- function(id, usr, i18n) {
             
             
             section_ix_member$foreign <- paste0("<br>", 
-                                                loc$foreign$data,
+                                                sanitize_output(
+                                                loc$foreign$data
+                                                ),
                                                 "<br>")
             ids_foreign <-  loc$foreign %>% 
                 dplyr::pull(other_member_id)
@@ -231,7 +237,9 @@ mod_other_member_server <- function(id, usr, i18n) {
                         params = list(input$remove_list_domestic))
         
         section_ix_member$domestic <- paste0("<br>", 
-                                             loc$domestic$data,
+                                             sanitize_output(
+                                                 loc$domestic$data
+                                                 ),
                                              "<br>")
         ids_domestic <-  loc$domestic %>% 
             dplyr::pull(other_member_id)
@@ -257,7 +265,9 @@ mod_other_member_server <- function(id, usr, i18n) {
                         params = list(input$remove_list_foreign))
         
         section_ix_member$foreign <- paste0("<br>", 
-                                            loc$foreign$data,
+                                            sanitize_output(
+                                                loc$foreign$data
+                                                ),
                                             "<br>")
         ids_foreign <-  loc$foreign %>% 
             dplyr::pull(other_member_id)
@@ -304,8 +314,10 @@ mod_other_member_server <- function(id, usr, i18n) {
         
         if (nrow(loc$foreign)>0) {
             
-            text_to_display <- loc$foreign %>% 
+            text_to_display <- sanitize_output(
+                loc$foreign %>% 
                 dplyr::pull(data)
+            )
             
             paste0(
                 paste0(seq_along(text_to_display), ".<br>"),

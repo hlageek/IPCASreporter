@@ -90,6 +90,8 @@ golem::add_utils( "funs", module = "pub" )
 golem::add_utils( "funs", module = "undergrad" )
 golem::add_utils( "funs", module = "postgrad" )
 golem::add_utils("db_startup")
+golem::add_utils( "funs", module = "manager" )
+
 
 
 
