@@ -30,7 +30,7 @@ mod_manager_ui <- function(id, i18n){
                                multiple = TRUE
                    ),
                    
-                   actionButton(ns("test"), "test"),
+                   #actionButton(ns("test"), "test"),
                    
                    h4(i18n$t("I. VYDANÉ PUBLIKACE")),
                    htmlOutput(ns("manager_section_i"), inline = FALSE),
@@ -48,7 +48,9 @@ mod_manager_ui <- function(id, i18n){
                    
                    br(),
                    h5(i18n$t("2) Příspěvky a přednášky na konferencích")),
+                   h5(i18n$t("Zahraniční")),
                    htmlOutput(ns("manager_section_iii_conference_foreign"), inline = FALSE),
+                   h5(i18n$t("Domácí")),
                    htmlOutput(ns("manager_section_iii_conference_domestic"), inline = FALSE),
                    
                    br(),
@@ -195,6 +197,29 @@ mod_manager_server <- function(id,
     }, {
         # browser()
         
+        # section I
+        
+        manager_section_i <- 
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "pubs",
+                tbl_id = "pub_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("pubs"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_i <- renderText({
+            paste(manager_section_i$name,
+                  sanitize_output(
+                      manager_section_i$data
+                  ),
+                  sep = "")
+        })
+        
+        
         # section III ####
         manager_section_iii_conference_domestic <-
             present_table(
@@ -236,6 +261,31 @@ mod_manager_server <- function(id,
                   ),
                   sep = "")
         })
+        
+        # section XI review
+        
+        
+        
+        manager_section_ix_review <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "other_reviews",
+                tbl_id = "other_reviews_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("other_reviews"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ix_review <- renderText({
+            paste(manager_section_ix_review$name,
+                  sanitize_output(
+                      manager_section_ix_review$data
+                  ),
+                  sep = "")
+        })
+        
 
     })
     
