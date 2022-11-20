@@ -69,8 +69,7 @@ mod_other_review_server <- function(id, usr, i18n) {
     # init ####
     observeEvent(usr$person_id, {
         
-        loc$names <- tibble::tibble(key = items,
-                                    names = item_names)
+        loc$names <- names_df_switch("other_reviews")
         
         loc$review <- transform_table(ipcas_db = ipcas_db,
                                      person_id = usr$person_id,

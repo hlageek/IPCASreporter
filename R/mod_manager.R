@@ -32,7 +32,83 @@ mod_manager_ui <- function(id, i18n){
                    
                    actionButton(ns("test"), "test"),
                    
-                   htmlOutput(ns("res"))
+                   h4(i18n$t("I. VYDANÉ PUBLIKACE")),
+                   htmlOutput(ns("manager_section_i"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ")),
+                   htmlOutput(ns("manager_section_ii"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
+                   h5(i18n$t("1) Výuka na vysokých školách a vedení prací")),
+                   htmlOutput(ns("manager_section_iii_undergrad"), inline = FALSE),
+                   htmlOutput(ns("manager_section_iii_postgrad"), inline = FALSE),
+                   
+                   
+                   br(),
+                   h5(i18n$t("2) Příspěvky a přednášky na konferencích")),
+                   htmlOutput(ns("manager_section_iii_conference_foreign"), inline = FALSE),
+                   htmlOutput(ns("manager_section_iii_conference_domestic"), inline = FALSE),
+                   
+                   br(),
+                   h5(i18n$t("3) Samostatné přednášky")),
+                   htmlOutput(ns("manager_section_iii_lecture_foreign"), inline = FALSE),
+                   htmlOutput(ns("manager_section_iii_lecture_domestic"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY")),
+                   h5(i18n$t("Řešené či spoluřešené granty")),
+                   htmlOutput(ns("manager_section_iv_funded"), inline = FALSE),
+                   h5(i18n$t("Projekty podané a nepřijaté k financování")),
+                   htmlOutput(ns("manager_section_iv_unfunded"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21")),
+                   htmlOutput(ns("manager_section_v"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("VI. POPULARIZAČNÍ ČINNOST")),
+                   h5(i18n$t("Akce")),
+                   htmlOutput(ns("manager_section_vi_popular_events"), inline = FALSE),
+                   h5(i18n$t("Přednášky na středních, případně základních školách")),
+                   htmlOutput(ns("manager_section_vi_school_events"), inline = FALSE),
+                   h5(i18n$t("Vystoupení a popularizační texty v médiích")),
+                   htmlOutput(ns("manager_section_vi_media"), inline = FALSE),
+                   
+                   
+                   br(),
+                   h4(i18n$t("VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU")),
+                   htmlOutput(ns("manager_section_vii"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("VIII. ZAHRANIČNÍ SPOLUPRÁCE")),
+                   h5(i18n$t("Zapojení do mezinárodních projektů")),
+                   htmlOutput(ns("manager_section_viii_int_projects"), inline = FALSE),
+                   h5(i18n$t("Mezinárodní dvoustranné dohody")),
+                   htmlOutput(ns("manager_section_viii_int_bilateral"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("IX. OSTATNÍ")),
+                   h5(i18n$t("Ocenění odbornou komunitou")),
+                   htmlOutput(ns("manager_section_ix_award"), inline = FALSE),
+                   h5(i18n$t("Posudky")),
+                   htmlOutput(ns("manager_section_ix_review"), inline = FALSE),
+                   h5(i18n$t("Odborná grémia, redakční a oborové rady apod.")),
+                   h6(i18n$t("Domácí")),
+                   htmlOutput(ns("manager_section_ix_member_domestic"), inline = FALSE),
+                   h6(i18n$t("Zahraniční")),
+                   htmlOutput(ns("manager_section_ix_member_foreign"), inline = FALSE),
+                   h5(i18n$t("Redakční práce")),
+                   htmlOutput(ns("manager_section_ix_editions"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY")),
+                   htmlOutput(ns("manager_section_x"), inline = FALSE),
+                   
+                   br(),
+                   h4(i18n$t("XI. RŮZNÉ")),
+                   htmlOutput(ns("manager_section_xi"), inline = FALSE)
                    )
       )
   
@@ -113,74 +189,53 @@ mod_manager_server <- function(id,
     })
     
     observeEvent(input$test, {browser()})
-    observeEvent({req(input$department)
-                 req(input$persons)}, {
+    observeEvent({
+        req(input$department)
+        input$persons
+    }, {
+        # browser()
         
-       # browser()
-       
+        # section III ####
+        manager_section_iii_conference_domestic <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "conferences",
+                tbl_id = "conference_id",
+                filter_col = "conference_location",
+                filter_val = "Domácí",
+                names_df = names_df_switch("conference_domestic"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_conference_domestic <- renderText({
+            paste(manager_section_iii_conference_domestic$name,
+                  sanitize_output(
+                      manager_section_iii_conference_domestic$data
+                      ),
+                  sep = "")
+        })
         
-        
-        
-        domestic_people <- dplyr::tbl(ipcas_db, "conferences") %>% 
-            dplyr::filter(person_id_conferences %in% !!loc$dpt_people) %>% 
-            dplyr::filter(person_id_conferences %in% !!input$persons) %>% 
-            dplyr::select("person_id_conferences", "conference_id") %>% 
-            dplyr::collect()
-        
-        domestic <- transform_table(ipcas_db = ipcas_db,
-                                        person_id = loc$dpt_people,
-                                        tbl = "conferences",
-                                        tbl_id = "conference_id",
-                                        filter_col = "conference_location",
-                                        filter_val = "Domácí",
-                                        names_df = tibble::tibble(        
-                                            key = c(
-                                            "conference_contribution",
-                                            "conference_organizer",
-                                            "conference_name",
-                                            "conference_date",
-                                            "conference_location"
-                                        ),
-                                            names = c(
-                                            "Název příspěvku:",
-                                            "Pořadatel:",
-                                            "Název konference:",
-                                            "Datum konání:",
-                                            "Místo konání:"
-                                        )))
 
-         
-        domestic_df <- domestic_people %>% 
-            dplyr::left_join(domestic, by = "conference_id") %>% 
-            dplyr::inner_join(loc$people, by = c("person_id_conferences" = "person_id")) %>% 
-            dplyr::bind_rows(
-                loc$people %>% 
-                    dplyr::filter(person_id %in% !!input$persons) %>% 
-                    dplyr::rename("person_id_conferences" = "person_id") %>% 
-                    dplyr::anti_join(domestic_people, by = "person_id_conferences")
-                             ) %>% 
-            dplyr::arrange(name_last)  %>%
-            tidyr::unite("name", c(name_first, name_last), sep = " ") %>% 
-            dplyr::mutate(name = paste0("<h5>", name, "</h5>")) %>% 
-            dplyr::mutate(dplyr::across(where(is.character), tidyr::replace_na, "" ))
-
-            
-        # tbl_names <- DBI::dbListTables(ipcas_db)
-        # tbl_names <- tbl_names[!grepl("persons", tbl_names)]
-        # 
-        # df_collection <- purrr::map2(tbl_names, dpt_people, 
-        #                              .f = function(x,y) {
-        #    dplyr::tbl(ipcas_db, x) %>% 
-        #         dplyr::filter(.data[[paste0("person_id_", x)]] %in% y) %>% 
-        #         dplyr::collect() %>% 
-        #         dplyr::mutate(person_id = y)
-        #})
-    
-             
-        output$res <- renderText({ 
-            paste(domestic_df$name,
-                  sanitize_output(domestic_df$data), sep = "")
-            })
+        manager_section_iii_conference_foreign <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "conferences",
+                tbl_id = "conference_id",
+                filter_col = "conference_location",
+                filter_val = "Zahraniční",
+                names_df = names_df_switch("conference_domestic"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_conference_foreign <- renderText({
+            paste(manager_section_iii_conference_foreign$name,
+                  sanitize_output(
+                      manager_section_iii_conference_foreign$data
+                  ),
+                  sep = "")
+        })
 
     })
     
