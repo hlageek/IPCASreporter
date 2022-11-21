@@ -10,27 +10,32 @@
 mod_manager_ui <- function(id, i18n){
   ns <- NS(id)
 
-      tabsetPanel(
-          tabPanel("Osobní náhled",
+      tabsetPanel(id = ns("tabs"),
+          tabPanel("Osobní náhled", value = "personal_view",
                    preview_standard(ns, i18n)
                    ),
-          tabPanel("Náhled oddělení",
+          tabPanel("Náhled oddělení", value = "department_view",
+                   
+                   tags$div(style="display: inline-block;vertical-align:bottom; width: 300px;",
                    
                    selectInput(ns("department"),
                                label = i18n$t("Oddělení"),
                                selected = "",
                                choices = c("", IPCASreporter::departments$department_name),
                                multiple = FALSE
-                   ),
-                   
+                   )),
+                   tags$div(style="display: inline-block;vertical-align:bottom; width: 400px;",
                    selectInput(ns("persons"),
                                label = i18n$t("Osoby"),
                                selected = "",
                                choices = "",
                                multiple = TRUE
-                   ),
+                   )),
                    
-                   #actionButton(ns("test"), "test"),
+                   tags$div(style="display: inline-block;vertical-align:bottom; width: 150px;",
+                   actionButton(ns("show_button"), "Zobrazit vybrané")
+                   
+                   ),
                    
                    h4(i18n$t("I. VYDANÉ PUBLIKACE")),
                    htmlOutput(ns("manager_section_i"), inline = FALSE),
@@ -190,14 +195,13 @@ mod_manager_server <- function(id,
                           )
     })
     
-    observeEvent(input$test, {browser()})
     observeEvent({
+        input$show_button
         req(input$department)
-        input$persons
     }, {
         # browser()
         
-        # section I
+        # section I ####
         
         manager_section_i <- 
             present_table(
@@ -262,7 +266,7 @@ mod_manager_server <- function(id,
                   sep = "")
         })
         
-        # section XI review
+        # section XI review ####
         
         
         
@@ -288,6 +292,19 @@ mod_manager_server <- function(id,
         
 
     })
+    
+    # tab control ####
+
+    observeEvent(input$tabs, {
+        
+        if (input$tabs == "department_view") {
+        golem::invoke_js("hide", "#docx_ui_1-download_docx")
+        } else {
+            golem::invoke_js("show", "#docx_ui_1-download_docx")
+        }
+            
+        })
+    
     
   })
 }
