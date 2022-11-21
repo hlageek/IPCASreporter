@@ -16,23 +16,23 @@ mod_manager_ui <- function(id, i18n){
                    ),
           tabPanel("Náhled oddělení", value = "department_view",
                    
-                   tags$div(style="display: inline-block;vertical-align:bottom; width: 300px;",
+                   tags$div(style=" display: flex; align-items: left; justify-content: center;",
                    
                    selectInput(ns("department"),
                                label = i18n$t("Oddělení"),
                                selected = "",
                                choices = c("", IPCASreporter::departments$department_name),
                                multiple = FALSE
-                   )),
-                   tags$div(style="display: inline-block;vertical-align:bottom; width: 400px;",
+                   ),
+          
                    selectInput(ns("persons"),
                                label = i18n$t("Osoby"),
                                selected = "",
                                choices = "",
                                multiple = TRUE
-                   )),
+                   ),
                    
-                   tags$div(style="display: inline-block;vertical-align:bottom; width: 150px;",
+     
                    actionButton(ns("show_button"), "Zobrazit vybrané")
                    
                    ),
