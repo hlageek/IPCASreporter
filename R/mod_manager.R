@@ -16,7 +16,7 @@ mod_manager_ui <- function(id, i18n){
                    ),
           tabPanel("Náhled oddělení", value = "department_view",
                    
-                   tags$div(style=" display: flex; align-items: left; justify-content: center;",
+                   tags$div(style=" display: flex; align-items: center; justify-content: left;",
                    
                    selectInput(ns("department"),
                                label = i18n$t("Oddělení"),
