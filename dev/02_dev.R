@@ -35,6 +35,7 @@ usethis::use_package( "purrr")
 usethis::use_package( "readr")
 usethis::use_package( "tidyr")
 usethis::use_package( "shiny.i18n")
+usethis::use_package( "waiter")
 
 
 

@@ -119,8 +119,7 @@ mod_postgrad_server <- function(id, usr, i18n) {
     
   )
 
-  names_df <- tibble::tibble(key = items,
-                             names = item_names)
+  names_df <- names_df_switch("postgrad")
   #  on startup ####
 
   observeEvent(usr$person_id, {

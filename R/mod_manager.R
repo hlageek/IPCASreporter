@@ -9,7 +9,11 @@
 #' @importFrom shiny NS tagList 
 mod_manager_ui <- function(id, i18n){
   ns <- NS(id)
-
+  
+fluidRow(
+    
+    column(10,
+    
       tabsetPanel(id = ns("tabs"),
           tabPanel("Osobní náhled", value = "personal_view",
                    preview_standard(ns, i18n)
@@ -117,8 +121,11 @@ mod_manager_ui <- function(id, i18n){
                    h4(i18n$t("XI. RŮZNÉ")),
                    htmlOutput(ns("manager_section_xi"), inline = FALSE)
                    )
-      )
-  
+      )),
+    column(2, 
+    uiOutput(ns("section_selector"))
+    )
+)
 }
     
 #' manager Server Functions
@@ -199,6 +206,26 @@ mod_manager_server <- function(id,
         input$show_button
         req(input$department)
     }, {
+        
+        # output$section_selector <- renderUI({
+        #     selectInput("sections", "Sekce", choices = c(
+        #         "I. VYDANÉ PUBLIKACE" = 1,
+        #         "II. ORGANIZACE KONFERENCÍ A WORKSHOPŮ" = 2,
+        #         "III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST" = 3,
+        #         "IV. ŘEŠENÉ ČI SPOLUŘEŠENÉ GRANTY" = 4,
+        #         "V. ŘEŠENÉ PROJEKTY V RÁMCI STRATEGIE AV 21" = 5,
+        #         "VI. POPULARIZAČNÍ ČINNOST" = 6,
+        #         "VII. SPOLUPRÁCE SE STÁTNÍ A VEŘEJNOU SPRÁVOU" = 7,
+        #         "VIII. ZAHRANIČNÍ SPOLUPRÁCE" = 8,
+        #         "IX. OSTATNÍ" = 9,
+        #         "X. ROZPRACOVANÉ PUBLIKACE A PROJEKTY" = 10,
+        #         "XI. RŮZNÉ" = 11
+        #     ),
+        #     selected = seq(1,11),
+        #     selectize = FALSE,
+        #     multiple = TRUE,
+        #     size = 11) %>% tagAppendAttributes(style = "margin-top: Opx; float:right;")
+        # })
         # browser()
         
         # section I ####
@@ -223,8 +250,73 @@ mod_manager_server <- function(id,
                   sep = "")
         })
         
+        # section II ####
         
-        # section III ####
+        manager_section_ii <- 
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "events",
+                tbl_id = "event_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("events"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ii <- renderText({
+            paste(manager_section_ii$name,
+                  sanitize_output(
+                      manager_section_ii$data
+                  ),
+                  sep = "")
+        })
+        
+        # section III  undergrad ####
+        
+        manager_section_iii_undergrad <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "undergrad",
+                tbl_id = "undergrad_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("undergrad"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_undergrad <- renderText({
+            paste(manager_section_iii_undergrad$name,
+                  sanitize_output(
+                      manager_section_iii_undergrad$data
+                  ),
+                  sep = "")
+        })
+        
+        # section III  postgrad ####
+        
+        manager_section_iii_postgrad <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "postgrad",
+                tbl_id = "postgrad_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("postgrad"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_postgrad <- renderText({
+            paste(manager_section_iii_postgrad$name,
+                  sanitize_output(
+                      manager_section_iii_postgrad$data
+                  ),
+                  sep = "")
+        })
+        
+        # section III  conference_domestic ####
         manager_section_iii_conference_domestic <-
             present_table(
                 ipcas_db = ipcas_db,
@@ -233,7 +325,7 @@ mod_manager_server <- function(id,
                 tbl_id = "conference_id",
                 filter_col = "conference_location",
                 filter_val = "Domácí",
-                names_df = names_df_switch("conference_domestic"),
+                names_df = names_df_switch("conference"),
                 person_id_selected = input$persons,
                 dpt_people = loc$people
             )
@@ -245,7 +337,7 @@ mod_manager_server <- function(id,
                   sep = "")
         })
         
-
+        # section III  conference_foreign ####
         manager_section_iii_conference_foreign <-
             present_table(
                 ipcas_db = ipcas_db,
@@ -254,7 +346,7 @@ mod_manager_server <- function(id,
                 tbl_id = "conference_id",
                 filter_col = "conference_location",
                 filter_val = "Zahraniční",
-                names_df = names_df_switch("conference_domestic"),
+                names_df = names_df_switch("conference"),
                 person_id_selected = input$persons,
                 dpt_people = loc$people
             )
@@ -262,6 +354,50 @@ mod_manager_server <- function(id,
             paste(manager_section_iii_conference_foreign$name,
                   sanitize_output(
                       manager_section_iii_conference_foreign$data
+                  ),
+                  sep = "")
+        })
+        
+        # section III  lectures_foreign ####
+        
+        manager_section_iii_lecture_foreign <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "lectures",
+                tbl_id = "lecture_id",
+                filter_col = "lecture_location",
+                filter_val = "Zahraniční",
+                names_df = names_df_switch("lecture"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_lecture_foreign <- renderText({
+            paste(manager_section_iii_lecture_foreign$name,
+                  sanitize_output(
+                      manager_section_iii_lecture_foreign$data
+                  ),
+                  sep = "")
+        })
+        
+        # section III  lectures_domestic ####
+        
+        manager_section_iii_lecture_domestic <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "lectures",
+                tbl_id = "lecture_id",
+                filter_col = "lecture_location",
+                filter_val = "Domácí",
+                names_df = names_df_switch("lecture"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iii_lecture_domestic <- renderText({
+            paste(manager_section_iii_lecture_domestic$name,
+                  sanitize_output(
+                      manager_section_iii_lecture_domestic$data
                   ),
                   sep = "")
         })

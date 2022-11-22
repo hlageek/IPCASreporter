@@ -83,8 +83,7 @@ mod_lectures_server <- function(id, usr, i18n) {
       "Místo konání:"
     )
     
-    names_df <- tibble::tibble(key = items,
-                                names = item_names)
+    names_df <- names_df_switch("lecture")
     
     
     

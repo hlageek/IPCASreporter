@@ -25,7 +25,6 @@ app_ui <- function(request) {
                   choices = i18n$get_languages()
                   ),
       style = "float: right; max-width: 60px"),
-
                      navlistPanel(widths = c(2,10), well = F, #####
 
                             tabPanel(i18n$t("NÁHLED"),
