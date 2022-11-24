@@ -47,13 +47,9 @@ mod_int_bilateral_server <- function(id, usr, i18n) {
     section_viii_int_bilateral <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "int_bilateral_description"
-    )
+    items <- names_df_switch("int_bilateral")$key
     
-    loc$item_names <- c(
-      "Bilaterální spolupráce:"
-    )
+    loc$item_names <- names_df_switch("int_bilateral")$names
     
     
     # init ####

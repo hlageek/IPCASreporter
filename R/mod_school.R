@@ -48,17 +48,9 @@ mod_school_server <- function(id, usr, i18n) {
     section_vi_school <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "school_contribution",
-      "school_name",
-      "school_description"
-    )
+    items <- names_df_switch("school")$key
     
-    loc$item_names <- c(
-      "Název přednášky či specifikace jiného druhu akce:",
-      "Pořadatel/škola:",
-      "Popis činnosti:"
-    )
+    loc$item_names <- names_df_switch("school")$names
     
     
     # init ####

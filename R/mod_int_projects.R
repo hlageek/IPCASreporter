@@ -47,13 +47,9 @@ mod_int_projects_server <- function(id, usr, i18n) {
     section_viii_int_projects <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "int_projects_name"
-    )
+    items <- names_df_switch("int_projects")$key
     
-    loc$item_names <- c(
-      "Název projektu:"
-    )
+    loc$item_names <- names_df_switch("int_projects")$names
     
     
     # init ####

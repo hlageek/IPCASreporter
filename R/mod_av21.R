@@ -76,8 +76,7 @@ mod_av21_server <- function(id, usr, i18n) {
       "Spolupracující instituce:"
     )
     
-    names_df <- tibble::tibble(key = items,
-                                names = item_names)
+    names_df <- names_df_switch("av21")
     
     # init ####
     observeEvent(usr$person_id, {
@@ -112,10 +111,11 @@ mod_av21_server <- function(id, usr, i18n) {
     observeEvent(input$add, {
        
         # check and require inputs
-        checks <- stats::setNames(item_names, items)
+        checks <- stats::setNames(names_df_switch("av21")$names, 
+                                  names_df_switch("av21")$key)
         check_inputs(input, checks, text = i18n()$t("Zadejte"))
 
-        all_items <- collect_items(items, input)
+        all_items <- collect_items(names_df_switch("av21")$key, input)
         
         new_entry_df <- prep_new_entry(
             items, 

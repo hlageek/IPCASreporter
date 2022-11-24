@@ -75,8 +75,7 @@ mod_popular_server <- function(id, usr, i18n) {
     # init ####
     observeEvent(usr$person_id, {
 
-        loc$names <- tibble::tibble(key = items,
-                                    names = loc$item_names)
+        loc$names <- names_df_switch("popular")
         
         loc$popular <- transform_table(ipcas_db = ipcas_db,
                                     person_id = usr$person_id,

@@ -81,17 +81,9 @@ mod_other_member_server <- function(id, usr, i18n) {
     section_ix_member <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "other_member_name",
-      "other_member_institute",
-      "other_member_position"
-    )
+    items <- names_df_switch("other_member")$key
     
-    item_names <- c(
-      "Grémium:",
-      "Organizace:",
-      "Funkce:"
-    )
+    item_names <- names_df_switch("other_member")$names
     
     
     

@@ -48,17 +48,8 @@ mod_media_server <- function(id, usr, i18n) {
     section_vi_media <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "media_contribution",
-      "media_name",
-      "media_description"
-    )
-    
-    loc$item_names <- c(
-      "Název:",
-      "Médium:",
-      "Doplňující informace:"
-    )
+    items <- names_df_switch("media")$key
+    loc$item_names <- names_df_switch("media")$names
     
     
     # init ####

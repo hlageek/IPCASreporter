@@ -137,8 +137,7 @@ mod_grants_server <- function(id, usr, i18n) {
  )
  
  
- loc$names <- tibble::tibble(key = items,
-                             names = item_names)
+ loc$names <- names_df_switch("grant")
  
  observeEvent(req(input$add_bespoke), {
     

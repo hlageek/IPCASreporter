@@ -49,9 +49,11 @@ fluidRow(
                    htmlOutput(ns("manager_section_ii"), inline = FALSE),
                    
                    br(),
-                   h4(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
+                   h5(i18n$t("III. PEDAGOGICKÁ A PŘEDNÁŠKOVÁ ČINNOST")),
                    h5(i18n$t("1) Výuka na vysokých školách a vedení prací")),
+                   h5(i18n$t("a) Bakalářské a magisterské studijní programy")),
                    htmlOutput(ns("manager_section_iii_undergrad"), inline = FALSE),
+                   h5(i18n$t("b) Doktorský studijní program")),
                    htmlOutput(ns("manager_section_iii_postgrad"), inline = FALSE),
                    
                    
@@ -64,7 +66,9 @@ fluidRow(
                    
                    br(),
                    h5(i18n$t("3) Samostatné přednášky")),
+                   h5(i18n$t("Zahraniční")),
                    htmlOutput(ns("manager_section_iii_lecture_foreign"), inline = FALSE),
+                   h5(i18n$t("Domácí")),
                    htmlOutput(ns("manager_section_iii_lecture_domestic"), inline = FALSE),
                    
                    br(),
@@ -402,9 +406,231 @@ mod_manager_server <- function(id,
                   sep = "")
         })
         
-        # section XI review ####
+        
+        # section IV  funded ####
+        
+        manager_section_iv_funded <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "grants",
+                tbl_id = "grant_id",
+                filter_col = "grant_funding_status",
+                filter_val = "funded",
+                names_df = names_df_switch("grant"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iv_funded <- renderText({
+            paste(manager_section_iv_funded$name,
+                  sanitize_output(
+                      manager_section_iv_funded$data
+                  ),
+                  sep = "")
+        })
         
         
+        # section IV  unfunded ####
+        
+        manager_section_iv_unfunded <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "grants",
+                tbl_id = "grant_id",
+                filter_col = "grant_funding_status",
+                filter_val = "unfunded",
+                names_df = names_df_switch("grant"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_iv_unfunded <- renderText({
+            paste(manager_section_iv_unfunded$name,
+                  sanitize_output(
+                      manager_section_iv_unfunded$data
+                  ),
+                  sep = "")
+        })
+        
+        # section V  av21 ####
+        
+        manager_section_v <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "av21",
+                tbl_id = "av21_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("av21"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_v <- renderText({
+            paste(manager_section_v$name,
+                  sanitize_output(
+                      manager_section_v$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VI popular ####
+        
+        manager_section_vi_popular_events <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "popular",
+                tbl_id = "popular_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("popular"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_vi_popular_events <- renderText({
+            paste(manager_section_vi_popular_events$name,
+                  sanitize_output(
+                      manager_section_vi_popular_events$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VI school ####
+        
+        manager_section_vi_school_events <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "school",
+                tbl_id = "school_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("school"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_vi_school_events <- renderText({
+            paste(manager_section_vi_school_events$name,
+                  sanitize_output(
+                      manager_section_vi_school_events$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VI media ####
+        
+        manager_section_vi_media <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "media",
+                tbl_id = "media_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("media"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_vi_media <- renderText({
+            paste(manager_section_vi_media$name,
+                  sanitize_output(
+                      manager_section_vi_media$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VII gov ####
+        
+        manager_section_vii <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "gov",
+                tbl_id = "gov_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("gov"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_vii <- renderText({
+            paste(manager_section_vii$name,
+                  sanitize_output(
+                      manager_section_vii$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VIII int ####
+        
+        manager_section_viii_int_projects <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "int_projects",
+                tbl_id = "int_projects_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("int_projects"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_viii_int_projects <- renderText({
+            paste(manager_section_viii_int_projects$name,
+                  sanitize_output(
+                      manager_section_viii_int_projects$data
+                  ),
+                  sep = "")
+        })
+        
+        # section VIII bilateral ####
+        
+        manager_section_viii_int_bilateral <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "int_bilateral",
+                tbl_id = "int_bilateral_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("int_bilateral"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_viii_int_bilateral <- renderText({
+            paste(manager_section_viii_int_bilateral$name,
+                  sanitize_output(
+                      manager_section_viii_int_bilateral$data
+                  ),
+                  sep = "")
+        })
+        
+        
+        
+        # section IX award ####
+        
+        manager_section_ix_award <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "other_awards",
+                tbl_id = "other_awards_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("other_awards"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ix_award <- renderText({
+            paste(manager_section_ix_award$name,
+                  sanitize_output(
+                      manager_section_ix_award$data
+                  ),
+                  sep = "")
+        })
+        
+        # section IX review ####
         
         manager_section_ix_review <-
             present_table(
@@ -426,8 +652,121 @@ mod_manager_server <- function(id,
                   sep = "")
         })
         
+        # section IX member domestic ####
+        
+        manager_section_ix_member_domestic <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "other_member",
+                tbl_id = "other_member_id",
+                filter_col = "other_member_location",
+                filter_val = "Domácí",
+                names_df = names_df_switch("other_member"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ix_member_domestic <- renderText({
+            paste(manager_section_ix_member_domestic$name,
+                  sanitize_output(
+                      manager_section_ix_member_domestic$data
+                  ),
+                  sep = "")
+        })
+        
+        
+        # section IX member foreign ####
+        
+        manager_section_ix_member_foreign <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "other_member",
+                tbl_id = "other_member_id",
+                filter_col = "other_member_location",
+                filter_val = "Zahraniční",
+                names_df = names_df_switch("other_member"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ix_member_foreign <- renderText({
+            paste(manager_section_ix_member_foreign$name,
+                  sanitize_output(
+                      manager_section_ix_member_foreign$data
+                  ),
+                  sep = "")
+        })
+        
+        
+        # section IX  editions ####
+        
+        manager_section_ix_member_foreign <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "other_editions",
+                tbl_id = "other_editions_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("other_editions"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_ix_member_foreign <- renderText({
+            paste(manager_section_ix_member_foreign$name,
+                  sanitize_output(
+                      manager_section_ix_member_foreign$data
+                  ),
+                  sep = "")
+        })
+        
+        # section X  wip ####
+        
+        manager_section_x <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "wip",
+                tbl_id = "wip_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("wip"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_x <- renderText({
+            paste(manager_section_x$name,
+                  sanitize_output(
+                      manager_section_x$data
+                  ),
+                  sep = "")
+        })
+        
+        # section XI various ####
+        
+        manager_section_xi <-
+            present_table(
+                ipcas_db = ipcas_db,
+                person_id = loc$dpt_people,
+                tbl = "various",
+                tbl_id = "various_id",
+                filter_col = NULL,
+                filter_val = NULL,
+                names_df = names_df_switch("various"),
+                person_id_selected = input$persons,
+                dpt_people = loc$people
+            )
+        output$manager_section_xi <- renderText({
+            paste(manager_section_xi$name,
+                  sanitize_output(
+                      manager_section_xi$data
+                  ),
+                  sep = "")
+        })
 
     })
+    
+    
     
     # tab control ####
 

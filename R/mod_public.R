@@ -46,15 +46,9 @@ mod_public_server <- function(id, usr, i18n) {
     section_vii <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "gov_body",
-      "gov_description"
-    )
+    items <- names_df_switch("gov")$key
     
-    loc$item_names <- c(
-      "Instituce státní nebo veřejné správy:",
-      "Popis spolupráce:"
-    )
+    loc$item_names <- names_df_switch("gov")$names
     
     
     # init ####

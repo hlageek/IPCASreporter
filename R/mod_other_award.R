@@ -49,13 +49,9 @@ mod_other_award_server <- function(id, usr, i18n) {
       section_ix_award <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "other_awards_description"
-    )
+    items <- names_df_switch("other_awards")$key
     
-    loc$item_names <- c(
-      "Název ocenění:"
-    )
+    loc$item_names <- names_df_switch("other_awards")$names
     
     
     # init ####

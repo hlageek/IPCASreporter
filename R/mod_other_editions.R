@@ -56,15 +56,8 @@ mod_other_editions_server <- function(id, usr, i18n) {
     section_ix_editions <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "other_editions_name",
-      "other_editions_description"
-      )
-    
-    item_names <- c(
-      "Název:",
-      "Doplňující informace:"
-    )
+    items <- names_df_switch("other_editions")$key
+    item_names <- names_df_switch("other_editions")$names
     
     
     names_df <- tibble::tibble(key = items,

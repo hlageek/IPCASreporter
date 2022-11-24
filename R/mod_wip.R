@@ -45,13 +45,9 @@ mod_wip_server <- function(id, usr, i18n) {
     section_x <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "wip_description"
-    )
+    items <- names_df_switch("wip")$key
     
-    item_names <- c(
-      "Popis:"
-    )
+    item_names <- names_df_switch("wip")$names
     
     names_df <- tibble::tibble(key = items,
                                names = item_names)

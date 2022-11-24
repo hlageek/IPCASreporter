@@ -149,6 +149,96 @@ names_df_switch <- function(x) {
                 "Místo konání:"
             )
         ),
+        grant = tibble::tibble(
+            key = c(
+                "grant_number",
+                "grant_title",
+                "grant_provider",
+                "grant_date_from",
+                "grant_date_to",
+                "grant_annotation_cze",
+                "grant_annotation_eng"
+            ),
+            names = c(
+                "Číslo projektu:",
+                "Název projektu:",
+                "Poskytovatel:",
+                "Doba řešení od:",
+                "Doba řešení do:",
+                "Anotace česky:",
+                "Anotace anglicky:"
+            )
+        ),
+        
+        av21 = tibble::tribble(
+            ~key,                       ~names,
+            "av21_program",            "Program Strategie AV21:",
+            "av21_activity",           "Název aktivity (projektu)",
+            "av21_person",             "Řešitel aktivity (projektu):",
+            "av21_annotation_cze",     "Anotace česky:",      
+            "av21_annotation_eng",     "Anotace anglicky:",      
+            "av21_results",            "Výstupy (včetně příp. odkazu na ASEP):",
+            "av21_partner",            "Spolupracující instituce:"
+        ),
+        
+        popular = tibble::tribble(
+            ~key,                            ~names,
+            "popular_contribution",          "Název akce:",
+            "popular_description",           "Popis aktivity:",
+            "popular_organizer_primary",     "Hlavní pořadatel:", 
+            "popular_organizer_secondary",   "Spolupořadatel:",
+            "popular_place",                 "Místo konání akce:",
+            "popular_date",                  "Datum konání akce:"
+        ),
+        
+        school = tibble::tribble(
+            ~key,                            ~names,
+            "school_contribution",          "Název přednášky či specifikace jiného druhu akce:",           
+            "school_name",                  "Pořadatel/škola:",   
+            "school_description",           "Popis činnosti:"         
+        ),    
+        
+        media = tibble::tribble(
+            ~key,                            ~names,
+            "media_contribution",            "Název:",               
+            "media_name",                    "Médium:",       
+            "media_description",             "Doplňující informace:"                
+        ),  
+        
+        gov = tibble::tribble(
+            ~key,                            ~names,
+            "gov_body",                      "Instituce státní nebo veřejné správy:",    
+            "gov_description",               "Popis spolupráce:"                       
+        ),  
+        
+        int_projects = tibble::tribble(
+            ~key,                            ~names,
+            "int_projects_name",             "Název projektu:"                   
+        ), 
+        
+        int_bilateral = tibble::tribble(
+            ~key,                            ~names,
+            "int_bilateral_description",     "Bilaterální spolupráce:"                   
+        ), 
+        
+        other_awards = tibble::tribble(
+            ~key,                            ~names,
+            "other_awards_description",     "Název ocenění:"                   
+        ), 
+        
+        other_member = tibble::tribble(
+            ~key,                            ~names,
+            "other_member_name",            "Grémium:",   
+            "other_member_institute",       "Organizace:",        
+            "other_member_position",        "Funkce:"
+        ), 
+        
+        other_editions = tibble::tribble(
+            ~key,                            ~names,
+            "other_editions_name",           "Název:",  
+            "other_editions_description",    "Doplňující informace:"                        
+        ), 
+        
         other_reviews = tibble::tibble(
             key = c("other_reviews_name",
                     "other_reviews_description"),
@@ -156,6 +246,16 @@ names_df_switch <- function(x) {
                       "Doplňující informace:")
             
         ),
+        
+        wip = tibble::tribble(
+            ~key,                            ~names,
+            "wip_description",               "Popis:"
+        ), 
+        
+        various = tibble::tribble(
+            ~key,                            ~names,
+            "various_description",           "Popis:"                        
+        ), 
         
         
         

@@ -47,13 +47,9 @@ mod_various_server <- function(id, usr, i18n) {
     section_xi <- reactiveValues()
     loc <- reactiveValues()
     
-    items <- c(
-      "various_description"
-    )
+    items <- names_df_switch("various")$key
     
-    item_names <- c(
-      "Popis:"
-    )
+    item_names <- names_df_switch("various")$names
     
     names_df <- tibble::tibble(key = items,
                                names = item_names)
