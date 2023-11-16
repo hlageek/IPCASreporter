@@ -15,16 +15,59 @@ mod_postgrad_ui <- function(id, i18n){
                               label = i18n$t("Název VŠ:"),
                               choices = NULL,
                               selected = ""),
-                  
+                  conditionalPanel(
+                    condition = 'input.postgrad_school == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_postgrad_school"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_postgrad_school"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block;"),
+                    style="margin-left: 25px;"
+                    ),
                   selectInput(ns("postgrad_faculty"), 
                               label = i18n$t("Název fakulty:"),
                               choices = NULL,
                               selected = ""),
+                    conditionalPanel(
+                    condition = 'input.postgrad_faculty == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_postgrad_faculty"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_postgrad_faculty"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block"),
+                    style="margin-left: 25px;"
+                    ),
                   selectInput(ns("postgrad_program"), 
                               label = i18n$t("Název studijního programu/studijního oboru:"),
                               choices = NULL,
                               selected = ""),
-                  
+                  conditionalPanel(
+                    condition = 'input.postgrad_program == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_postgrad_program"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_postgrad_program"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block"),
+                    style="margin-left: 25px;"
+                    ),      
                   selectInput(ns("postgrad_year"), 
                               label = i18n$t("Akademický rok, semestr:"),
                               choices = c(paste0(format(Sys.Date(), "%Y"), ", LS"),
@@ -120,6 +163,14 @@ mod_postgrad_server <- function(id, usr, i18n) {
   )
 
   names_df <- names_df_switch("postgrad")
+
+  loc$uni_choices <- IPCASreporter::universities %>% 
+            dplyr::pull(university) %>% 
+            unique() %>% 
+            sort()
+   loc$choices_fac <- ""
+  loc$choices_prog <- ""
+
   #  on startup ####
 
   observeEvent(usr$person_id, {
@@ -130,7 +181,7 @@ mod_postgrad_server <- function(id, usr, i18n) {
 
       updateSelectInput(session = session,
                         "postgrad_school",
-                        choices =  c("", sort(uni_choices))
+                        choices =  c("", sort(uni_choices), "Jiný/Other" = "other")
       )
 
 
@@ -224,17 +275,17 @@ loc$all_df <- transform_table(
       
       
       
-      choices_fac <- IPCASreporter::universities %>% 
-          dplyr::filter(university == input$postgrad_school &
-                            !is.na(faculty)) %>% 
-          dplyr::pull(faculty) %>% 
-          unique() %>% 
-          sort()
+            loc$choices_fac <- IPCASreporter::universities %>% 
+                dplyr::filter(university == input$postgrad_school &
+                                  !is.na(faculty)) %>% 
+                dplyr::pull(faculty) %>% 
+                unique() %>% 
+                sort()
       
       
       updateSelectInput(session = session,
                         "postgrad_faculty", 
-                        choices = choices_fac
+                        choices = c("", loc$choices_fac, "Jiný/Other" = "other")
                         
       )
       
@@ -249,10 +300,10 @@ loc$all_df <- transform_table(
       
       if (length(choices_prog_check)==1) {
           
-          choices_prog <- IPCASreporter::universities %>% 
+          loc$choices_prog <- IPCASreporter::universities %>% 
               dplyr::filter(university == input$postgrad_school &
                                 !is.na(disc_program) &
-                                stringr::str_detect(type, "bakalářský|magisterský") 
+                                stringr::str_detect(type, "doktorský") 
               ) %>% 
               dplyr::pull(disc_program) %>% 
               unique() %>% 
@@ -260,11 +311,11 @@ loc$all_df <- transform_table(
           
       } else {
           
-          choices_prog <- IPCASreporter::universities %>% 
+          loc$choices_prog <- IPCASreporter::universities %>% 
               dplyr::filter(university == input$postgrad_school &
                                 faculty == input$postgrad_faculty &
                                 !is.na(disc_program) &
-                                stringr::str_detect(type, "bakalářský|magisterský") 
+                                stringr::str_detect(type, "doktorský") 
               ) %>% 
               dplyr::pull(disc_program) %>% 
               unique() %>% 
@@ -274,10 +325,42 @@ loc$all_df <- transform_table(
       
       updateSelectInput(session = session,
                         "postgrad_program", 
-                        choices = choices_prog)
+                        choices =  c("", loc$choices_prog, "Jiný/Other" = "other"))
       
   })
   
+  # bespoke updates ####
+
+         observeEvent(req(input$add_bespoke_postgrad_school), {
+             
+    updateSelectInput(session = session,
+                      "postgrad_school", 
+                      selected = input$bespoke_postgrad_school,
+                      choices  =  c(input$bespoke_postgrad_school, loc$uni_choices, "Jiný/Other" = "other")
+                      
+    )
+    })
+
+             observeEvent(req(input$add_bespoke_postgrad_faculty), {
+    
+    updateSelectInput(session = session,
+                      "postgrad_faculty", 
+                      selected = input$bespoke_postgrad_faculty,
+                      choices  =  c(input$bespoke_postgrad_faculty, loc$choices_fac, "Jiný/Other" = "other")
+                      
+    )
+    })
+    
+                 observeEvent(req(input$add_bespoke_postgrad_program), {
+
+    updateSelectInput(session = session,
+                      "postgrad_program", 
+                      selected = input$bespoke_postgrad_program,
+                      choices  =  c(input$bespoke_postgrad_program)
+                      
+    )
+    })
+
   # translations ####
   
   observe({

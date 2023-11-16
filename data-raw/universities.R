@@ -1,11 +1,12 @@
 ## code to prepare `universities` dataset goes here
 require(dplyr)
-
+# https://regvssp.msmt.cz/registrvssp/
 uni_raw <-
     readr::read_tsv(
         file = here::here(
-            "data-raw/Export_SP_SO_2021_09_17_08_56_48/ExportSP_SO-Table 1.tsv"
-        )
+            "data-raw/Export_SP_SO_2023_11_16_01_17_38/ExportSP_SO-Table 1.tsv"
+            ),
+        show_col_types = FALSE
     )
 
 universities_tbl <- uni_raw %>% select(

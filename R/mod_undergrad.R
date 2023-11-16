@@ -18,16 +18,59 @@ mod_undergrad_ui <- function(id, i18n){
                                 label = i18n$t("Název VŠ:"), 
                                 choices = NULL, 
                                 selected = ""),
-                    
+                    conditionalPanel(
+                    condition = 'input.undergrad_school == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_undergrad_school"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_undergrad_school"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block;"),
+                    style="margin-left: 25px;"
+                    ),                       
                     selectInput(ns("undergrad_faculty"), 
                                 label = i18n$t("Název fakulty:"),
                                 choices = NULL,
                                 selected = ""),
+                    conditionalPanel(
+                    condition = 'input.undergrad_faculty == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_undergrad_faculty"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_undergrad_faculty"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block"),
+                    style="margin-left: 25px;"
+                    ),                  
                     selectInput(ns("undergrad_program"), 
                                 label = i18n$t("Název studijního programu/studijního oboru:"),
                                 choices = NULL,
                                 selected = ""),
-                    
+                    conditionalPanel(
+                    condition = 'input.undergrad_program == "other"',
+                    ns = ns,
+                    tags$div(
+                    textInput(ns("bespoke_undergrad_program"), label = "Jiný/Other"),
+                    style="display:inline-block"),
+                    tags$div(
+                    actionButton(ns("add_bespoke_undergrad_program"), 
+                                    icon = icon("plus"), 
+                                    label = "",
+                                    title = "Add to menu"
+                                    ),
+                    style="display:inline-block"),
+                    style="margin-left: 25px;"
+                    ),                      
                     selectInput(ns("undergrad_year"), 
                                 label = i18n$t("Akademický rok, semestr:"),
                                 choices = c(paste0(format(Sys.Date(), "%Y"), ", LS"),
@@ -129,17 +172,22 @@ mod_undergrad_server <- function(id, usr, i18n) {
         
         names_df <- names_df_switch("undergrad")
         
+        loc$uni_choices <- IPCASreporter::universities %>% 
+            dplyr::pull(university) %>% 
+            unique() %>% 
+            sort()
+        loc$choices_fac <- ""
+        loc$choices_prog <- ""
         #  on startup ####
         
         observeEvent(usr$person_id, {
             
-            uni_choices <- IPCASreporter::universities %>% 
-                dplyr::pull(university)
-            uni_choices <- unique(uni_choices)
-        
+            
+                
             updateSelectInput(session = session,
                               "undergrad_school", 
-                              choices =  c("", sort(uni_choices))
+                              selected = "",
+                              choices =  c("", loc$uni_choices, "Jiný/Other" = "other")
                               )
             
             loc$all_df <- transform_table(
@@ -235,7 +283,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
             
             
             
-            choices_fac <- IPCASreporter::universities %>% 
+            loc$choices_fac <- IPCASreporter::universities %>% 
                 dplyr::filter(university == input$undergrad_school &
                                   !is.na(faculty)) %>% 
                 dplyr::pull(faculty) %>% 
@@ -245,7 +293,8 @@ mod_undergrad_server <- function(id, usr, i18n) {
             
             updateSelectInput(session = session,
                               "undergrad_faculty", 
-                              choices = choices_fac
+                              selected = "",
+                              choices = c("", loc$choices_fac, "Jiný/Other" = "other")
                               
             )
             
@@ -260,7 +309,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
             
             if (length(choices_prog_check)==1) {
                 
-                choices_prog <- IPCASreporter::universities %>% 
+                loc$choices_prog <- IPCASreporter::universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       !is.na(disc_program) &
                                       stringr::str_detect(type, "bakalářský|magisterský") 
@@ -271,7 +320,7 @@ mod_undergrad_server <- function(id, usr, i18n) {
                 
             } else {
                 
-                choices_prog <- IPCASreporter::universities %>% 
+                loc$choices_prog <- IPCASreporter::universities %>% 
                     dplyr::filter(university == input$undergrad_school &
                                       faculty == input$undergrad_faculty &
                                       !is.na(disc_program) &
@@ -285,11 +334,42 @@ mod_undergrad_server <- function(id, usr, i18n) {
             
             updateSelectInput(session = session,
                               "undergrad_program", 
-                              choices = choices_prog)
+                              selected = "",
+                              choices = c("", loc$choices_prog, "Jiný/Other" = "other"))
             
         })
         
-        
+        # bespoke updates ####
+
+         observeEvent(req(input$add_bespoke_undergrad_school), {
+             
+    updateSelectInput(session = session,
+                      "undergrad_school", 
+                      selected = input$bespoke_undergrad_school,
+                      choices  =  c(input$bespoke_undergrad_school, loc$uni_choices, "Jiný/Other" = "other")
+                      
+    )
+    })
+
+             observeEvent(req(input$add_bespoke_undergrad_faculty), {
+    
+    updateSelectInput(session = session,
+                      "undergrad_faculty", 
+                      selected = input$bespoke_undergrad_faculty,
+                      choices  =  c(input$bespoke_undergrad_faculty, loc$choices_fac, "Jiný/Other" = "other")
+                      
+    )
+    })
+    
+                 observeEvent(req(input$add_bespoke_undergrad_program), {
+
+    updateSelectInput(session = session,
+                      "undergrad_program", 
+                      selected = input$bespoke_undergrad_program,
+                      choices  =  c(input$bespoke_undergrad_program, loc$choices_prog, "Jiný/Other" = "other")
+                      
+    )
+    })
         # preview ####
         
         output$section_iii_undergrad_preview <- renderText({
