@@ -162,6 +162,24 @@ mod_manager_server <- function(id,
     ns <- session$ns
  
     loc <- reactiveValues()
+
+    # filter for dpt heads ####
+    observeEvent(usr, { 
+    
+    if (req(usr$level) < 3) {
+
+    department_limited <- IPCASreporter::departments %>% 
+    dplyr::filter(head_id == usr$person_id) %>% 
+    dplyr::pull(department_name)
+
+    updateSelectInput(session = session,
+                              "department", 
+                              selected = department_limited,
+                              choices = department_limited)
+            
+    }
+
+    })
     
     render_preview(output,
                    identification,

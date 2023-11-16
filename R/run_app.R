@@ -25,7 +25,8 @@ run_app <- function(
       onStart = purrr::partial(eval, expr = make_globals, envir = globalenv())
       ),
     
-    golem_opts = list(translator = shiny.i18n::Translator$new(translation_csvs_path = app_sys("app/www/translations")),
+    golem_opts = list(
+        translator = shiny.i18n::Translator$new(translation_csvs_path = app_sys("app/www/translations")),
         email_password = email_password,
         email_default = email_default,
         dbname = dbname,

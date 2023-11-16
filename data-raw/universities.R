@@ -4,7 +4,9 @@ require(dplyr)
 uni_raw <-
     readr::read_tsv(
         file = here::here(
-            "data-raw/Export_SP_SO_2023_11_16_01_17_38/ExportSP_SO-Table 1.tsv"        )
+            "data-raw/Export_SP_SO_2023_11_16_01_17_38/ExportSP_SO-Table 1.tsv"
+            ),
+        show_col_types = FALSE
     )
 
 universities_tbl <- uni_raw %>% select(

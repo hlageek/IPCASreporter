@@ -1,9 +1,9 @@
-pool <- pool::dbPool(
-    drv = RMariaDB::MariaDB(),
-    dbname = "ipcas",
-    username = "test",
-    password = "test"
-)
+# pool <- pool::dbPool(
+#     drv = RMariaDB::MariaDB(),
+#     dbname = "ipcas",
+#     username = "test",
+#     password = "test"
+# )
 
 # Set options here
 options(golem.app.prod = TRUE) # TRUE = production mode, FALSE = development mode
