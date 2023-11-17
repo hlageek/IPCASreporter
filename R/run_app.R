@@ -12,7 +12,8 @@ run_app <- function(
         dbusername = NULL,
         dbpassword = NULL,
         credentials_path = NULL,
-        credentials_pass = NULL) {
+        credentials_pass = NULL,
+        deadline = NULL) {
     
   with_golem_options(
     app = shinyApp(
@@ -33,7 +34,8 @@ run_app <- function(
         dbusername = dbusername,
         dbpassword = dbpassword,
         credentials_path = credentials_path,
-        credentials_pass = credentials_pass
+        credentials_pass = credentials_pass,
+        deadline = deadline
         )
   )
 }

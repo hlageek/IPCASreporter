@@ -21,7 +21,7 @@ i18n_r <- reactive({
 })
 
     observeEvent(input[["lang"]], {
-         shiny.i18n::update_lang(input[["lang"]], session)
+         shiny.i18n::update_lang(language = input[["lang"]], session = session)
          i18n_r()$set_translation_language(input[["lang"]])
     })
 
@@ -152,6 +152,28 @@ i18n_r <- reactive({
                     )
     
     mod_guide_server("guide_ui_1", i18n_r)
-    
+
+    # deadline handler ####
+    deadline <- golem::get_golem_options(which = "deadline")
+    observeEvent(deadline, {
+    if (isTruthy(deadline) && Sys.Date() > deadline) {
+    hideTab(inputId = "sections_panel", target = "section1")
+    hideTab(inputId = "sections_panel", target = "section2")
+    hideTab(inputId = "sections_panel", target = "section3")
+    hideTab(inputId = "sections_panel", target = "section4")
+    hideTab(inputId = "sections_panel", target = "section5")
+    hideTab(inputId = "sections_panel", target = "section6")
+    hideTab(inputId = "sections_panel", target = "section7")
+    hideTab(inputId = "sections_panel", target = "section8")
+    hideTab(inputId = "sections_panel", target = "section9")
+    hideTab(inputId = "sections_panel", target = "section10")
+    hideTab(inputId = "sections_panel", target = "section11")
+    output$deadline <- renderText({
+            paste("Sběr dat ukončen / Data collection due:", deadline)
+            })
+    } else {
+           output$deadline <- renderText({""})
+    }
+    })
 }
 
