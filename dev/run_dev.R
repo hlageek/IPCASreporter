@@ -24,6 +24,6 @@ golem::document_and_reload()
             dbpassword = "test",
             credentials_path = "credentials.sqlite",
             credentials_pass = "test",
-            deadline = "2023-11-17"
+            deadline = "2023-11-17 15:00:00"
             )
     )

@@ -156,7 +156,7 @@ i18n_r <- reactive({
     # deadline handler ####
     deadline <- golem::get_golem_options(which = "deadline")
     observeEvent(deadline, {
-    if (isTruthy(deadline) && Sys.Date() > deadline) {
+    if (isTruthy(deadline) && Sys.time() > deadline) {
     hideTab(inputId = "sections_panel", target = "section1")
     hideTab(inputId = "sections_panel", target = "section2")
     hideTab(inputId = "sections_panel", target = "section3")
