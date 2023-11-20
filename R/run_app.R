@@ -13,6 +13,7 @@ run_app <- function(
         dbpassword = NULL,
         credentials_path = NULL,
         credentials_pass = NULL,
+        department_heads = NULL,
         deadline = NULL,
         exception = NULL) {
     
@@ -36,6 +37,7 @@ run_app <- function(
         dbpassword = dbpassword,
         credentials_path = credentials_path,
         credentials_pass = credentials_pass,
+        department_heads = department_heads,
         deadline = deadline,
         exception = exception
         )

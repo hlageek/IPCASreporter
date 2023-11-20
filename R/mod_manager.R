@@ -168,9 +168,13 @@ mod_manager_server <- function(id,
     
     if (req(usr$level) < 3) {
 
-    department_limited <- IPCASreporter::departments %>% 
+    department_limited <- golem::get_golem_options(which = "department_heads") %>% 
     dplyr::filter(head_id == usr$person_id) %>% 
     dplyr::pull(department_name)
+
+    if (length(department_limited) < 1) {
+        department_limited <- ""
+    }
 
     updateSelectInput(session = session,
                               "department", 

@@ -12,6 +12,7 @@ run_app(
   dbpassword = NULL,
   credentials_path = NULL,
   credentials_pass = NULL,
+  department_heads = NULL,
   deadline = NULL,
   exception = NULL
 )
