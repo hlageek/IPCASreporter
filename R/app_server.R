@@ -155,7 +155,9 @@ i18n_r <- reactive({
 
     # deadline handler ####
     deadline <- golem::get_golem_options(which = "deadline")
+    exception <- golem::get_golem_options(which = "exception")
     observeEvent(deadline, {
+
     if (isTruthy(deadline) && Sys.time() > deadline) {
     hideTab(inputId = "sections_panel", target = "section1")
     hideTab(inputId = "sections_panel", target = "section2")
@@ -168,11 +170,29 @@ i18n_r <- reactive({
     hideTab(inputId = "sections_panel", target = "section9")
     hideTab(inputId = "sections_panel", target = "section10")
     hideTab(inputId = "sections_panel", target = "section11")
-    output$deadline <- renderText({
-            paste("Sběr dat ukončen / Data collection due:", deadline)
+    output$deadline <- renderUI({
+            p(i18n_r()$t("Sběr dat byl ukončen v termínu:"), span(deadline, style='color:red'))
             })
     } else {
-           output$deadline <- renderText({""})
+           output$deadline <- renderUI({""
+            p(i18n_r()$t("Sběr dat bude ukončen v termínu:"), span(deadline, style='color:red'))
+           })
+    }
+    # reenable for exceptions
+    req(exception)
+    is_exception <- exception[names(exception) == req(usr$user)]
+    if (isTruthy(is_exception) && Sys.time() < is_exception) {
+    showTab(inputId = "sections_panel", target = "section1")
+    showTab(inputId = "sections_panel", target = "section2")
+    showTab(inputId = "sections_panel", target = "section3")
+    showTab(inputId = "sections_panel", target = "section4")
+    showTab(inputId = "sections_panel", target = "section5")
+    showTab(inputId = "sections_panel", target = "section6")
+    showTab(inputId = "sections_panel", target = "section7")
+    showTab(inputId = "sections_panel", target = "section8")
+    showTab(inputId = "sections_panel", target = "section9")
+    showTab(inputId = "sections_panel", target = "section10")
+    showTab(inputId = "sections_panel", target = "section11")
     }
     })
 }

@@ -36,7 +36,7 @@ app_ui <- function(request) {
                                      ),
 
                                      fluidRow(
-                                         textOutput("deadline"),
+                                         uiOutput("deadline"),
                                          mod_preview_ui("preview_ui_1", i18n)
                                          )
 

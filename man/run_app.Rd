@@ -12,7 +12,8 @@ run_app(
   dbpassword = NULL,
   credentials_path = NULL,
   credentials_pass = NULL,
-  deadline = NULL
+  deadline = NULL,
+  exception = NULL
 )
 }
 \arguments{

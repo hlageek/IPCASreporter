@@ -7,3 +7,4 @@
 shiny_bookmarks/
 *.sqlite
 csv_handler.R
+department_heads.csv
