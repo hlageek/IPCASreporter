@@ -193,6 +193,9 @@ i18n_r <- reactive({
     showTab(inputId = "sections_panel", target = "section9")
     showTab(inputId = "sections_panel", target = "section10")
     showTab(inputId = "sections_panel", target = "section11")
+          output$deadline <- renderUI({""
+            p(i18n_r()$t("Termín individuálně prodloužen do:"), span(deadline, style='color:red'))
+           })
     }
     })
 }
