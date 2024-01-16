@@ -40,6 +40,12 @@ fluidRow(
                    actionButton(ns("show_button"), "Zobrazit vybrané")
                    
                    ),
+                  numericInput(ns("year"),
+                               label = i18n$t("Rok"),
+                               value = as.integer( format(Sys.Date(), "%Y")),
+                               min = as.integer( format(Sys.Date(), "%Y"))-1,
+                               max = as.integer( format(Sys.Date(), "%Y"))
+                   ),
                    
                    h4(i18n$t("I. VYDANÉ PUBLIKACE")),
                    htmlOutput(ns("manager_section_i"), inline = FALSE),
@@ -163,6 +169,7 @@ mod_manager_server <- function(id,
  
     loc <- reactiveValues()
 
+
     # filter for dpt heads ####
     observeEvent(usr, { 
     
@@ -266,7 +273,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("pubs"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year, year = input$year
             )
         output$manager_section_i <- renderText({
             paste(manager_section_i$name,
@@ -288,7 +295,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("events"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ii <- renderText({
             paste(manager_section_ii$name,
@@ -310,7 +317,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("undergrad"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_undergrad <- renderText({
             paste(manager_section_iii_undergrad$name,
@@ -332,7 +339,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("postgrad"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_postgrad <- renderText({
             paste(manager_section_iii_postgrad$name,
@@ -353,7 +360,7 @@ mod_manager_server <- function(id,
                 filter_val = "Domácí",
                 names_df = names_df_switch("conference"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_conference_domestic <- renderText({
             paste(manager_section_iii_conference_domestic$name,
@@ -374,7 +381,7 @@ mod_manager_server <- function(id,
                 filter_val = "Zahraniční",
                 names_df = names_df_switch("conference"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_conference_foreign <- renderText({
             paste(manager_section_iii_conference_foreign$name,
@@ -396,7 +403,7 @@ mod_manager_server <- function(id,
                 filter_val = "Zahraniční",
                 names_df = names_df_switch("lecture"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_lecture_foreign <- renderText({
             paste(manager_section_iii_lecture_foreign$name,
@@ -418,7 +425,7 @@ mod_manager_server <- function(id,
                 filter_val = "Domácí",
                 names_df = names_df_switch("lecture"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iii_lecture_domestic <- renderText({
             paste(manager_section_iii_lecture_domestic$name,
@@ -441,7 +448,7 @@ mod_manager_server <- function(id,
                 filter_val = "funded",
                 names_df = names_df_switch("grant"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iv_funded <- renderText({
             paste(manager_section_iv_funded$name,
@@ -464,7 +471,7 @@ mod_manager_server <- function(id,
                 filter_val = "unfunded",
                 names_df = names_df_switch("grant"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_iv_unfunded <- renderText({
             paste(manager_section_iv_unfunded$name,
@@ -486,7 +493,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("av21"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_v <- renderText({
             paste(manager_section_v$name,
@@ -508,7 +515,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("popular"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_vi_popular_events <- renderText({
             paste(manager_section_vi_popular_events$name,
@@ -530,7 +537,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("school"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_vi_school_events <- renderText({
             paste(manager_section_vi_school_events$name,
@@ -552,7 +559,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("media"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_vi_media <- renderText({
             paste(manager_section_vi_media$name,
@@ -574,7 +581,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("gov"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_vii <- renderText({
             paste(manager_section_vii$name,
@@ -596,7 +603,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("int_projects"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_viii_int_projects <- renderText({
             paste(manager_section_viii_int_projects$name,
@@ -618,7 +625,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("int_bilateral"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_viii_int_bilateral <- renderText({
             paste(manager_section_viii_int_bilateral$name,
@@ -642,7 +649,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("other_awards"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ix_award <- renderText({
             paste(manager_section_ix_award$name,
@@ -664,7 +671,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("other_reviews"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ix_review <- renderText({
             paste(manager_section_ix_review$name,
@@ -686,7 +693,7 @@ mod_manager_server <- function(id,
                 filter_val = "Domácí",
                 names_df = names_df_switch("other_member"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ix_member_domestic <- renderText({
             paste(manager_section_ix_member_domestic$name,
@@ -709,7 +716,7 @@ mod_manager_server <- function(id,
                 filter_val = "Zahraniční",
                 names_df = names_df_switch("other_member"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ix_member_foreign <- renderText({
             paste(manager_section_ix_member_foreign$name,
@@ -732,7 +739,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("other_editions"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_ix_member_foreign <- renderText({
             paste(manager_section_ix_member_foreign$name,
@@ -754,7 +761,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("wip"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_x <- renderText({
             paste(manager_section_x$name,
@@ -776,7 +783,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("various"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_xi <- renderText({
             paste(manager_section_xi$name,

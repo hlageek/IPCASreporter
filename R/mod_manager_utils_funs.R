@@ -7,7 +7,8 @@ present_table <-
              filter_val = NULL,
              names_df,
              person_id_selected,
-             dpt_people) {
+             dpt_people,
+             year = NULL) {
         person_id_tbl <- paste0("person_id_", tbl)
         
         people_df <- dplyr::tbl(ipcas_db, tbl) %>%
@@ -25,7 +26,8 @@ present_table <-
             tbl_id = tbl_id,
             filter_col = filter_col,
             filter_val = filter_val,
-            names_df = names_df
+            names_df = names_df,
+            year = year
         )
         
         data_output <- people_df %>%

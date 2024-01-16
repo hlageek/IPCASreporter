@@ -192,15 +192,16 @@ format_input <- function(x) {
 # transform table ---------------------------------------
 
 
-transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL, filter_val = NULL, names_df) {
+transform_table <- function(ipcas_db, tbl, person_id, tbl_id, filter_col = NULL, filter_val = NULL, names_df, year = NULL) {
  
     id_year <- ipcas_db %>%
         dplyr::tbl(tbl) %>% 
         dplyr::select(tidyselect::ends_with("id_year")) %>% 
         colnames()
         
+        if (is.null(year)) {
     year <- as.integer( format(Sys.Date(), "%Y"))
-    
+    }
     pre_filter <- ipcas_db %>%
       dplyr::tbl(tbl) %>%
       dplyr::filter(.data[[paste0("person_id_", tbl)]] %in% person_id) %>% 
