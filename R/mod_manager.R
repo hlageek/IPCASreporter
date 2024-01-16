@@ -273,7 +273,7 @@ mod_manager_server <- function(id,
                 filter_val = NULL,
                 names_df = names_df_switch("pubs"),
                 person_id_selected = input$persons,
-                dpt_people = loc$people, year = input$year, year = input$year
+                dpt_people = loc$people, year = input$year
             )
         output$manager_section_i <- renderText({
             paste(manager_section_i$name,
