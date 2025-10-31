@@ -297,94 +297,85 @@ CREATE TABLE IF NOT EXISTS various (
 
 #' @export
 clear_db <- function(pool) {
-    
-    tables <- pool::dbListTables(pool)
-    tables_reordered <- c(tables[tables != "persons"], "persons")
-    purrr::walk(tables_reordered, .f = function(x) {
-        pool::dbRemoveTable(pool, x)
-        }
-    )
-    
+        tables <- pool::dbListTables(pool)
+        tables_reordered <- c(tables[tables != "persons"], "persons")
+        purrr::walk(tables_reordered, .f = function(x) {
+                pool::dbRemoveTable(pool, x)
+        })
 }
 
 # clear_db(pool)
 
 #' @export
-create_db_schema <- function(pool){
-    # TODO: Full DB structure
-    DBI::dbExecute(pool, CREATE_PERSONS_SQL)
-    DBI::dbExecute(pool, CREATE_YEARLY_SQL)
-    DBI::dbExecute(pool, CREATE_DEPARTMENTS_SQL)
-    DBI::dbExecute(pool, CREATE_PUBS_SQL)
-    DBI::dbExecute(pool, CREATE_EVENTS_SQL)
-    DBI::dbExecute(pool, CREATE_UNDERGRAD_SQL)
-    DBI::dbExecute(pool, CREATE_POSTGRAD_SQL)
-    DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
-    DBI::dbExecute(pool, CREATE_LECTURES_SQL)
-    DBI::dbExecute(pool, CREATE_GRANTS_SQL)
-    DBI::dbExecute(pool, CREATE_AV21_SQL)
-    DBI::dbExecute(pool, CREATE_POPULAR_SQL)
-    DBI::dbExecute(pool, CREATE_SCHOOL_SQL)
-    DBI::dbExecute(pool, CREATE_MEDIA_SQL)
-    DBI::dbExecute(pool, CREATE_GOV_SQL)
-    DBI::dbExecute(pool, CREATE_INT_PROJECTS_SQL)
-    DBI::dbExecute(pool, CREATE_INT_BILATERAL_SQL)
-    DBI::dbExecute(pool, CREATE_OTHER_AWARDS_SQL)
-    DBI::dbExecute(pool, CREATE_OTHER_REVIEWS_SQL)
-    DBI::dbExecute(pool, CREATE_OTHER_MEMBER_SQL)
-    DBI::dbExecute(pool, CREATE_OTHER_EDITIONS_SQL)
-    DBI::dbExecute(pool, CREATE_WIP_SQL)
-    DBI::dbExecute(pool, CREATE_VARIOUS_SQL)
+create_db_schema <- function(pool) {
+        # TODO: Full DB structure
+        DBI::dbExecute(pool, CREATE_PERSONS_SQL)
+        DBI::dbExecute(pool, CREATE_YEARLY_SQL)
+        DBI::dbExecute(pool, CREATE_DEPARTMENTS_SQL)
+        DBI::dbExecute(pool, CREATE_PUBS_SQL)
+        DBI::dbExecute(pool, CREATE_EVENTS_SQL)
+        DBI::dbExecute(pool, CREATE_UNDERGRAD_SQL)
+        DBI::dbExecute(pool, CREATE_POSTGRAD_SQL)
+        DBI::dbExecute(pool, CREATE_CONFERENCES_SQL)
+        DBI::dbExecute(pool, CREATE_LECTURES_SQL)
+        DBI::dbExecute(pool, CREATE_GRANTS_SQL)
+        DBI::dbExecute(pool, CREATE_AV21_SQL)
+        DBI::dbExecute(pool, CREATE_POPULAR_SQL)
+        DBI::dbExecute(pool, CREATE_SCHOOL_SQL)
+        DBI::dbExecute(pool, CREATE_MEDIA_SQL)
+        DBI::dbExecute(pool, CREATE_GOV_SQL)
+        DBI::dbExecute(pool, CREATE_INT_PROJECTS_SQL)
+        DBI::dbExecute(pool, CREATE_INT_BILATERAL_SQL)
+        DBI::dbExecute(pool, CREATE_OTHER_AWARDS_SQL)
+        DBI::dbExecute(pool, CREATE_OTHER_REVIEWS_SQL)
+        DBI::dbExecute(pool, CREATE_OTHER_MEMBER_SQL)
+        DBI::dbExecute(pool, CREATE_OTHER_EDITIONS_SQL)
+        DBI::dbExecute(pool, CREATE_WIP_SQL)
+        DBI::dbExecute(pool, CREATE_VARIOUS_SQL)
 }
 
 # create_db_schema(pool)
 
-
 make_globals <- quote({
-    
-    shinymanager::set_labels(
-        language = "en",
-        "Please authenticate" = "Výroční výkaz (Annual report)"
-    )
-    
-    ipcas_db <- pool::dbPool(
-            drv = RMariaDB::MariaDB(),
-            dbname = golem::get_golem_options("dbname"),
-            username = golem::get_golem_options("dbusername"),
-            password = golem::get_golem_options("dbpassword")
-    )
-    
-    shiny::onStop(function() {
-        pool::poolClose(ipcas_db)
-    })
-    
+        shinymanager::set_labels(
+                language = "en",
+                "Please authenticate" = "Výroční výkaz (Annual report)"
+        )
 
+        ipcas_db <- pool::dbPool(
+                drv = RMariaDB::MariaDB(),
+                dbname = golem::get_golem_options("dbname"),
+                username = golem::get_golem_options("dbusername"),
+                password = golem::get_golem_options("dbpassword")
+        )
+
+        shiny::onStop(function() {
+                pool::poolClose(ipcas_db)
+        })
 })
-    
+
 
 #' @export
 create_credentials_db <- function(admin_pass, path, df = NULL) {
-    # Init DB using credentials data
-    # define some credentials
-    admin_df <- data.frame(
-        user = "admin", # mandatory
-        password = admin_pass, # mandatory
-        name_last = "admin",
-        name_first = "admin",
-        admin = TRUE,
-        person_id = 123,
-        level = 5,
-        stringsAsFactors = FALSE
-    )
-    
-    credentials <- dplyr::bind_rows(admin_df, df)
+        # Init DB using credentials data
+        # define some credentials
+        admin_df <- data.frame(
+                user = "admin", # mandatory
+                password = admin_pass, # mandatory
+                name_last = "admin",
+                name_first = "admin",
+                admin = TRUE,
+                person_id = 123,
+                level = 5,
+                stringsAsFactors = FALSE
+        )
 
-    # Init the database
-    shinymanager::create_db(
-        credentials_data = credentials,
-        sqlite_path = path, # will be created
-        passphrase = admin_pass
-    )
-    
+        credentials <- dplyr::bind_rows(admin_df, df)
+
+        # Init the database
+        shinymanager::create_db(
+                credentials_data = credentials,
+                sqlite_path = path, # will be created
+                passphrase = admin_pass
+        )
 }
-
